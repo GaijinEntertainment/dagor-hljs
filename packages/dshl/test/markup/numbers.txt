@@ -1,0 +1,20 @@
+float scale = .5;
+float bias = 5.;
+float4 tint = (1., 0.25, .75, 2);
+int mask = 0xFF;
+int packed = 1Fh;
+
+shader numbers_demo
+{
+  (ps) { scale@f1 = (scale); }
+  hlsl(ps) {
+    float4 numbers_ps() : SV_Target
+    {
+      half m = (1 >= 0.5) ? 1. : 0.;
+      float e = 1.5e-3f + .25 + 2.e2 + 0xFFu;
+      float3 v = float3(1, 2, 3).xyz;
+      return float4(m, e, v.x / 127., 1.0h);
+    }
+  }
+  compile("target_ps", "numbers_ps");
+}
