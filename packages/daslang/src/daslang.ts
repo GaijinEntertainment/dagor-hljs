@@ -109,7 +109,7 @@ export default function daslang(hljs: HLJSApi): Language {
 
 	const MACRO_VARIABLE: Mode = {
 		scope: 'meta',
-		begin: /\$[eivbatcf]\b|(?<!@)@[_a-zA-Z]\w*/,
+		begin: /\$\$|\$[eivbatcf]\b|(?<!@)@[_a-zA-Z]\w*/,
 	};
 
 	const NEGATED_KEYWORD: Mode = {
