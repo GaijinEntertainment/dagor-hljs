@@ -1,0 +1,11 @@
+<span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">throw</span> <span class="hljs-string">&quot;x&quot;</span>
+} <span class="hljs-keyword">catch</span> (e) {
+  <span class="hljs-title function_">print</span>(e)
+}
+
+<span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">throw</span> <span class="hljs-string">&quot;x&quot;</span>
+} <span class="hljs-keyword">catch</span> (<span class="hljs-type">Error</span> e) {
+  <span class="hljs-title function_">print</span>(e)
+}

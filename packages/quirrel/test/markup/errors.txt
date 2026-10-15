@@ -1,0 +1,11 @@
+try {
+  throw "x"
+} catch (e) {
+  print(e)
+}
+
+try {
+  throw "x"
+} catch (Error e) {
+  print(e)
+}
