@@ -1,0 +1,7 @@
+"include" "a.blk"
+'INCLUDE' b.blk
+"include" /* c */
+  "c.blk"
+include /* before the path */ d.blk
+"include"{}
+'''include''' = y
