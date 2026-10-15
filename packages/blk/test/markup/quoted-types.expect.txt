@@ -1,7 +1,7 @@
-<span class="hljs-property">q1</span>:<span class="hljs-type">&quot;i&quot;</span>=<span class="hljs-number">5</span>
-<span class="hljs-property">q2</span>:<span class="hljs-type">&#x27;t&#x27;</span>=<span class="hljs-string">text</span>
-<span class="hljs-property">q3</span>:<span class="hljs-type">&quot;&quot;&quot;b&quot;&quot;&quot;</span>=<span class="hljs-literal">yes</span>
-<span class="hljs-property">q4</span>:<span class="hljs-type">&quot;~i&quot;</span>=<span class="hljs-number">6</span>
-<span class="hljs-property">q5</span>:<span class="hljs-type">&#x27;ip2&#x27;</span>=<span class="hljs-number">1,2</span>
-<span class="hljs-property">c</span>:<span class="hljs-type">&quot;t&quot;</span>[]=[<span class="hljs-string">&quot;x&quot;</span>]
-<span class="hljs-property">plain</span>:<span class="hljs-type">i64</span>=<span class="hljs-number">7</span>
+q1:<span class="hljs-type">&quot;i&quot;</span>=<span class="hljs-number">5</span>
+q2:<span class="hljs-type">&#x27;t&#x27;</span>=<span class="hljs-string">text</span>
+q3:<span class="hljs-type">&quot;&quot;&quot;b&quot;&quot;&quot;</span>=<span class="hljs-literal">yes</span>
+q4:<span class="hljs-type">&quot;~i&quot;</span>=<span class="hljs-number">6</span>
+q5:<span class="hljs-type">&#x27;ip2&#x27;</span>=<span class="hljs-number">1,2</span>
+c:<span class="hljs-type">&quot;t&quot;</span>[]=[<span class="hljs-string">&quot;x&quot;</span>]
+plain:<span class="hljs-type">i64</span>=<span class="hljs-number">7</span>

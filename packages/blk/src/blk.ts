@@ -2,9 +2,7 @@
  * BLK (DataBlock) language definition for highlight.js.
  *
  * Written by hand from the tree-sitter grammar in
- * GaijinEntertainment/tree-sitter-blk (MIT). Its queries/highlights.scm
- * chooses the token classes. Only classes listed in CLASS_SAFELIST in
- * gr-syntax-layer-worker.ts are shown in the diff.
+ * GaijinEntertainment/tree-sitter-blk (MIT).
  */
 
 import type {HLJSApi, Language, Mode} from 'highlight.js';
@@ -137,13 +135,13 @@ export default function blk(hljs: HLJSApi): Language {
 			// `"@delete:vsync"`. It is listed before the other quoted names.
 			{scope: 'meta', begin: new RegExp(`${QUOTE}~?@[^"'\\n]*?${QUOTE}`)},
 			{scope: 'built_in', begin: new RegExp(`${QUOTE}~?_[^"'\\n]*?${QUOTE}(?=\\s*(?:;\\s*)?\\{)`)},
-			{scope: 'variable.language', begin: new RegExp(`${QUOTE}~?_[^"'\\n]*?${QUOTE}(?=\\s*(?:;\\s*)?[:=])`)},
+			{scope: 'built_in', begin: new RegExp(`${QUOTE}~?_[^"'\\n]*?${QUOTE}(?=\\s*(?:;\\s*)?[:=])`)},
 			{scope: 'title', begin: new RegExp(`${QUOTE}~?[^"'\\n]*?${QUOTE}(?=\\s*(?:;\\s*)?\\{)`)},
-			{scope: 'property', begin: new RegExp(`${QUOTE}~?[^"'\\n]*?${QUOTE}(?=\\s*(?:;\\s*)?[:=])`)},
+			{begin: new RegExp(`${QUOTE}~?[^"'\\n]*?${QUOTE}(?=\\s*(?:;\\s*)?[:=])`)},
 			{scope: 'built_in', begin: new RegExp(`_${NAME}(?=\\s*\\{)`)},
 			{scope: 'title', begin: new RegExp(`(?!_)${NAME}(?=\\s*\\{)`)},
-			{scope: 'variable.language', begin: new RegExp(`_${NAME}(?=\\s*[:=])`)},
-			{scope: 'property', begin: new RegExp(`(?!_)${NAME}(?=\\s*[:=])`)},
+			{scope: 'built_in', begin: new RegExp(`_${NAME}(?=\\s*[:=])`)},
+			{begin: new RegExp(`(?!_)${NAME}(?=\\s*[:=])`)},
 			TYPE,
 			ARRAY,
 			value(typedEquals(TEXT_TYPES), 'string'),

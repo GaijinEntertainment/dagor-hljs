@@ -9,6 +9,6 @@ test('a lone CR ends a value', () => {
 	const target = hljs.newInstance();
 	target.registerLanguage('blk', blk);
 	expect(target.highlight('a:i=1\rb:i=2', {language: 'blk'}).value).toContain(
-		'<span class="hljs-number">1</span>\r<span class="hljs-property">b</span>',
+		'<span class="hljs-number">1</span>\rb:<span class="hljs-type">i</span>',
 	);
 });
