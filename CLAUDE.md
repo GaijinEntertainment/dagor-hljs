@@ -13,7 +13,7 @@ public.
 
 ## Verification
 
-- Run `npm install`, then `npm test`.
+- Run `vp install`, then `vp check` (format, lint, and type check) and `vp test run`.
 
 ## Public repository
 

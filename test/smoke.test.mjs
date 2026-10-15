@@ -1,7 +1,6 @@
 // Each grammar must load, color its sample, and keep the text unchanged.
-import {test} from 'node:test';
-import assert from 'node:assert/strict';
 import hljs from 'highlight.js';
+import {expect, test} from 'vite-plus/test';
 import {register, languages} from '../index.js';
 
 const samples = {
@@ -18,10 +17,10 @@ for (const name of Object.keys(languages)) {
   test(`${name} highlights its sample`, () => {
     const code = samples[name];
     const html = hljs.highlight(code, {language: name}).value;
-    assert.match(html, /<span class="hljs-/, 'expected at least one highlighted token');
+    expect(html).toMatch(/<span class="hljs-/);
     const text = html.replace(/<[^>]+>/g, '')
       .replace(/&quot;/g, '"').replace(/&#x27;/g, "'")
       .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-    assert.equal(text, code);
+    expect(text).toBe(code);
   });
 }

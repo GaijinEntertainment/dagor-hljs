@@ -39,8 +39,9 @@ hljs.registerLanguage('dshl', dshl);
 ## Tests
 
 ```sh
-npm install
-npm test
+vp install
+vp check
+vp test run
 ```
 
 ## License
