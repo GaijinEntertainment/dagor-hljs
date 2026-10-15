@@ -16,16 +16,7 @@ export default defineConfig({
 	lint: {
 		extends: [javascript, typescript, vitest],
 		// The JavaScript grammars at the root have no types; each leaves this list when it moves into packages/.
-		ignorePatterns: [
-			'**/dist/**',
-			'index.js',
-			'das.js',
-			'blk.js',
-			'quirrel.js',
-			'dshl.js',
-			'jam.js',
-			'test/smoke.test.mjs',
-		],
+		ignorePatterns: ['**/dist/**', 'index.js', 'das.js', 'quirrel.js', 'dshl.js', 'jam.js', 'test/smoke.test.mjs'],
 		options: {
 			typeAware: true,
 			typeCheck: true,
@@ -36,6 +27,9 @@ export default defineConfig({
 		},
 	},
 	test: {
-		include: ['test/**/*.test.mjs', 'packages/*/test/**/*.test.ts'],
+		projects: [
+			{test: {name: 'markup', include: ['test/**/*.test.mjs', 'packages/*/test/**/*.test.ts']}},
+			{test: {name: 'dist', include: ['test/dist.test.ts'], globalSetup: ['test/build.ts']}},
+		],
 	},
 });

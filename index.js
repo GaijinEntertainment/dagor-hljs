@@ -1,6 +1,6 @@
 // highlight.js grammars for the Dagor languages.
 import das from './das.js';
-import blk from './blk.js';
+import blk from './packages/blk/src/blk.ts';
 import quirrel from './quirrel.js';
 import dshl from './dshl.js';
 import jam from './jam.js';
