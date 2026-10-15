@@ -76,7 +76,8 @@ export default function blk(hljs: HLJSApi): Language {
 		],
 	});
 
-	const typedEquals = (types: readonly string[]): RegExp => new RegExp(`(?<=:[ \\t]*${typeName(types)}[ \\t]*)=`);
+	const typedEquals = (types: readonly string[]): RegExp =>
+		new RegExp(`(?<=:[ \\t]*${typeName(types)}[ \\t]*(?:;[ \\t]*)?)=`);
 
 	const ELEMENT = unquotedValue('\\]');
 
@@ -118,6 +119,7 @@ export default function blk(hljs: HLJSApi): Language {
 		beginScope: 'keyword',
 		end: /(?=[;}])/,
 		contains: [
+			{begin: /(?<=["'])[ \t]*;/},
 			BLOCK_COMMENT,
 			hljs.C_LINE_COMMENT_MODE,
 			{...STRING, endsParent: true},
@@ -134,10 +136,10 @@ export default function blk(hljs: HLJSApi): Language {
 			// A quoted name that starts with `@` is a directive, such as
 			// `"@delete:vsync"`. It is listed before the other quoted names.
 			{scope: 'meta', begin: new RegExp(`${QUOTE}~?@[^"'\\n]*?${QUOTE}`)},
-			{scope: 'built_in', begin: new RegExp(`${QUOTE}~?_[^"'\\n]*?${QUOTE}(?=\\s*\\{)`)},
-			{scope: 'variable.language', begin: new RegExp(`${QUOTE}~?_[^"'\\n]*?${QUOTE}(?=\\s*[:=])`)},
-			{scope: 'title', begin: new RegExp(`${QUOTE}~?[^"'\\n]*?${QUOTE}(?=\\s*\\{)`)},
-			{scope: 'property', begin: new RegExp(`${QUOTE}~?[^"'\\n]*?${QUOTE}(?=\\s*[:=])`)},
+			{scope: 'built_in', begin: new RegExp(`${QUOTE}~?_[^"'\\n]*?${QUOTE}(?=\\s*(?:;\\s*)?\\{)`)},
+			{scope: 'variable.language', begin: new RegExp(`${QUOTE}~?_[^"'\\n]*?${QUOTE}(?=\\s*(?:;\\s*)?[:=])`)},
+			{scope: 'title', begin: new RegExp(`${QUOTE}~?[^"'\\n]*?${QUOTE}(?=\\s*(?:;\\s*)?\\{)`)},
+			{scope: 'property', begin: new RegExp(`${QUOTE}~?[^"'\\n]*?${QUOTE}(?=\\s*(?:;\\s*)?[:=])`)},
 			{scope: 'built_in', begin: new RegExp(`_${NAME}(?=\\s*\\{)`)},
 			{scope: 'title', begin: new RegExp(`(?!_)${NAME}(?=\\s*\\{)`)},
 			{scope: 'variable.language', begin: new RegExp(`_${NAME}(?=\\s*[:=])`)},
