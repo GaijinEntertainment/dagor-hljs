@@ -28,6 +28,12 @@ an npm package of its own. The repository is public.
 
 - Run `vp install`, then `vp check` (format, lint, and type check) and `vp test run`. The `dist` test project builds
   every package first; `vp pack` runs publint and attw on each package.
+- A change reaches `main` through a pull request, merged by rebase or squash after the `ci-ok` job of
+  `.github/workflows/ci.yml` passes; the `protect-main` ruleset rejects a direct push. Add each new CI job to the
+  `needs` list of `ci-ok`.
+- A workflow pins each action to the commit SHA of a release and names the release in a comment
+  (`actions/checkout@<sha> # v7.0.1`), which Dependabot reads to update both. A checkout sets
+  `persist-credentials: false`.
 
 ## Public repository
 
