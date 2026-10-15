@@ -3,17 +3,17 @@
 <span class="hljs-keyword">include</span> <span class="hljs-string">shaders_game_internal.blk</span>
 <span class="hljs-keyword">INCLUDE</span> <span class="hljs-string">/abs/path.blk</span> <span class="hljs-comment">// comment</span>
 <span class="hljs-keyword">inClude</span> <span class="hljs-string">&quot;mixed.blk&quot;</span>
-<span class="hljs-title">block</span>{
+<span class="hljs-section">block</span>{
   <span class="hljs-keyword">include</span>
     <span class="hljs-string">&quot;a.blk&quot;</span>
   <span class="hljs-keyword">Include</span>
   <span class="hljs-string">b.blk</span>
 }
-<span class="hljs-title">a</span>{
+<span class="hljs-section">a</span>{
   <span class="hljs-keyword">include</span>
 }
 <span class="hljs-keyword">include</span>;
-<span class="hljs-title">include</span>{}
+<span class="hljs-section">include</span>{}
 <span class="hljs-attr">Include</span>:<span class="hljs-type">t</span>=<span class="hljs-string">&quot;x&quot;</span>
 <span class="hljs-attr">include</span> = <span class="hljs-string">y</span>
 <span class="hljs-attr">include.x</span>:<span class="hljs-type">i</span>=<span class="hljs-number">1</span>

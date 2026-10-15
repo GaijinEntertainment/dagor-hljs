@@ -24,5 +24,5 @@
   <span class="hljs-string">bare value</span>
 ]
 <span class="hljs-attr">empty</span>:<span class="hljs-type">p3</span>[]=[]
-<span class="hljs-built_in">_built_in</span>:<span class="hljs-type">r</span>=<span class="hljs-number">1</span>
-<span class="hljs-built_in">_untyped_built_in</span> = <span class="hljs-string">x</span>
+<span class="hljs-attr">_built_in</span>:<span class="hljs-type">r</span>=<span class="hljs-number">1</span>
+<span class="hljs-attr">_untyped_built_in</span> = <span class="hljs-string">x</span>

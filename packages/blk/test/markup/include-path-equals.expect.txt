@@ -1,4 +1,4 @@
 <span class="hljs-keyword">include</span> <span class="hljs-string">= &quot;x</span>
-<span class="hljs-title">a</span>{
+<span class="hljs-section">a</span>{
   <span class="hljs-keyword">include</span> <span class="hljs-string">=</span>
 }
