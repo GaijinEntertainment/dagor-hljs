@@ -45,5 +45,4 @@ npm test
 
 ## License
 
-Not chosen yet. `package.json` says `UNLICENSED`, so no one may use or copy the
-code until a license is added.
+MIT. See `LICENSE`.
