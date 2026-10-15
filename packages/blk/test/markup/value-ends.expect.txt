@@ -1,5 +1,5 @@
-<span class="hljs-property">e</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">&quot;x&quot;</span> <span class="hljs-property">f</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">&quot;y&quot;</span>
-<span class="hljs-property">g</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">&quot;x&quot;</span> <span class="hljs-comment">/* nested <span class="hljs-comment">/* comment */</span> here */</span> ;
+<span class="hljs-property">e</span>:<span class="hljs-type">t</span>=<span class="hljs-string">&quot;x&quot;</span> <span class="hljs-property">f</span>:<span class="hljs-type">t</span>=<span class="hljs-string">&quot;y&quot;</span>
+<span class="hljs-property">g</span>:<span class="hljs-type">t</span>=<span class="hljs-string">&quot;x&quot;</span> <span class="hljs-comment">/* nested <span class="hljs-comment">/* comment */</span> here */</span> ;
 <span class="hljs-property">multi</span> =
   <span class="hljs-string">next line</span>
-<span class="hljs-property">h</span>:<span class="hljs-built_in">i</span>=<span class="hljs-number">1</span>
+<span class="hljs-property">h</span>:<span class="hljs-type">i</span>=<span class="hljs-number">1</span>
