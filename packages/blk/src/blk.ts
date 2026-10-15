@@ -65,13 +65,13 @@ export default function blk(hljs: HLJSApi): Language {
 		end: /\*\//,
 	};
 
-	const value = (equals: RegExp, scope: string): Mode => ({
+	const value = (equals: RegExp, scope: string, end = /(?=[;}\r\n]|\s*\/\/)/): Mode => ({
 		begin: equals,
-		end: /(?=;|\n|\}|\s*\/\/)/,
+		end,
 		contains: [
 			{...COMMENT_AFTER_UNQUOTED, endsParent: true},
 			BLOCK_COMMENT,
-			STRING,
+			{...STRING, endsParent: true},
 			{scope, begin: new RegExp(unquotedValue(''))},
 		],
 	});
@@ -147,7 +147,7 @@ export default function blk(hljs: HLJSApi): Language {
 			value(typedEquals(TEXT_TYPES), 'string'),
 			value(typedEquals(BOOLEAN_TYPES), 'literal'),
 			value(typedEquals(NUMBER_TYPES), 'number'),
-			value(/(?<!\[\][ \t]*)=/, 'string'),
+			value(/(?<!\[\][ \t]*)=/, 'string', /(?=[;}]|\s*\/\/)|(?<!=[ \t]*)(?=[\r\n])/),
 			STRING,
 		],
 	};
