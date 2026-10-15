@@ -1,8 +1,8 @@
-<span class="hljs-meta">include</span> <span class="hljs-string">&quot;shader_global.dshl&quot;</span>
+<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;shader_global.dshl&quot;</span>
 
-<span class="hljs-keyword">shader</span> strings_demo
+<span class="hljs-keyword">shader</span> <span class="hljs-title">strings_demo</span>
 {
   <span class="hljs-keyword">render_stage</span> <span class="hljs-string">&quot;opaque;</span>
-  <span class="hljs-property">z_write</span> = <span class="hljs-literal">true</span>;
+  <span class="hljs-attr">z_write</span> = <span class="hljs-literal">true</span>;
   <span class="hljs-keyword">error</span>(<span class="hljs-string">&quot;a ~&quot;quoted~&quot; word&quot;</span>);
 }
