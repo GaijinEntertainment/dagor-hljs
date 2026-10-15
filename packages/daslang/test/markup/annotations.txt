@@ -1,0 +1,19 @@
+options gen2
+
+[safe_when_uninitialized]
+struct Plain {
+    value : int
+}
+
+[export, unused_argument(args)]
+def main(args : array<string>) {
+    let rows = [
+        [1, 2],
+        [3, 4]
+    ]
+    print("{rows} {other()}\n")
+}
+
+[export] def other() : int {
+    return 1
+}

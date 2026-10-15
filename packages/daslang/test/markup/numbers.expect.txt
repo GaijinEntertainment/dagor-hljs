@@ -1,6 +1,6 @@
 <span class="hljs-keyword">options</span> gen2
 
-[export]
+<span class="hljs-meta">[export]</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>() {
     <span class="hljs-keyword">let</span> decimal = <span class="hljs-number">1_000_000</span>
     <span class="hljs-keyword">let</span> unsigned = <span class="hljs-number">42u</span>
