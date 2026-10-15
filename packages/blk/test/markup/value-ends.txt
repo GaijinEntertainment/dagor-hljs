@@ -1,0 +1,5 @@
+e:t="x" f:t="y"
+g:t="x" /* nested /* comment */ here */ ;
+multi =
+  next line
+h:i=1
