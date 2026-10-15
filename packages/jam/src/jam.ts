@@ -95,9 +95,11 @@ export default function jam(_hljs: HLJSApi): Language {
 	const STRING: Mode = {
 		scope: 'string',
 		begin: /"/,
-		end: /"|$/,
+		end: /"/,
 		contains: [ESCAPE, VARIABLE],
 	};
+
+	const ACTION_STRING: Mode = {...STRING, end: /"|$/};
 
 	// A brace inside an action body nests, so it does not end the body.
 	const ACTION_NESTED: Mode = {
@@ -114,7 +116,7 @@ export default function jam(_hljs: HLJSApi): Language {
 		{scope: 'meta', begin: /#\/?\(|\)\/?#|#\\\(|\)\\#/},
 		{scope: 'string', begin: /^[ \t]*:\w+/},
 		{scope: 'comment', begin: /^[ \t]*#/, end: /$/},
-		STRING,
+		ACTION_STRING,
 		VARIABLE,
 	];
 	ACTION_NESTED.contains = [...ACTION_RULES, ACTION_NESTED];
