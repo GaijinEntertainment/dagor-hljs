@@ -1,0 +1,8 @@
+<span class="hljs-property">plain</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">&quot;no escapes&quot;</span>
+<span class="hljs-property">quote</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">&quot;esc~&quot;aped&quot;</span>
+<span class="hljs-property">single</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">&#x27;it~&#x27;s&#x27;</span>
+<span class="hljs-property">tilde</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">&quot;a~~b&quot;</span>
+<span class="hljs-property">line</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">&quot;escaped~
+newline&quot;</span>
+<span class="hljs-property">triple</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">&quot;&quot;&quot;line ~&quot;&quot;&quot; still&quot;&quot;&quot;</span>
+<span class="hljs-property">after</span>:<span class="hljs-built_in">i</span>=<span class="hljs-number">1</span>

@@ -26,6 +26,7 @@ function words(list: readonly string[]): RegExp {
 export default function blk(hljs: HLJSApi): Language {
 	const STRING: Mode = {
 		scope: 'string',
+		contains: [{begin: /~[\s\S]/, relevance: 0}],
 		variants: [
 			{begin: /"""/, end: /"""/},
 			{begin: /'''/, end: /'''/},

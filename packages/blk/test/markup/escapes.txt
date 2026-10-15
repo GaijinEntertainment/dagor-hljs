@@ -1,0 +1,8 @@
+plain:t="no escapes"
+quote:t="esc~"aped"
+single:t='it~'s'
+tilde:t="a~~b"
+line:t="escaped~
+newline"
+triple:t="""line ~""" still"""
+after:i=1
