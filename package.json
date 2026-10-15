@@ -1,0 +1,29 @@
+{
+  "name": "daglangs_grammars",
+  "version": "0.1.0",
+  "description": "highlight.js grammars for the Dagor languages: Daslang, BLK, Quirrel, DSHL and Jam",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "das.js",
+    "blk.js",
+    "quirrel.js",
+    "dshl.js",
+    "jam.js"
+  ],
+  "scripts": {
+    "test": "node --test test/"
+  },
+  "peerDependencies": {
+    "highlight.js": "^11.12.0"
+  },
+  "devDependencies": {
+    "highlight.js": "11.12.0"
+  },
+  "private": true,
+  "license": "UNLICENSED"
+}
