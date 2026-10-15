@@ -1,0 +1,10 @@
+function scale(value: float, ratio: float|null = null): table|null {
+  let result: table = {}
+  let numbers: (int|float) = value
+  let pick = @(x: string) x
+  let call: function = pick
+  local table = array(5)
+  foreach (i, string in table)
+    print(string)
+  return ::array(3)
+}
