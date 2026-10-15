@@ -8,14 +8,12 @@
 
 import type {HLJSApi, Language, Mode} from 'highlight.js';
 
-// Keywords of the Jam language.
 const KEYWORDS = [
 	'actions bind break case continue default else existing for if ignore in',
 	'include local maxline on piecemeal quietly return rule switch together',
 	'updated while',
 ].join(' ');
 
-// Rules that the Jam engine provides.
 const BUILTIN_RULES = [
 	'Always ALWAYS Depends DEPENDS echo Echo ECHO exit Exit EXIT Glob GLOB',
 	'Includes INCLUDES Leaves LEAVES Match MATCH NoCare NOCARE NOTIME NotFile',

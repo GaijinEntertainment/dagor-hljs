@@ -113,12 +113,12 @@ export default function dshl(hljs: HLJSApi): Language {
 		meta: DSHL_DIRECTIVES,
 	};
 
-	// Builtin bindings that a shader can read from the HLSL body.
 	const HLSL_KEYWORD_OBJECT = {
 		keyword: HLSL_KEYWORDS,
 		type: HLSL_TYPE_WORDS,
 		built_in: HLSL_INTRINSICS,
 		attr: HLSL_SEMANTICS,
+		// Builtin bindings that a shader can read from the HLSL body.
 		literal: [
 			'true false globtm projtm viewprojtm immediate_dword_count',
 			'local_view_x local_view_y local_view_z local_view_pos',
@@ -152,7 +152,6 @@ export default function dshl(hljs: HLJSApi): Language {
 		begin: /##|#rb\b/,
 	};
 
-	// A line in an HLSL body that starts with `#` is a preprocessor line.
 	const HLSL_PREPROCESSOR: Mode = {
 		scope: 'meta',
 		begin: /^[ \t]*#/,
