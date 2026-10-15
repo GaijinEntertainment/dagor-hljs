@@ -125,7 +125,7 @@ jobs:
           if [[ ${PRERELEASE} == true ]]; then
             dist_tag=next
           fi
-          npm publish "tarballs/${TARBALL}" --provenance --access public --tag "${dist_tag}"
+          npm publish "./tarballs/${TARBALL}" --provenance --access public --tag "${dist_tag}"
         env:
           TARBALL: ${{needs.build.outputs.tarball}}
           PRERELEASE: ${{needs.build.outputs.prerelease}}
