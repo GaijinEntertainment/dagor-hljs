@@ -23,7 +23,7 @@ actions quietly CompileShaderCmd bind flags
 {
 #async
   :retry
-  call $(COMPILER) #\(-o $(1)\)# $(2)
+  call $(COMPILER) #\(-o $(1))\# $(2)
   if errorlevel 1 goto retry
   { echo nested braces }
 }

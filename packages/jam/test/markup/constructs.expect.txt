@@ -23,7 +23,7 @@
 {
 <span class="hljs-meta">#async</span>
 <span class="hljs-string">  :retry</span>
-  <span class="hljs-keyword">call</span> $(<span class="hljs-variable">COMPILER</span>) <span class="hljs-meta">#\(</span>-o $(<span class="hljs-variable">1</span>)\<span class="hljs-meta">)#</span> $(<span class="hljs-variable">2</span>)
+  <span class="hljs-keyword">call</span> $(<span class="hljs-variable">COMPILER</span>) <span class="hljs-meta">#\(</span>-o $(<span class="hljs-variable">1</span>)<span class="hljs-meta">)\#</span> $(<span class="hljs-variable">2</span>)
   <span class="hljs-keyword">if</span> <span class="hljs-string">errorlevel</span> 1 <span class="hljs-keyword">goto</span> retry
   { <span class="hljs-keyword">echo</span> nested braces }
 }
