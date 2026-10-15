@@ -3,10 +3,10 @@
 <span class="hljs-keyword">module</span> addresses
 
 <span class="hljs-keyword">struct</span> <span class="hljs-type">Tagged</span> {
-    <span class="hljs-meta">@tag</span> name : <span class="hljs-built_in">string</span>
+    <span class="hljs-meta">@tag</span> name : <span class="hljs-type">string</span>
 }
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(x : <span class="hljs-built_in">int</span>) : <span class="hljs-built_in">int</span> {
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(x : <span class="hljs-type">int</span>) : <span class="hljs-type">int</span> {
     <span class="hljs-keyword">return</span> x + <span class="hljs-number">1</span>
 }
 

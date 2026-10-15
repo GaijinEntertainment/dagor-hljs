@@ -7,14 +7,14 @@
     <span class="hljs-keyword">return</span> <span class="hljs-title function_">qmacro</span>(<span class="hljs-meta">$e</span>(a) + <span class="hljs-meta">$$</span>(b))
 }
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">make_call</span>(name : <span class="hljs-built_in">string</span>; arg : ExpressionPtr) : ExpressionPtr {
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">make_call</span>(name : <span class="hljs-type">string</span>; arg : ExpressionPtr) : ExpressionPtr {
     <span class="hljs-keyword">return</span> <span class="hljs-title function_">qmacro</span>(<span class="hljs-meta">$c</span>(name)(<span class="hljs-meta">$e</span>(arg)))
 }
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">make_variable</span>(name : <span class="hljs-built_in">string</span>) : ExpressionPtr {
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">make_variable</span>(name : <span class="hljs-type">string</span>) : ExpressionPtr {
     <span class="hljs-keyword">return</span> <span class="hljs-title function_">qmacro</span>(<span class="hljs-meta">$i</span>(name))
 }
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">make_value</span>(value : <span class="hljs-built_in">int</span>) : ExpressionPtr {
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">make_value</span>(value : <span class="hljs-type">int</span>) : ExpressionPtr {
     <span class="hljs-keyword">return</span> <span class="hljs-title function_">qmacro</span>(<span class="hljs-meta">$v</span>(value))
 }
