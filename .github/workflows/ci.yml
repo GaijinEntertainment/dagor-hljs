@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{github.workflow}}-${{github.ref}}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Vite+
+        uses: voidzero-dev/setup-vp@68f39c78aaf39be468cabd2afb09c162574c84af # v1.21.2
+        with:
+          node-version: '24'
+          cache: true
+          run-install: false
+      - name: Install dependencies
+        run: vp install --frozen-lockfile
+      - name: Check format, lint, and types
+        run: vp check
+
+  test:
+    name: Test
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Vite+
+        uses: voidzero-dev/setup-vp@68f39c78aaf39be468cabd2afb09c162574c84af # v1.21.2
+        with:
+          node-version: '24'
+          cache: true
+          run-install: false
+      - name: Install dependencies
+        run: vp install --frozen-lockfile
+      - name: Build and test the packages
+        run: vp test run
+
+  ci-ok:
+    if: always()
+    needs: [check, test]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check that each job passed
+        run: |
+          echo "$RESULTS"
+          jq --exit-status 'all(. == "success")' <<< "$RESULTS"
+        env:
+          RESULTS: ${{toJSON(needs.*.result)}}
