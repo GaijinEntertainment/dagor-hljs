@@ -2,3 +2,10 @@ actions quietly Link bind NEEDLIBS LINKFLAGS
 {
   call $(LINK) $(LINKFLAGS) $(1)
 }
+
+actions Clean
+{
+  rem nothing $(1) here
+  REM an upper-case remark
+  del $(1)
+}
