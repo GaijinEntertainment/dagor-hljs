@@ -1,0 +1,18 @@
+options gen2
+
+module addresses
+
+struct Tagged {
+    @tag name : string
+}
+
+def helper(x : int) : int {
+    return x + 1
+}
+
+[export]
+def main() {
+    let plain = @@helper
+    let qualified = @@addresses::helper
+    print("{invoke(plain, 1)} {invoke(qualified, 2)}\n")
+}
