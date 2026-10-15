@@ -69,7 +69,12 @@ export default function daslang(hljs: HLJSApi): Language {
 
 	const NUMBER: Mode = {
 		scope: 'number',
-		begin: /\b(?:0[xX][0-9a-fA-F_]+|\d[\d_]*(?:\.\d[\d_]*)?(?:[eE][+-]?\d+)?)(?:[uUlLfFhHdD]+8?)?\b/,
+		variants: [
+			{begin: /\b0[xX][0-9a-fA-F][0-9a-fA-F_]*(?:[uU][lL]|[lL]|[uU]8|[uU])?(?!\w)/},
+			{begin: /(?:\b\d+\.(?!\.)\d*|(?<![\w.])\.\d+)(?:[eE][+-]?\d+)?(?:[fF]|lf|d|[hH])?(?!\w)/},
+			{begin: /\b\d+(?:[eE][+-]?\d+(?:[fF]|lf|d|[hH])?|[fF]|lf|d|[hH])(?!\w)/},
+			{begin: /\b\d[\d_]*(?:[uU][lL]|[lL]|[uU]8|[uU])?(?!\w)/},
+		],
 	};
 
 	// The macro body runs up to `%%`, and it may hold a single `%`.

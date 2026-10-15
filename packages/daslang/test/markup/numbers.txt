@@ -1,0 +1,28 @@
+options gen2
+
+[export]
+def main() {
+    let decimal = 1_000_000
+    let unsigned = 42u
+    let long = 7l
+    let unsigned_long = 7ul
+    let byte = 255u8
+    let hex = 0xFF_FF
+    let hex_byte = 0x1Fu8
+    let hex_long = 0xFFul
+    let trailing_dot = 1.
+    let leading_dot = .5
+    let exponent = 1.5e-3
+    let dot_suffix = 1.f
+    let float_suffix = 2f
+    let plain_exponent = 1e3
+    let double_fraction = 1.5lf
+    let double_suffix = 2d
+    let span = 1..2
+    for (x in 0..10) {
+        print("{x}\n")
+    }
+    print("{decimal} {unsigned} {long} {unsigned_long} {byte} {hex} {hex_byte} {hex_long}\n")
+    print("{trailing_dot} {leading_dot} {exponent} {dot_suffix} {float_suffix} {plain_exponent}\n")
+    print("{double_fraction} {double_suffix} {span}\n")
+}
