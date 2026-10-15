@@ -1,20 +1,20 @@
-<span class="hljs-property">fname</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">billboard.dag</span> <span class="hljs-comment">// comment</span>
-<span class="hljs-property">next</span>:<span class="hljs-built_in">i</span>=<span class="hljs-number">1</span><span class="hljs-comment">//tight</span>
-<span class="hljs-property">path</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">x</span><span class="hljs-comment">//c</span>
-<span class="hljs-property">a</span>:<span class="hljs-built_in">i</span>=<span class="hljs-number">1/* one */2</span>
-<span class="hljs-property">b</span>:<span class="hljs-built_in">r</span>=<span class="hljs-number">70</span> <span class="hljs-comment">/* trailing */</span>
-<span class="hljs-property">c</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">x</span> <span class="hljs-comment">/* a */</span> ;
-<span class="hljs-property">compartment_08_dm</span>:<span class="hljs-built_in">r</span>=<span class="hljs-number">177.286</span><span class="hljs-comment">/*
+<span class="hljs-property">fname</span>:<span class="hljs-type">t</span>=<span class="hljs-string">billboard.dag</span> <span class="hljs-comment">// comment</span>
+<span class="hljs-property">next</span>:<span class="hljs-type">i</span>=<span class="hljs-number">1</span><span class="hljs-comment">//tight</span>
+<span class="hljs-property">path</span>:<span class="hljs-type">t</span>=<span class="hljs-string">x</span><span class="hljs-comment">//c</span>
+<span class="hljs-property">a</span>:<span class="hljs-type">i</span>=<span class="hljs-number">1/* one */2</span>
+<span class="hljs-property">b</span>:<span class="hljs-type">r</span>=<span class="hljs-number">70</span> <span class="hljs-comment">/* trailing */</span>
+<span class="hljs-property">c</span>:<span class="hljs-type">t</span>=<span class="hljs-string">x</span> <span class="hljs-comment">/* a */</span> ;
+<span class="hljs-property">compartment_08_dm</span>:<span class="hljs-type">r</span>=<span class="hljs-number">177.286</span><span class="hljs-comment">/*
   compartment_09_dm:r=504.399 /* inner
   compartment_10_dm:r=177.286*/</span>
-<span class="hljs-property">cover_01_dm</span>:<span class="hljs-built_in">r</span>=<span class="hljs-number">1498.56</span>
-<span class="hljs-property">f</span>:<span class="hljs-built_in">i</span>=<span class="hljs-number">1</span> <span class="hljs-comment">/* open
-closed here */</span> <span class="hljs-property">g</span>:<span class="hljs-built_in">i</span>=<span class="hljs-number">2</span>
+<span class="hljs-property">cover_01_dm</span>:<span class="hljs-type">r</span>=<span class="hljs-number">1498.56</span>
+<span class="hljs-property">f</span>:<span class="hljs-type">i</span>=<span class="hljs-number">1</span> <span class="hljs-comment">/* open
+closed here */</span> <span class="hljs-property">g</span>:<span class="hljs-type">i</span>=<span class="hljs-number">2</span>
 <span class="hljs-comment">/* outer <span class="hljs-comment">/* inner */</span> still outer */</span>
-<span class="hljs-property">d</span>:<span class="hljs-built_in">t</span>= <span class="hljs-comment">/* outer <span class="hljs-comment">/* inner */</span> still outer */</span> <span class="hljs-string">y</span>
-<span class="hljs-property">e</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">&quot;x&quot;</span> <span class="hljs-comment">/* nested <span class="hljs-comment">/* after a */</span> quoted value */</span>
-<span class="hljs-property">list</span>:<span class="hljs-built_in">i</span>[]=[ <span class="hljs-comment">// first</span>
+<span class="hljs-property">d</span>:<span class="hljs-type">t</span>= <span class="hljs-comment">/* outer <span class="hljs-comment">/* inner */</span> still outer */</span> <span class="hljs-string">y</span>
+<span class="hljs-property">e</span>:<span class="hljs-type">t</span>=<span class="hljs-string">&quot;x&quot;</span> <span class="hljs-comment">/* nested <span class="hljs-comment">/* after a */</span> quoted value */</span>
+<span class="hljs-property">list</span>:<span class="hljs-type">i</span>[]=[ <span class="hljs-comment">// first</span>
   <span class="hljs-number">1</span> <span class="hljs-comment">/* one */</span>
   <span class="hljs-comment">// two</span>
   <span class="hljs-number">2</span>;]
-<span class="hljs-property">dirs</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">a/b/</span>
+<span class="hljs-property">dirs</span>:<span class="hljs-type">t</span>=<span class="hljs-string">a/b/</span>

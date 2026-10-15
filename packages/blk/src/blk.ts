@@ -104,7 +104,7 @@ export default function blk(hljs: HLJSApi): Language {
 		end: /(?=\[|=|;|\s|\n|$)/,
 		contains: [
 			{
-				scope: 'built_in',
+				scope: 'type',
 				begin: new RegExp(`(?<![A-Za-z0-9_])${QUOTE}?~?(?:${TYPE_WORDS.join('|')})(?![A-Za-z0-9_])${QUOTE}?`),
 			},
 		],
