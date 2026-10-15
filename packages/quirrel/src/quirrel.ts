@@ -75,7 +75,7 @@ export default function quirrel(hljs: HLJSApi): Language {
 
 	const CHARACTER: Mode = {
 		scope: 'string',
-		begin: /'(?:\\[^'\n]*|[^'\\\n])'/,
+		begin: /'(?:\\(?:x[0-9a-fA-F]{1,2}|u[0-9a-fA-F]{1,4}|U[0-9a-fA-F]{1,8}|[abtnrvf0\\"'])|[^'\\\n])'/,
 	};
 
 	const NUMBER: Mode = {
