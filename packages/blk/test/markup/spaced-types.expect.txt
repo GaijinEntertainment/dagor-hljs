@@ -1,6 +1,6 @@
-a : <span class="hljs-type">t</span> = <span class="hljs-string">x</span>
-b : <span class="hljs-type">i</span> = <span class="hljs-number">1</span>
-&quot;quoted&quot; : <span class="hljs-type">r</span> = <span class="hljs-number">2.5</span>
-&quot;include&quot; : <span class="hljs-type">t</span> = <span class="hljs-string">&quot;x&quot;</span>
-c:<span class="hljs-type">t</span> [] = [<span class="hljs-string">x</span>;]
-d : <span class="hljs-type">b</span>[]=[<span class="hljs-literal">yes</span>;]
+<span class="hljs-attr">a</span> : <span class="hljs-type">t</span> = <span class="hljs-string">x</span>
+<span class="hljs-attr">b</span> : <span class="hljs-type">i</span> = <span class="hljs-number">1</span>
+<span class="hljs-attr">&quot;quoted&quot;</span> : <span class="hljs-type">r</span> = <span class="hljs-number">2.5</span>
+<span class="hljs-attr">&quot;include&quot;</span> : <span class="hljs-type">t</span> = <span class="hljs-string">&quot;x&quot;</span>
+<span class="hljs-attr">c</span>:<span class="hljs-type">t</span> [] = [<span class="hljs-string">x</span>;]
+<span class="hljs-attr">d</span> : <span class="hljs-type">b</span>[]=[<span class="hljs-literal">yes</span>;]
