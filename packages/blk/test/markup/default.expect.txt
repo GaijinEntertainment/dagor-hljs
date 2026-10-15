@@ -1,12 +1,12 @@
 <span class="hljs-comment">// Blocks, typed parameters, arrays, strings, comments and directives of the BLK text format</span>
 <span class="hljs-keyword">include</span> <span class="hljs-string">&quot;base.blk&quot;</span>
 
-<span class="hljs-title">lod</span>{
+<span class="hljs-section">lod</span>{
   <span class="hljs-attr">range</span>:<span class="hljs-type">r</span>=<span class="hljs-number">70</span>
   <span class="hljs-attr">fname</span>:<span class="hljs-type">t</span>=<span class="hljs-string">&quot;lod01.dag&quot;</span>
 }
 
-<span class="hljs-title">material</span>{
+<span class="hljs-section">material</span>{
   <span class="hljs-attr">name</span>:<span class="hljs-type">t</span>=<span class="hljs-string">&quot;metal&quot;</span>; <span class="hljs-attr">shader</span>:<span class="hljs-type">t</span>=<span class="hljs-string">rendinst_simple</span>
   <span class="hljs-attr">diffuse</span>:<span class="hljs-type">c</span>=<span class="hljs-number">255, 255, 255, 255</span>
   <span class="hljs-attr">scale</span>:<span class="hljs-type">p2</span>=<span class="hljs-number">1.0, 1.0</span>

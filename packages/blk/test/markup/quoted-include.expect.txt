@@ -3,5 +3,5 @@
 <span class="hljs-keyword">&quot;include&quot;</span> <span class="hljs-comment">/* c */</span>
   <span class="hljs-string">&quot;c.blk&quot;</span>
 <span class="hljs-keyword">include</span> <span class="hljs-comment">/* before the path */</span> <span class="hljs-string">d.blk</span>
-<span class="hljs-title">&quot;include&quot;</span>{}
+<span class="hljs-section">&quot;include&quot;</span>{}
 <span class="hljs-attr">&#x27;&#x27;&#x27;include&#x27;&#x27;&#x27;</span> = <span class="hljs-string">y</span>

@@ -17,7 +17,7 @@ const TYPE_WORDS = [...NUMBER_TYPES, ...TEXT_TYPES, ...BOOLEAN_TYPES];
 
 const BOOLEAN_WORDS = ['yes', 'no', 'true', 'false', 'on', 'off'];
 
-// Block and parameter names. A name starting with `_` is a built-in name.
+// Block and parameter names.
 const NAME = '[A-Za-z0-9_.~-]+';
 
 // A quoted name. The BLK parser accepts both triple and single quotes.
@@ -134,14 +134,10 @@ export default function blk(hljs: HLJSApi): Language {
 			// A quoted name that starts with `@` is a directive, such as
 			// `"@delete:vsync"`. It is listed before the other quoted names.
 			{scope: 'meta', begin: new RegExp(`${QUOTE}~?@[^"'\\n]*?${QUOTE}`)},
-			{scope: 'built_in', begin: new RegExp(`${QUOTE}~?_[^"'\\n]*?${QUOTE}(?=\\s*(?:;\\s*)?\\{)`)},
-			{scope: 'built_in', begin: new RegExp(`${QUOTE}~?_[^"'\\n]*?${QUOTE}(?=\\s*(?:;\\s*)?[:=])`)},
-			{scope: 'title', begin: new RegExp(`${QUOTE}~?[^"'\\n]*?${QUOTE}(?=\\s*(?:;\\s*)?\\{)`)},
+			{scope: 'section', begin: new RegExp(`${QUOTE}~?[^"'\\n]*?${QUOTE}(?=\\s*(?:;\\s*)?\\{)`)},
 			{scope: 'attr', begin: new RegExp(`${QUOTE}~?[^"'\\n]*?${QUOTE}(?=\\s*(?:;\\s*)?[:=])`)},
-			{scope: 'built_in', begin: new RegExp(`_${NAME}(?=\\s*\\{)`)},
-			{scope: 'title', begin: new RegExp(`(?!_)${NAME}(?=\\s*\\{)`)},
-			{scope: 'built_in', begin: new RegExp(`_${NAME}(?=\\s*[:=])`)},
-			{scope: 'attr', begin: new RegExp(`(?!_)${NAME}(?=\\s*[:=])`)},
+			{scope: 'section', begin: new RegExp(`${NAME}(?=\\s*\\{)`)},
+			{scope: 'attr', begin: new RegExp(`${NAME}(?=\\s*[:=])`)},
 			TYPE,
 			ARRAY,
 			value(typedEquals(TEXT_TYPES), 'string'),
