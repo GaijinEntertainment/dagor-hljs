@@ -1,8 +1,8 @@
 <span class="hljs-title">&quot;block&quot;</span>;{}
-&quot;param&quot; ;:<span class="hljs-type">i</span>=<span class="hljs-number">1</span>
-&#x27;simple&#x27;;=<span class="hljs-string">text</span>
+<span class="hljs-attr">&quot;param&quot;</span> ;:<span class="hljs-type">i</span>=<span class="hljs-number">1</span>
+<span class="hljs-attr">&#x27;simple&#x27;</span>;=<span class="hljs-string">text</span>
 <span class="hljs-built_in">&quot;_hidden&quot;</span>;{}
-b:<span class="hljs-type">&#x27;p3&#x27;</span>;=<span class="hljs-number">1,2,3</span>
+<span class="hljs-attr">b</span>:<span class="hljs-type">&#x27;p3&#x27;</span>;=<span class="hljs-number">1,2,3</span>
 <span class="hljs-keyword">&#x27;INCLUDE&#x27;</span>;<span class="hljs-string">b.blk</span>
 <span class="hljs-keyword">include</span>;
 <span class="hljs-title">a</span>{

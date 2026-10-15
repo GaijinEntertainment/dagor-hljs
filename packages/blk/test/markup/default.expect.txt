@@ -2,26 +2,26 @@
 <span class="hljs-keyword">include</span> <span class="hljs-string">&quot;base.blk&quot;</span>
 
 <span class="hljs-title">lod</span>{
-  range:<span class="hljs-type">r</span>=<span class="hljs-number">70</span>
-  fname:<span class="hljs-type">t</span>=<span class="hljs-string">&quot;lod01.dag&quot;</span>
+  <span class="hljs-attr">range</span>:<span class="hljs-type">r</span>=<span class="hljs-number">70</span>
+  <span class="hljs-attr">fname</span>:<span class="hljs-type">t</span>=<span class="hljs-string">&quot;lod01.dag&quot;</span>
 }
 
 <span class="hljs-title">material</span>{
-  name:<span class="hljs-type">t</span>=<span class="hljs-string">&quot;metal&quot;</span>; shader:<span class="hljs-type">t</span>=<span class="hljs-string">rendinst_simple</span>
-  diffuse:<span class="hljs-type">c</span>=<span class="hljs-number">255, 255, 255, 255</span>
-  scale:<span class="hljs-type">p2</span>=<span class="hljs-number">1.0, 1.0</span>
-  tm:<span class="hljs-type">m</span>=<span class="hljs-number">[[1, 0, 0] [0, 1, 0] [0, 0, 1] [0, 0, 0]]</span>
-  enabled:<span class="hljs-type">b</span>=<span class="hljs-literal">yes</span>
+  <span class="hljs-attr">name</span>:<span class="hljs-type">t</span>=<span class="hljs-string">&quot;metal&quot;</span>; <span class="hljs-attr">shader</span>:<span class="hljs-type">t</span>=<span class="hljs-string">rendinst_simple</span>
+  <span class="hljs-attr">diffuse</span>:<span class="hljs-type">c</span>=<span class="hljs-number">255, 255, 255, 255</span>
+  <span class="hljs-attr">scale</span>:<span class="hljs-type">p2</span>=<span class="hljs-number">1.0, 1.0</span>
+  <span class="hljs-attr">tm</span>:<span class="hljs-type">m</span>=<span class="hljs-number">[[1, 0, 0] [0, 1, 0] [0, 0, 1] [0, 0, 0]]</span>
+  <span class="hljs-attr">enabled</span>:<span class="hljs-type">b</span>=<span class="hljs-literal">yes</span>
   <span class="hljs-comment">/* block comments <span class="hljs-comment">/* nest */</span> here */</span>
 }
 
 <span class="hljs-meta">&quot;@override:material&quot;</span>{
-  enabled:<span class="hljs-type">b</span>=<span class="hljs-literal">no</span>
+  <span class="hljs-attr">enabled</span>:<span class="hljs-type">b</span>=<span class="hljs-literal">no</span>
 }
 
-tags:<span class="hljs-type">t</span>[]=[<span class="hljs-string">&quot;alpha&quot;</span>; <span class="hljs-string">&quot;beta&quot;</span>; <span class="hljs-string">gamma</span>;]
-sizes:<span class="hljs-type">ip2</span>[]=[<span class="hljs-number">32, 64</span>; <span class="hljs-number">128, 256</span>;]
-description:<span class="hljs-type">t</span>=<span class="hljs-string">&quot;&quot;&quot;
+<span class="hljs-attr">tags</span>:<span class="hljs-type">t</span>[]=[<span class="hljs-string">&quot;alpha&quot;</span>; <span class="hljs-string">&quot;beta&quot;</span>; <span class="hljs-string">gamma</span>;]
+<span class="hljs-attr">sizes</span>:<span class="hljs-type">ip2</span>[]=[<span class="hljs-number">32, 64</span>; <span class="hljs-number">128, 256</span>;]
+<span class="hljs-attr">description</span>:<span class="hljs-type">t</span>=<span class="hljs-string">&quot;&quot;&quot;
 A triple-quoted string keeps its line ends and ~&quot;escapes~&quot;.
 &quot;&quot;&quot;</span>
-width = <span class="hljs-string">50%pw</span>
+<span class="hljs-attr">width</span> = <span class="hljs-string">50%pw</span>

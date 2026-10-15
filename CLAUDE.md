@@ -25,7 +25,8 @@ an npm package of its own. The repository is public.
   - `type` - built-in types, type suffixes such as `@f4` and `:r`, and type names in a type position.
   - `built_in` - built-in functions and built-in values such as `this`.
   - `literal` - `true`, `false`, `null`, and named built-in constants.
-  - `attr` - render states and other built-in setting names, and HLSL semantics.
+  - `attr` - render states and other built-in setting names, HLSL semantics, and BLK parameter names, as Gerrit colors
+    the keys of JSON.
   - `template-variable` - a variable expansion, such as `$(Root)` in Jam.
   - `number`, `string`, `comment` - every number, string, and comment, also in values and directives.
 - Do not use `property`, `variable`, `params`, `function`, `attribute`, `quote`, `strong`, or `emphasis`: the light
