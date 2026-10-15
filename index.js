@@ -10,10 +10,10 @@ export const languages = {das, blk, quirrel, dshl, jam};
 
 // Adds every grammar to a highlight.js instance.
 export function register(hljs) {
-  for (const [name, definition] of Object.entries(languages)) {
-    hljs.registerLanguage(name, definition);
-  }
-  return hljs;
+	for (const [name, definition] of Object.entries(languages)) {
+		hljs.registerLanguage(name, definition);
+	}
+	return hljs;
 }
 
 export default languages;

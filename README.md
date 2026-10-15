@@ -3,12 +3,12 @@
 highlight.js grammars for the Dagor languages. Use them in any project that
 highlights code with highlight.js 11.
 
-| Language | Name in highlight.js | File extensions |
-|----------|----------------------|-----------------|
-| Daslang  | `das`                | `.das`          |
-| BLK      | `blk`                | `.blk`          |
-| Quirrel  | `quirrel`            | `.nut`          |
-| DSHL     | `dshl`               | `.dshl`         |
+| Language | Name in highlight.js | File extensions   |
+| -------- | -------------------- | ----------------- |
+| Daslang  | `das`                | `.das`            |
+| BLK      | `blk`                | `.blk`            |
+| Quirrel  | `quirrel`            | `.nut`            |
+| DSHL     | `dshl`               | `.dshl`           |
 | Jam      | `jam`                | `.jam`, `Jamfile` |
 
 ## Usage
