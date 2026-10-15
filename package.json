@@ -1,32 +1,26 @@
 {
-  "name": "daglangs_grammars",
-  "version": "0.1.0",
-  "description": "highlight.js grammars for the Dagor languages: Daslang, BLK, Quirrel, DSHL and Jam",
-  "type": "module",
-  "main": "index.js",
-  "exports": {
-    ".": "./index.js"
-  },
-  "files": [
-    "index.js",
-    "das.js",
-    "blk.js",
-    "quirrel.js",
-    "dshl.js",
-    "jam.js"
-  ],
-  "scripts": {
-    "test": "node --test test/"
-  },
-  "peerDependencies": {
-    "highlight.js": "^11.12.0"
-  },
-  "devDependencies": {
-    "highlight.js": "11.12.0"
-  },
-  "private": true,
-  "license": "MIT",
-  "author": {
-    "name": "Gaijin Entertainment"
-  }
+	"name": "dagor-hljs",
+	"private": true,
+	"description": "highlight.js grammars for the Dagor languages: Daslang, BLK, Quirrel, DSHL and Jam",
+	"license": "MIT",
+	"author": {
+		"name": "Gaijin Entertainment"
+	},
+	"type": "module",
+	"workspaces": [
+		"packages/*"
+	],
+	"devDependencies": {
+		"@arethetypeswrong/core": "^0.18.5",
+		"@types/node": "^24.19.2",
+		"@ver0/oxlint-config": "^2.0.2",
+		"highlight.js": "^11.12.0",
+		"publint": "^0.3.25",
+		"typescript": "^7.0.2",
+		"vite-plus": "^1.2.0"
+	},
+	"engines": {
+		"node": ">=24.11.0"
+	},
+	"packageManager": "yarn@4.18.1"
 }
