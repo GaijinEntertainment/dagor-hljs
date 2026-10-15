@@ -9,7 +9,7 @@
     origin : Point
 }
 
-[export]
+<span class="hljs-meta">[export]</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>() {
     <span class="hljs-keyword">let</span> copied = <span class="hljs-type">Point</span>(x = <span class="hljs-number">1.0</span>, y = <span class="hljs-number">2.0</span>)
     <span class="hljs-keyword">var</span> source = <span class="hljs-number">1.0</span>

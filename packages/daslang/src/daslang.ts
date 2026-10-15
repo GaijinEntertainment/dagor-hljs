@@ -102,6 +102,13 @@ export default function daslang(hljs: HLJSApi): Language {
 		begin: /#\d+,\d+,"[^"]+"#/,
 	};
 
+	const ANNOTATION_LIST: Mode = {
+		scope: 'meta',
+		begin: /(?<=^[ \t]*)\[(?=[^\]\n]*\][\s;]*(?:def|struct|class|enum)\b)/,
+		end: /\]/,
+		contains: [STRING, NUMBER],
+	};
+
 	const BLOCK_MARKER: Mode = {
 		scope: 'keyword',
 		begin: /(?<!\$)(?:@@|@|\$)(?=\s*(?:[([{]|capture\b))/,
@@ -192,6 +199,7 @@ export default function daslang(hljs: HLJSApi): Language {
 		hljs.C_LINE_COMMENT_MODE,
 		BLOCK_COMMENT,
 		LINE_DIRECTIVE,
+		ANNOTATION_LIST,
 		INCLUDE,
 		STRING,
 		CHARACTER,

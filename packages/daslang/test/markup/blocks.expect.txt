@@ -12,7 +12,7 @@
     <span class="hljs-keyword">return</span> <span class="hljs-title function_">invoke</span>(fn, <span class="hljs-number">2</span>)
 }
 
-[export]
+<span class="hljs-meta">[export]</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>() {
     <span class="hljs-keyword">let</span> doubled = <span class="hljs-title function_">apply</span>(<span class="hljs-keyword">$</span>(x : <span class="hljs-built_in">int</span>) : <span class="hljs-built_in">int</span> {
         <span class="hljs-keyword">return</span> x * <span class="hljs-number">2</span>

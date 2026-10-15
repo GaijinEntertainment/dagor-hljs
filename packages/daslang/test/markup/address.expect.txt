@@ -10,7 +10,7 @@
     <span class="hljs-keyword">return</span> x + <span class="hljs-number">1</span>
 }
 
-[export]
+<span class="hljs-meta">[export]</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>() {
     <span class="hljs-keyword">let</span> plain = @@<span class="hljs-title function_">helper</span>
     <span class="hljs-keyword">let</span> qualified = @@<span class="hljs-title">addresses</span>::<span class="hljs-title function_">helper</span>
