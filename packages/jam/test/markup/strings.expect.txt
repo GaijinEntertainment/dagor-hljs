@@ -1,0 +1,4 @@
+<span class="hljs-keyword">Echo</span> <span class="hljs-string">&quot;a multi-line
+string&quot;</span> ;
+<span class="hljs-keyword">Echo</span> <span class="hljs-string">&quot;a \&quot;quoted\&quot; word&quot;</span> ;
+<span class="hljs-variable">Joined</span> = a<span class="hljs-string">&quot;b c&quot;</span>d ;

@@ -1,0 +1,4 @@
+Echo "a multi-line
+string" ;
+Echo "a \"quoted\" word" ;
+Joined = a"b c"d ;
