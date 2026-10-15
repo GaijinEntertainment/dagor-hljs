@@ -1,0 +1,10 @@
+"block";{}
+"param" ;:i=1
+'simple';=text
+"_hidden";{}
+b:'p3';=1,2,3
+'INCLUDE';b.blk
+include;
+a{
+  include
+}
