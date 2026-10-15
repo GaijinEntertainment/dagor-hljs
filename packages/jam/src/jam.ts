@@ -49,10 +49,12 @@ function words(list: string): RegExp {
 
 export default function jam(_hljs: HLJSApi): Language {
 	const KEYWORD_OBJECT = {
+		$pattern: /\S+/,
 		keyword: `${KEYWORDS} ${BUILTIN_RULES}`,
 	};
 
 	const ACTION_OBJECT = {
+		$pattern: /\S+/,
 		keyword: ACTION_COMMANDS,
 		string: ACTION_STRINGS,
 	};
