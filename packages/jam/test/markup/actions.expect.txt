@@ -2,3 +2,10 @@
 {
   <span class="hljs-keyword">call</span> $(<span class="hljs-variable">LINK</span>) $(<span class="hljs-variable">LINKFLAGS</span>) $(<span class="hljs-variable">1</span>)
 }
+
+<span class="hljs-keyword">actions</span> <span class="hljs-title function_">Clean</span>
+{
+  <span class="hljs-keyword">rem</span><span class="hljs-comment"> nothing $(1) here</span>
+  <span class="hljs-keyword">REM</span><span class="hljs-comment"> an upper-case remark</span>
+  <span class="hljs-keyword">del</span> $(<span class="hljs-variable">1</span>)
+}
