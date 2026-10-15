@@ -1,0 +1,8 @@
+include "shader_global.dshl"
+
+shader strings_demo
+{
+  render_stage "opaque;
+  z_write = true;
+  error("a ~"quoted~" word");
+}
