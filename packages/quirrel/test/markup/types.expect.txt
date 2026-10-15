@@ -1,8 +1,8 @@
-<span class="hljs-keyword">function</span> <span class="hljs-title function_">scale</span>(value: <span class="hljs-type">float</span>, ratio: <span class="hljs-type">float</span>|<span class="hljs-type">null</span> = <span class="hljs-literal">null</span>): <span class="hljs-type">table</span>|<span class="hljs-type">null</span> {
-  <span class="hljs-keyword">let</span> result: <span class="hljs-type">table</span> = {}
-  <span class="hljs-keyword">let</span> numbers: (<span class="hljs-type">int</span>|<span class="hljs-type">float</span>) = value
-  <span class="hljs-keyword">let</span> pick = <span class="hljs-keyword">@</span>(x: <span class="hljs-type">string</span>) x
-  <span class="hljs-keyword">let</span> call: <span class="hljs-type">function</span> = pick
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">scale</span>(value: <span class="hljs-built_in">float</span>, ratio: <span class="hljs-built_in">float</span>|<span class="hljs-built_in">null</span> = <span class="hljs-literal">null</span>): <span class="hljs-built_in">table</span>|<span class="hljs-built_in">null</span> {
+  <span class="hljs-keyword">let</span> result: <span class="hljs-built_in">table</span> = {}
+  <span class="hljs-keyword">let</span> numbers: (<span class="hljs-built_in">int</span>|<span class="hljs-built_in">float</span>) = value
+  <span class="hljs-keyword">let</span> <span class="hljs-title function_">pick</span> = <span class="hljs-keyword">@</span>(x: <span class="hljs-built_in">string</span>) x
+  <span class="hljs-keyword">let</span> call: <span class="hljs-built_in">function</span> = pick
   <span class="hljs-keyword">local</span> table = <span class="hljs-title function_">array</span>(<span class="hljs-number">5</span>)
   <span class="hljs-keyword">foreach</span> (i, string <span class="hljs-keyword">in</span> table)
     <span class="hljs-title function_">print</span>(string)

@@ -1,24 +1,24 @@
-<span class="hljs-keyword">class</span> <span class="hljs-title">Unit</span> (<span class="hljs-type">Base</span>) {
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Unit</span> (<span class="hljs-title class_ inherited__">Base</span>) {
   name = <span class="hljs-literal">null</span>
 }
 
-<span class="hljs-keyword">let</span> <span class="hljs-title">Anonymous</span> = <span class="hljs-keyword">class</span> (<span class="hljs-type">Base</span>) {
+<span class="hljs-keyword">let</span> <span class="hljs-title class_">Anonymous</span> = <span class="hljs-keyword">class</span> (<span class="hljs-title class_ inherited__">Base</span>) {
   name = <span class="hljs-literal">null</span>
 }
 
-<span class="hljs-keyword">local</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Inner</span> {
+<span class="hljs-keyword">local</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Inner</span> {
   name = <span class="hljs-literal">null</span>
 }
 
-<span class="hljs-keyword">local</span> Shape
-<span class="hljs-title">Shape</span> = <span class="hljs-keyword">class</span> {
+<span class="hljs-keyword">local</span> <span class="hljs-title class_">Shape</span>
+<span class="hljs-title class_">Shape</span> = <span class="hljs-keyword">class</span> {
   sides = <span class="hljs-number">0</span>
 }
 
-<span class="hljs-keyword">class</span> <span class="hljs-title">Loaded</span> (<span class="hljs-title function_">require</span>(<span class="hljs-string">&quot;base.nut&quot;</span>).Base) {
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Loaded</span> (<span class="hljs-title function_">require</span>(<span class="hljs-string">&quot;base.nut&quot;</span>).<span class="hljs-property">Base</span>) {
   name = <span class="hljs-literal">null</span>
 }
 
-<span class="hljs-keyword">enum</span> <span class="hljs-title">Team</span> {
-  <span class="hljs-literal">RED</span> = <span class="hljs-number">1</span>
+<span class="hljs-keyword">enum</span> <span class="hljs-title class_">Team</span> {
+  <span class="hljs-variable constant_">RED</span> = <span class="hljs-number">1</span>
 }
