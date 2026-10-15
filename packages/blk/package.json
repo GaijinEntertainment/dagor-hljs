@@ -1,6 +1,6 @@
 {
 	"name": "@gaijin/highlightjs-blk",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"description": "highlight.js grammar for BLK, the DataBlock text format of the Dagor Engine",
 	"keywords": [
 		"blk",
