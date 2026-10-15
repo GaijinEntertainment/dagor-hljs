@@ -1,0 +1,32 @@
+<span class="hljs-keyword">options</span> gen2
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">apply</span>(blk : <span class="hljs-built_in">block</span>&lt;(x : <span class="hljs-built_in">int</span>) : <span class="hljs-built_in">int</span>&gt;) : <span class="hljs-built_in">int</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">invoke</span>(blk, <span class="hljs-number">1</span>)
+}
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">run</span>(blk : <span class="hljs-built_in">block</span>) {
+    <span class="hljs-title function_">invoke</span>(blk)
+}
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">keep</span>(fn : <span class="hljs-built_in">lambda</span>&lt;(x : <span class="hljs-built_in">int</span>) : <span class="hljs-built_in">int</span>&gt;) : <span class="hljs-built_in">int</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">invoke</span>(fn, <span class="hljs-number">2</span>)
+}
+
+[export]
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> doubled = <span class="hljs-title function_">apply</span>(<span class="hljs-keyword">$</span>(x : <span class="hljs-built_in">int</span>) : <span class="hljs-built_in">int</span> {
+        <span class="hljs-keyword">return</span> x * <span class="hljs-number">2</span>
+    })
+    <span class="hljs-title function_">run</span>() <span class="hljs-keyword">$</span> {
+        <span class="hljs-title function_">print</span>(<span class="hljs-string">&quot;bare block\n&quot;</span>)
+    }
+    <span class="hljs-keyword">let</span> tripled = <span class="hljs-title function_">keep</span>(<span class="hljs-keyword">@</span>(x : <span class="hljs-built_in">int</span>) : <span class="hljs-built_in">int</span> =&gt; x * <span class="hljs-number">3</span>)
+    <span class="hljs-keyword">var</span> total = <span class="hljs-number">10</span>
+    <span class="hljs-keyword">let</span> shifted = <span class="hljs-title function_">keep</span>(<span class="hljs-keyword">@</span><span class="hljs-keyword">capture</span>(= total) (x : <span class="hljs-built_in">int</span>) : <span class="hljs-built_in">int</span> {
+        <span class="hljs-keyword">return</span> x + total
+    })
+    <span class="hljs-keyword">let</span> local_function = <span class="hljs-keyword">@@</span>(a : <span class="hljs-built_in">int</span>) : <span class="hljs-built_in">int</span> {
+        <span class="hljs-keyword">return</span> a + <span class="hljs-number">1</span>
+    }
+    <span class="hljs-title function_">print</span>(<span class="hljs-string">&quot;<span class="hljs-template-variable">{doubled}</span> <span class="hljs-template-variable">{tripled}</span> <span class="hljs-template-variable">{shifted}</span> <span class="hljs-template-variable">{<span class="hljs-title function_">invoke</span>(local_function, <span class="hljs-number">1</span>)}</span>\n&quot;</span>)
+}
