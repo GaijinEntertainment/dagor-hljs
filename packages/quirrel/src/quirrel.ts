@@ -117,11 +117,13 @@ export default function quirrel(hljs: HLJSApi): Language {
 	};
 
 	const TYPE_DEFINITION: Mode = {
-		beginKeywords: 'class enum',
-		end: /[{\n]/,
-		returnEnd: true,
-		keywords: KEYWORD_OBJECT,
-		contains: [{scope: 'type', begin: NAME_START}],
+		match: [/\b(?:class|enum)/, /\s+/, new RegExp(NAME_START)],
+		scope: {1: 'keyword', 3: 'type'},
+	};
+
+	const CLASS_BASE: Mode = {
+		scope: 'type',
+		match: /(?<=\bclass(?:\s+[A-Za-z_]\w*)?\s*\(\s*)[A-Za-z_]\w*(?=\s*\))/,
 	};
 
 	const CONSTRUCTOR: Mode = {
@@ -175,6 +177,7 @@ export default function quirrel(hljs: HLJSApi): Language {
 		LAMBDA,
 		FUNCTION_DEFINITION,
 		TYPE_DEFINITION,
+		CLASS_BASE,
 		CONSTRUCTOR,
 		THIS_OR_BASE,
 		METHOD_CALL,
