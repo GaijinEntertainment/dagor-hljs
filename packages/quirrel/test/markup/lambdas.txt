@@ -1,0 +1,5 @@
+let plain = @(x) x + 1
+let named = @ increment(x) x + 1
+let attributed = @[pure](x) x * 2
+let both = @[pure] twice(x) x * 2
+let path = @"C:\data"
