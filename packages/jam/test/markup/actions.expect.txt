@@ -1,16 +1,16 @@
-<span class="hljs-keyword">actions</span> <span class="hljs-keyword">quietly</span> <span class="hljs-title function_">Link</span> <span class="hljs-keyword">bind</span> <span class="hljs-variable">NEEDLIBS</span> <span class="hljs-variable">LINKFLAGS</span>
+<span class="hljs-keyword">actions</span> <span class="hljs-keyword">quietly</span> <span class="hljs-title function_">Link</span> <span class="hljs-keyword">bind</span> NEEDLIBS LINKFLAGS
 {
-  <span class="hljs-keyword">call</span> $(<span class="hljs-variable">LINK</span>) $(<span class="hljs-variable">LINKFLAGS</span>) $(<span class="hljs-variable">1</span>)
-  <span class="hljs-keyword">call_1core</span> $(<span class="hljs-variable">LINK</span>) $(<span class="hljs-variable">1</span>)
-  <span class="hljs-keyword">call_1core_filtered</span> $(<span class="hljs-variable">LINK</span>) $(<span class="hljs-variable">1</span>)
+  <span class="hljs-keyword">call</span> <span class="hljs-template-variable">$(LINK)</span> <span class="hljs-template-variable">$(LINKFLAGS)</span> <span class="hljs-template-variable">$(1)</span>
+  <span class="hljs-keyword">call_1core</span> <span class="hljs-template-variable">$(LINK)</span> <span class="hljs-template-variable">$(1)</span>
+  <span class="hljs-keyword">call_1core_filtered</span> <span class="hljs-template-variable">$(LINK)</span> <span class="hljs-template-variable">$(1)</span>
 }
 
 <span class="hljs-keyword">actions</span> <span class="hljs-title function_">Clean</span>
 {
-<span class="hljs-string">  :label-1</span>
-  <span class="hljs-keyword">if</span> <span class="hljs-string">errorlevel</span> 1 <span class="hljs-keyword">goto</span> label-1
+  <span class="hljs-title">:label-1</span>
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">errorlevel</span> 1 <span class="hljs-keyword">goto</span> label-1
   <span class="hljs-keyword">rem</span><span class="hljs-comment"> nothing $(1) here</span>
   <span class="hljs-keyword">REM</span><span class="hljs-comment"> an upper-case remark</span>
-  <span class="hljs-keyword">del</span> $(<span class="hljs-variable">1</span>)
-  <span class="hljs-keyword">echo</span> #( plain text )# then <span class="hljs-meta">#/(</span>out\$(<span class="hljs-variable">1</span>)<span class="hljs-meta">)/#</span>
+  <span class="hljs-keyword">del</span> <span class="hljs-template-variable">$(1)</span>
+  <span class="hljs-keyword">echo</span> #( plain text )# then <span class="hljs-meta">#/(</span>out\<span class="hljs-template-variable">$(1)</span><span class="hljs-meta">)/#</span>
 }

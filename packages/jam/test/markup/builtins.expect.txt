@@ -1,5 +1,5 @@
-<span class="hljs-variable">Parts</span> = [ <span class="hljs-keyword">SplitStringsOnSpace</span> $(<span class="hljs-variable">line</span>) ] ;
-<span class="hljs-keyword">Echo</span> $(<span class="hljs-built_in">JAM_CWD</span>) $(<span class="hljs-built_in">JAMTARGETS</span>) $(<span class="hljs-built_in">JAMFILESRC</span>) ;
-<span class="hljs-keyword">if</span> ! SimplifyComposedPath <span class="hljs-keyword">in</span> $(<span class="hljs-built_in">JAM_BUILTINS</span>) { <span class="hljs-keyword">Echo</span> missing ; }
+Parts = [ <span class="hljs-built_in">SplitStringsOnSpace</span> <span class="hljs-template-variable">$(line)</span> ] ;
+<span class="hljs-built_in">Echo</span> <span class="hljs-template-variable">$(JAM_CWD)</span> <span class="hljs-template-variable">$(JAMTARGETS)</span> <span class="hljs-template-variable">$(JAMFILESRC)</span> ;
+<span class="hljs-keyword">if</span> ! SimplifyComposedPath <span class="hljs-keyword">in</span> <span class="hljs-template-variable">$(JAM_BUILTINS)</span> { <span class="hljs-built_in">Echo</span> missing ; }
 <span class="hljs-built_in">HDRFS</span> = 1 ;
-<span class="hljs-keyword">DepRulePlain</span> target : source ;
+<span class="hljs-built_in">DepRulePlain</span> target : source ;

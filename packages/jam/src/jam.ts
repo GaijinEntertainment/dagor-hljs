@@ -2,8 +2,7 @@
  * Jam and Jamfile language definition for highlight.js.
  *
  * Written from the syntax of the Jam engine (its keyword table and scanner)
- * and the Colorer definition for Jamfiles. Only classes listed in
- * CLASS_SAFELIST in gr-syntax-layer-worker.ts are shown in the diff.
+ * and the Colorer definition for Jamfiles.
  */
 
 import type {HLJSApi, Language, Mode} from 'highlight.js';
@@ -33,10 +32,8 @@ const JAM_VARIABLES = [
 const ACTION_COMMANDS = [
 	'quietly together echo echo_cvt mkdir copyfile del rem set goto if not',
 	'exist call call_filtered call_1core call_1core_filtered set_filter clr_filters enter_critsec',
-	'leave_critsec',
+	'leave_critsec ERRORLEVEL errorlevel',
 ].join(' ');
-
-const ACTION_STRINGS = 'ERRORLEVEL errorlevel';
 
 const NAME = '[A-Za-z_][\\w.]*';
 
@@ -53,10 +50,6 @@ const BUILTIN_RULE = `(?:${BUILTIN_RULES.split(' ').join('|')})`;
 const STATEMENT_END = /(?<!\S);(?!\S)/;
 const BEFORE_BLOCK = /(?=(?<!\S)\{(?!\S))/;
 
-function words(list: string): RegExp {
-	return new RegExp(`\\b(?:${list.split(' ').join('|')})\\b`);
-}
-
 export default function jam(_hljs: HLJSApi): Language {
 	const KEYWORD_OBJECT = {
 		$pattern: /\S+/,
@@ -66,7 +59,6 @@ export default function jam(_hljs: HLJSApi): Language {
 	const ACTION_OBJECT = {
 		$pattern: /\S+/,
 		keyword: ACTION_COMMANDS,
-		string: ACTION_STRINGS,
 	};
 
 	const COMMENT: Mode = {
@@ -75,8 +67,8 @@ export default function jam(_hljs: HLJSApi): Language {
 		end: /$/,
 	};
 
-	// A '$(...)' reference. Its name is a built-in variable or a user variable.
-	// A modifier such as ':S' or a subscript such as '[1]' is a type.
+	// A '$(...)' expansion with its modifiers, such as ':S' or ':E=value', and its subscripts.
+	// An expansion can hold another one.
 	const MODIFIER_VALUE: Mode = {
 		begin: /=/,
 		end: /(?=[:)])/,
@@ -84,19 +76,10 @@ export default function jam(_hljs: HLJSApi): Language {
 	};
 
 	const VARIABLE: Mode = {
+		scope: 'template-variable',
 		begin: /\$\(/,
 		end: /\)|$/,
-		contains: [
-			'self',
-			{scope: 'built_in', begin: words(JAM_VARIABLES)},
-			{scope: 'type', begin: /:[LUPEJGRDBSM]+/},
-			{begin: /:[A-Za-z]+/},
-			MODIFIER_VALUE,
-			{scope: 'type', begin: /\[[\d-]+\]/},
-			{scope: 'built_in', begin: /[<>]/},
-			{scope: 'variable', begin: /\d+/},
-			{scope: 'variable', begin: new RegExp(NAME)},
-		],
+		contains: ['self', MODIFIER_VALUE],
 	};
 	MODIFIER_VALUE.contains = [VARIABLE];
 
@@ -124,7 +107,7 @@ export default function jam(_hljs: HLJSApi): Language {
 		{scope: 'meta', begin: /^[ \t]*#(?:async|respfile-ln|no-respfile|respfile)\b/},
 		// The markers that flip slashes in an action line.
 		{scope: 'meta', begin: /#\/\(|\)\/#|#\\\(|\)\\#/},
-		{scope: 'string', begin: /^[ \t]*:\S+/},
+		{match: [/^[ \t]*/, /:\S+/], scope: {2: 'title'}},
 		{scope: 'comment', begin: /^[ \t]*#/, end: /$/},
 		{match: [/(?<=^[ \t]*)[rR][eE][mM](?=\s|$)/, /.*/], scope: {1: 'keyword', 2: 'comment'}},
 		ACTION_STRING,
@@ -153,17 +136,16 @@ export default function jam(_hljs: HLJSApi): Language {
 				begin: /(?<!\S)bind(?!\S)/,
 				beginScope: 'keyword',
 				end: BEFORE_BLOCK,
-				contains: [VARIABLE, {scope: 'variable', begin: new RegExp(NAME)}],
+				contains: [VARIABLE],
 			},
 			{scope: 'title.function', begin: new RegExp(`${NOT_RESERVED}${NAME}(?=\\s*(?:bind\\b|\\{|$))`)},
 			ACTION_BODY,
 		],
 	};
 
-	// The parameters of `rule NAME PARAMS {` are variables. The title ends
-	// where the parameters start, and the parameters end at the brace.
+	// The parameters of `rule NAME PARAMS {`. The title ends where the
+	// parameters start, and the parameters end at the brace.
 	const RULE_PARAMETERS: Mode = {
-		scope: 'variable',
 		end: /(?=\{)|$/,
 		endsParent: true,
 	};
@@ -187,7 +169,7 @@ export default function jam(_hljs: HLJSApi): Language {
 		begin: /(?<!\S)\[(?!\S)/,
 		end: /(?<!\S)\](?!\S)/,
 		contains: [
-			{scope: 'keyword', begin: new RegExp(`${BUILTIN_RULE}(?!\\S)`), starts: BRACKET_ARGUMENTS},
+			{scope: 'built_in', begin: new RegExp(`${BUILTIN_RULE}(?!\\S)`), starts: BRACKET_ARGUMENTS},
 			{scope: 'keyword', begin: /on(?!\S)/},
 			{scope: 'title.function', begin: new RegExp(`${NOT_RESERVED}${NAME}(?!\\S)`), starts: BRACKET_ARGUMENTS},
 			STRING,
@@ -213,17 +195,12 @@ export default function jam(_hljs: HLJSApi): Language {
 		begin: new RegExp(`${STATEMENT_START}local(?=\\s|$)`),
 		beginScope: 'keyword',
 		end: STATEMENT_END,
-		contains: [
-			{begin: /(?<!\S)=(?!\S)/, end: /(?=(?<!\S);(?!\S))/, contains: ARGUMENT_CONTENTS},
-			COMMENT,
-			VARIABLE,
-			{scope: 'variable', begin: new RegExp(`(?<!\\S)${NAME}(?!\\S)`)},
-		],
+		contains: [{begin: /(?<!\S)=(?!\S)/, end: /(?=(?<!\S);(?!\S))/, contains: ARGUMENT_CONTENTS}, COMMENT, VARIABLE],
 	};
 
 	const FOR_DEFINITION: Mode = {
 		match: [new RegExp(`${STATEMENT_START}for`), /\s+/, new RegExp(NAME), /\s+/, /in(?=\s|$)/],
-		scope: {1: 'keyword', 3: 'variable', 5: 'keyword'},
+		scope: {1: 'keyword', 5: 'keyword'},
 		starts: BLOCK_LIST,
 	};
 
@@ -239,21 +216,27 @@ export default function jam(_hljs: HLJSApi): Language {
 		starts: ARGUMENTS,
 	};
 
-	// An assignment to a Jam variable, such as `SEARCH = ...`.
-	function assignment(name: string, scope: string): Mode[] {
+	// An assignment such as `SEARCH = ...`. A variable that Jam sets itself is a built-in name, and the name of
+	// another variable has no class.
+	function assignment(name: string, scope?: string): Mode[] {
+		const nameScope = scope === undefined ? {} : {1: scope};
 		return [
 			{
 				match: [new RegExp(`${STATEMENT_START}${name}`), /\s+/, /on(?=\s|$)|default(?=\s+=(?:\s|$))/],
-				scope: {1: scope, 3: 'keyword'},
+				scope: {...nameScope, 3: 'keyword'},
 				starts: ARGUMENTS,
 			},
-			{scope, begin: new RegExp(`${STATEMENT_START}${name}${ASSIGNMENT_AHEAD}`), starts: ARGUMENTS},
+			{
+				...(scope === undefined ? {} : {scope}),
+				begin: new RegExp(`${STATEMENT_START}${name}${ASSIGNMENT_AHEAD}`),
+				starts: ARGUMENTS,
+			},
 		];
 	}
 
 	// A statement that starts with a rule name calls that rule.
 	const BUILTIN_CALL: Mode = {
-		scope: 'keyword',
+		scope: 'built_in',
 		begin: new RegExp(`${STATEMENT_START}${BUILTIN_RULE}(?=\\s|$)(?!${ASSIGNMENT_AHEAD})`),
 		starts: ARGUMENTS,
 	};
@@ -279,7 +262,7 @@ export default function jam(_hljs: HLJSApi): Language {
 			SWITCH,
 			LIST_STATEMENT,
 			...assignment(`(?:${JAM_VARIABLES.split(' ').join('|')})`, 'built_in'),
-			...assignment(NAME, 'variable'),
+			...assignment(NAME),
 			BRACKET_CALL,
 			BUILTIN_CALL,
 			STATEMENT_CALL,
