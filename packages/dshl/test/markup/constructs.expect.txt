@@ -1,32 +1,38 @@
-<span class="hljs-meta">include_optional</span> <span class="hljs-string">&quot;extra.dshl&quot;</span>
+<span class="hljs-keyword">include_optional</span> <span class="hljs-string">&quot;extra.dshl&quot;</span>
 
-<span class="hljs-meta">macro</span> USE_TINT()
-  <span class="hljs-built_in">(ps)</span> { tint<span class="hljs-built_in">@f4</span> = tint; }
-<span class="hljs-meta">endmacro</span>
+<span class="hljs-keyword">macro</span> <span class="hljs-title function_">USE_TINT</span>()
+  <span class="hljs-built_in">(ps)</span> { tint<span class="hljs-type">@f4</span> = tint; }
+<span class="hljs-keyword">endmacro</span>
 
-<span class="hljs-keyword">block</span>(frame) frame_scene
+<span class="hljs-keyword">block</span>(frame) <span class="hljs-title">frame_scene</span>
 {
-  <span class="hljs-built_in">(ps)</span> { fog_color<span class="hljs-built_in">@f4</span> = fog_color; }
+  <span class="hljs-built_in">(ps)</span> { fog_color<span class="hljs-type">@f4</span> = fog_color; }
 }
 
 <span class="hljs-keyword">texture</span> noise_tex;
 <span class="hljs-type">float4</span> tint = (<span class="hljs-number">1</span>, <span class="hljs-number">0.5</span>, <span class="hljs-number">0.25</span>, <span class="hljs-number">1</span>);
 <span class="hljs-keyword">assume</span> use_fog = <span class="hljs-number">1</span>;
 
-<span class="hljs-keyword">shader</span> tinted
+<span class="hljs-keyword">shader</span> <span class="hljs-title">tinted</span>
 {
   <span class="hljs-keyword">supports</span> frame_scene;
-  USE_TINT()
+  <span class="hljs-title function_">USE_TINT</span>()
   <span class="hljs-keyword">render_stage</span> opaque;
   <span class="hljs-keyword">hlsl</span><span class="hljs-built_in">(ps)</span> {
-<span class="hljs-meta">    #define TINT_SCALE 0x10</span>
+    <span class="hljs-meta">#include</span> <span class="hljs-string">&lt;tint_common.hlsl&gt;</span>
+    <span class="hljs-meta">#define</span> TINT_SCALE <span class="hljs-number">0x10</span>
     <span class="hljs-type">Texture2D</span> <span class="hljs-built_in">noise</span> : <span class="hljs-keyword">register</span>(t0);
-    <span class="hljs-type">float4</span> tinted_ps(<span class="hljs-type">float4</span> pos : SV_Position) : <span class="hljs-attr">SV_Target0</span>
+    <span class="hljs-keyword">struct</span> <span class="hljs-title">TintInput</span>
+    {
+      <span class="hljs-type">float4</span> pos : <span class="hljs-attr">SV_Position</span>;
+    };
+    <span class="hljs-type">half3</span> <span class="hljs-title function_">scale_tint</span>(<span class="hljs-type">half3</span> c) { <span class="hljs-keyword">return</span> c * TINT_SCALE; }
+    <span class="hljs-type">float4</span> <span class="hljs-title function_">tinted_ps</span>(TintInput input) : <span class="hljs-attr">SV_Target0</span>
     {
       <span class="hljs-type">float4x4</span> m = (<span class="hljs-type">float4x4</span>)<span class="hljs-number">0</span>;
       <span class="hljs-type">half3</span> c = <span class="hljs-built_in">lerp</span>(tint.rgb, <span class="hljs-number">1.5h</span>, <span class="hljs-number">0.25f</span>);
-      <span class="hljs-keyword">if</span> (pos.x &gt; <span class="hljs-number">2</span>) <span class="hljs-keyword">discard</span>;
-      <span class="hljs-keyword">return</span> <span class="hljs-type">float4</span>(c * TINT_SCALE, <span class="hljs-number">1</span>);
+      <span class="hljs-keyword">if</span> (input.pos.x &gt; <span class="hljs-number">2</span>) <span class="hljs-keyword">discard</span>;
+      <span class="hljs-keyword">return</span> <span class="hljs-type">float4</span>(<span class="hljs-title function_">scale_tint</span>(c), <span class="hljs-number">1</span>);
     }
   }
   <span class="hljs-keyword">compile</span>(<span class="hljs-string">&quot;target_ps&quot;</span>, <span class="hljs-string">&quot;tinted_ps&quot;</span>);

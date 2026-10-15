@@ -2,9 +2,8 @@
  * DSHL (Dagor shader) language definition for highlight.js.
  *
  * Written by hand from the grammar of the shader compiler (the lexer rules
- * and the syntax rules). The keyword groups and the colors follow the
- * Colorer definition that ships with the compiler. Only classes listed in
- * CLASS_SAFELIST in gr-syntax-layer-worker.ts are shown in the diff.
+ * and the syntax rules). The keyword groups follow the Colorer definition
+ * that ships with the compiler.
  */
 
 import type {HLJSApi, Language, Mode} from 'highlight.js';
@@ -19,7 +18,13 @@ const DSHL_KEYWORDS = [
 	'bounding_pack register max_recursion allow_opacity_micromaps material',
 	'immediate_dword_count texture sampler buffer const_buffer tlas',
 	'pixel vertex render_pass multi_render_pass framebuffer_layout subpass pass',
-	'hlsl',
+	'hlsl include include_optional macro endmacro define_macro_if_not_defined',
+].join(' ');
+
+// Functions of the preshader expressions (shFunc.cpp of the compiler). int4 is a type.
+const DSHL_INTRINSICS = [
+	'anim_frame cos exists_buf exists_tex fade_val fsel get_dimensions get_size get_viewport',
+	'int2 int3 uint2 uint3 uint4 max min pow request_sampler sRGBread sin sqrt time_phase vecpow wind_coeff',
 ].join(' ');
 
 // Channel and variable types.
@@ -44,8 +49,6 @@ const DSHL_VALUES = [
 	'local_view_x local_view_y local_view_z local_view_pos',
 	'world_local_x world_local_y world_local_z world_local_pos',
 ].join(' ');
-
-const DSHL_DIRECTIVES = ['include include_optional macro endmacro define_macro_if_not_defined'].join(' ');
 
 // Keywords of the HLSL body. Colorer matches them in any case, so both cases
 // are listed below.
@@ -98,6 +101,24 @@ const HLSL_SEMANTICS = [
 
 const HLSL_TYPE_SET = new Set(HLSL_TYPE_WORDS.split(' '));
 
+const HLSL_VECTOR_TYPE = String.raw`(?:bool|int|uint|fixed|half|float|double)[1-4](?:x[1-4])?`;
+
+/**
+ * Returns the mode of a function name: a name before `(` that is none of `words` and does not match `pattern`. It
+ * colors the name of a definition and of a call alike.
+ */
+function functionName(words: string, pattern?: string): Mode {
+	const alternatives = [...new Set(words.split(/\s+/).filter((word) => word !== ''))];
+	if (pattern !== undefined) {
+		alternatives.push(pattern);
+	}
+	return {
+		scope: 'title.function',
+		match: new RegExp(String.raw`\b(?!(?:${alternatives.join('|')})\b)[A-Za-z_]\w*(?=\s*\()`),
+		relevance: 0,
+	};
+}
+
 // highlight.js keywords are case sensitive, so each word is listed in both
 // cases. Types are left out here, so that each word has one class.
 const HLSL_KEYWORDS = [...new Set(HLSL_KEYWORDS_LIST.split(/\s+/).flatMap((w) => [w, w.toLowerCase()]))]
@@ -108,9 +129,9 @@ export default function dshl(hljs: HLJSApi): Language {
 	const DSHL_KEYWORD_OBJECT = {
 		keyword: DSHL_KEYWORDS,
 		type: DSHL_TYPES,
-		property: DSHL_STATES,
+		attr: DSHL_STATES,
 		literal: DSHL_VALUES,
-		meta: DSHL_DIRECTIVES,
+		built_in: DSHL_INTRINSICS,
 	};
 
 	const HLSL_KEYWORD_OBJECT = {
@@ -125,6 +146,9 @@ export default function dshl(hljs: HLJSApi): Language {
 			'world_local_x world_local_y world_local_z world_local_pos',
 		].join(' '),
 	};
+
+	const DSHL_FUNCTION = functionName(Object.values(DSHL_KEYWORD_OBJECT).join(' '));
+	const HLSL_FUNCTION = functionName(Object.values(HLSL_KEYWORD_OBJECT).join(' '), HLSL_VECTOR_TYPE);
 
 	// `~` escapes the next character, so `~"` does not end the string.
 	const STRING: Mode = {
@@ -142,7 +166,7 @@ export default function dshl(hljs: HLJSApi): Language {
 
 	// `name@type` binds a shader variable to a resource type, such as `@tex2d`.
 	const BINDING_TYPE: Mode = {
-		scope: 'built_in',
+		scope: 'type',
 		begin: /@[A-Za-z_]\w*/,
 	};
 
@@ -152,37 +176,64 @@ export default function dshl(hljs: HLJSApi): Language {
 		begin: /##|#rb\b/,
 	};
 
+	const HLSL_TYPE_VECTOR: Mode = {
+		scope: 'type',
+		begin: new RegExp(String.raw`\b${HLSL_VECTOR_TYPE}\b`),
+	};
+
+	const COMMENTS: Mode[] = [hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE];
+
+	const LINE_CONTINUATION: Mode = {begin: /\\\r?\n/, relevance: 0};
+
+	// A directive of the HLSL preprocessor. Only the directive is meta; the rest of the line keeps its colors.
 	const HLSL_PREPROCESSOR: Mode = {
-		scope: 'meta',
-		begin: /^[ \t]*#/,
+		begin: [/^[ \t]*/, /#[ \t]*(?:if|ifdef|ifndef|elif|else|endif|define|undef|include|pragma|line|error|warning)\b/],
+		beginScope: {2: 'meta'},
 		end: /$/,
-		contains: [{begin: /\\\r?\n/, relevance: 0}],
+		keywords: {keyword: 'defined'},
+		contains: [
+			LINE_CONTINUATION,
+			{scope: 'string', begin: /<(?=[^<>\n]*>)/, end: />/},
+			STRING,
+			NUMBER,
+			HLSL_TYPE_VECTOR,
+			...COMMENTS,
+		],
+	};
+
+	// A `##` directive of the shader compiler, whose condition is a DSHL condition.
+	const SHADER_DIRECTIVE: Mode = {
+		begin: [/^[ \t]*/, /##[ \t]*(?:if|elif|else|endif|bool|declare|assert)\b/],
+		beginScope: {2: 'meta'},
+		end: /$/,
+		keywords: {keyword: 'hardware maybe shader', literal: DSHL_VALUES},
+		contains: [STRING, NUMBER, ...COMMENTS],
 	};
 
 	const HLSL_SEMANTIC: Mode = {
 		scope: 'attr',
-		begin:
-			/\b(?:SV_(?:IsFrontFace|InstanceID|Depth|Position|Target)|COLOR|NORMAL|POSITION)[0-1]\b|\bTEXCOORD(?:1[0-5]|\d)\b/,
+		begin: /\bSV_[A-Za-z]+\d*\b|\b(?:COLOR|NORMAL|POSITION)[0-1]\b|\bTEXCOORD(?:1[0-5]|\d)\b/,
 	};
 
-	const HLSL_TYPE_VECTOR: Mode = {
-		scope: 'type',
-		begin: /\b(?:bool|int|uint|fixed|half|float|double)[1-4](?:x[1-4])?\b/,
+	const HLSL_STRUCT_DECLARATION: Mode = {
+		match: [/\b(?:struct|class|interface)\b/, /\s+/, /[A-Za-z_]\w*/],
+		scope: {1: 'keyword', 3: 'title'},
 	};
-
-	const COMMENTS: Mode[] = [hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE];
 
 	// Rules that apply inside an HLSL body. The HLSL body is plain HLSL, so the
 	// DSHL keywords do not apply there.
 	const HLSL_RULES: Mode[] = [
 		...COMMENTS,
 		STRING,
+		HLSL_STRUCT_DECLARATION,
+		SHADER_DIRECTIVE,
 		HLSL_PREPROCESSOR,
 		MACRO_TOKEN,
 		NUMBER,
 		BINDING_TYPE,
 		HLSL_SEMANTIC,
 		HLSL_TYPE_VECTOR,
+		HLSL_FUNCTION,
 	];
 
 	// A brace inside an HLSL body opens a nested block, which can hold more braces.
@@ -228,7 +279,30 @@ export default function dshl(hljs: HLJSApi): Language {
 		contains: [],
 	};
 
-	const DSHL_RULES: Mode[] = [...COMMENTS, STRING, HLSL_BLOCK, MACRO_TOKEN, BINDING_TYPE, NUMBER];
+	const NAME = /[A-Za-z_]\w*/;
+
+	// `shader name1, name2` names one shader under several names.
+	const SHADER_DECLARATION: Mode = {
+		match: [/\bshader\b/, /\s+/, /[A-Za-z_]\w*(?:\s*,\s*[A-Za-z_]\w*)*/],
+		scope: {1: 'keyword', 3: 'title'},
+	};
+
+	const BLOCK_DECLARATION: Mode = {
+		match: [/\bblock\b/, /\s*\(\s*[A-Za-z_]\w*\s*\)\s*/, NAME],
+		scope: {1: 'keyword', 3: 'title'},
+	};
+
+	const DSHL_RULES: Mode[] = [
+		...COMMENTS,
+		STRING,
+		HLSL_BLOCK,
+		MACRO_TOKEN,
+		BINDING_TYPE,
+		NUMBER,
+		SHADER_DECLARATION,
+		BLOCK_DECLARATION,
+		DSHL_FUNCTION,
+	];
 
 	STAGE_NESTED.contains = [...DSHL_RULES, STAGE_NESTED];
 	STAGE_BODY.contains = [...DSHL_RULES, STAGE_NESTED];

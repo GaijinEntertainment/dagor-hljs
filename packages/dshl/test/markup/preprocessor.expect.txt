@@ -1,21 +1,21 @@
-<span class="hljs-keyword">shader</span> preprocessor_demo
+<span class="hljs-keyword">shader</span> <span class="hljs-title">preprocessor_demo</span>
 {
   <span class="hljs-keyword">hlsl</span><span class="hljs-built_in">(ps)</span> {
 
-<span class="hljs-meta">    #define SCALE 2</span>
-<span class="hljs-meta">    #define MUL(a, b) \
-      ((a) * (b))</span>
-<span class="hljs-meta">    #define SWAP(a, b) \
+    <span class="hljs-meta">#define</span> SCALE <span class="hljs-number">2</span>
+    <span class="hljs-meta">#define</span> MUL(a, b) \
+      ((a) * (b))
+    <span class="hljs-meta">#define</span> SWAP(a, b) \
       { \
         float t = a; a = b; b = t; \
-      }</span>
-<span class="hljs-meta">    ##if use_fog</span>
+      }
+    <span class="hljs-meta">##if</span> use_fog
     <span class="hljs-type">float</span> fog = <span class="hljs-number">1</span>;
-<span class="hljs-meta">    ##endif</span>
+    <span class="hljs-meta">##endif</span>
 
-    <span class="hljs-type">float4</span> preprocessor_ps() : SV_Target
+    <span class="hljs-type">float4</span> <span class="hljs-title function_">preprocessor_ps</span>() : <span class="hljs-attr">SV_Target</span>
     {
-      <span class="hljs-keyword">return</span> <span class="hljs-type">float4</span>(MUL(SCALE, <span class="hljs-number">1</span>), <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+      <span class="hljs-keyword">return</span> <span class="hljs-type">float4</span>(<span class="hljs-title function_">MUL</span>(SCALE, <span class="hljs-number">1</span>), <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
     }
   }
   <span class="hljs-keyword">compile</span>(<span class="hljs-string">&quot;target_ps&quot;</span>, <span class="hljs-string">&quot;preprocessor_ps&quot;</span>);

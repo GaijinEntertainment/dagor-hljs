@@ -19,14 +19,20 @@ shader tinted
   USE_TINT()
   render_stage opaque;
   hlsl(ps) {
+    #include <tint_common.hlsl>
     #define TINT_SCALE 0x10
     Texture2D noise : register(t0);
-    float4 tinted_ps(float4 pos : SV_Position) : SV_Target0
+    struct TintInput
+    {
+      float4 pos : SV_Position;
+    };
+    half3 scale_tint(half3 c) { return c * TINT_SCALE; }
+    float4 tinted_ps(TintInput input) : SV_Target0
     {
       float4x4 m = (float4x4)0;
       half3 c = lerp(tint.rgb, 1.5h, 0.25f);
-      if (pos.x > 2) discard;
-      return float4(c * TINT_SCALE, 1);
+      if (input.pos.x > 2) discard;
+      return float4(scale_tint(c), 1);
     }
   }
   compile("target_ps", "tinted_ps");
