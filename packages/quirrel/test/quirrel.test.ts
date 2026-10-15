@@ -20,3 +20,12 @@ test.for(['01', '0_1', '1f', '0x', '1.5.3', '1e_5', '1e+_5', '5.tostring()'])(
 		expect(target.highlight(code, {language: 'quirrel'}).value).not.toContain('hljs-number');
 	},
 );
+
+test.for([String.raw`'\q'`, `'ab'`, String.raw`'\x'`, String.raw`'\u00041'`])(
+	'the malformed character %s is not a string',
+	(code) => {
+		const target = hljs.newInstance();
+		target.registerLanguage('quirrel', quirrel);
+		expect(target.highlight(code, {language: 'quirrel'}).value).not.toContain('hljs-string');
+	},
+);
