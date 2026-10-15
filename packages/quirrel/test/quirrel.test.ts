@@ -11,3 +11,12 @@ test('nut is an alias of quirrel', () => {
 	expect(target.getLanguage('quirrel')).toBeDefined();
 	expect(target.getLanguage('nut')).toBe(target.getLanguage('quirrel'));
 });
+
+test.for(['01', '0_1', '1f', '0x', '1.5.3', '1e_5', '1e+_5', '5.tostring()'])(
+	'the malformed number %s is not a number',
+	(code) => {
+		const target = hljs.newInstance();
+		target.registerLanguage('quirrel', quirrel);
+		expect(target.highlight(code, {language: 'quirrel'}).value).not.toContain('hljs-number');
+	},
+);

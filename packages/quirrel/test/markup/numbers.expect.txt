@@ -1,0 +1,12 @@
+<span class="hljs-keyword">let</span> thousands = <span class="hljs-number">1_000_000</span>
+<span class="hljs-keyword">let</span> mask = <span class="hljs-number">0xFF_FF</span>
+<span class="hljs-keyword">let</span> leading = <span class="hljs-number">0x_FF</span>
+<span class="hljs-keyword">let</span> fraction = <span class="hljs-number">1_000.5</span>
+<span class="hljs-keyword">let</span> bare = <span class="hljs-number">1.</span>
+<span class="hljs-keyword">let</span> after_dot = <span class="hljs-number">1._5</span>
+<span class="hljs-keyword">let</span> exponent = <span class="hljs-number">1.5e1_0</span>
+<span class="hljs-keyword">let</span> small = <span class="hljs-number">1E-2</span>
+<span class="hljs-keyword">let</span> signed = <span class="hljs-number">12e+3</span>
+<span class="hljs-keyword">let</span> zero = <span class="hljs-number">0_</span>
+<span class="hljs-keyword">let</span> before_exponent = <span class="hljs-number">1_e5</span>
+<span class="hljs-keyword">let</span> method = <span class="hljs-number">0xFF</span>.<span class="hljs-title function_">tostring</span>()
