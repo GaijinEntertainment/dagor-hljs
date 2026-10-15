@@ -15,8 +15,21 @@ an npm package of its own. The repository is public.
 
 - Lexical rules (numbers, strings and escapes, comments, keywords) follow the compiler or engine of the language: the
   lexer of GaijinEntertainment/daScript, the compiler of GaijinEntertainment/quirrel, the BLK parser and the shader
-  compiler of GaijinEntertainment/DagorEngine, and GaijinEntertainment/jam-G8. Token classes follow the source that
-  the header comment of each grammar names, a tree-sitter highlights query or a Colorer definition.
+  compiler of GaijinEntertainment/DagorEngine, and GaijinEntertainment/jam-G8.
+- Every grammar gives a kind of token the same class, chosen for the colors of the Gerrit diff view
+  (`embed/diff/gr-syntax-themes/gr-syntax-theme.ts` and `styles/themes/` of `polygerrit-ui/app`):
+  - `keyword` - every keyword, also the keywords of imports, includes, modules, and macro definitions.
+  - `meta` - the token of a preprocessor directive (`#if`, `##if`) or of an annotation; not the rest of its line.
+  - `title.function` - the name of a function or a macro, where it is defined and where it is called.
+  - `title` - the name that a declaration of a type, a shader, a block, or a class introduces.
+  - `type` - built-in types, type suffixes such as `@f4` and `:r`, and type names in a type position.
+  - `built_in` - built-in functions and built-in values such as `this`.
+  - `literal` - `true`, `false`, `null`, and named built-in constants.
+  - `attr` - render states and other built-in setting names, and HLSL semantics.
+  - `template-variable` - a variable expansion, such as `$(Root)` in Jam.
+  - `number`, `string`, `comment` - every number, string, and comment, also in values and directives.
+- Do not use `property`, `variable`, `params`, `function`, `attribute`, `quote`, `strong`, or `emphasis`: the light
+  theme of Gerrit shows them in the default text color.
 - Every fixture input is code that the compiler of its language accepts.
 - A grammar package also changes the language table of `README.md`.
 - Give a token only a class from `CLASS_SAFELIST` in Gerrit's
