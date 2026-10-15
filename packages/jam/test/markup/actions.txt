@@ -1,6 +1,8 @@
 actions quietly Link bind NEEDLIBS LINKFLAGS
 {
   call $(LINK) $(LINKFLAGS) $(1)
+  call_1core $(LINK) $(1)
+  call_1core_filtered $(LINK) $(1)
 }
 
 actions Clean

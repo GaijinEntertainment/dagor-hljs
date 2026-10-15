@@ -31,7 +31,7 @@ const JAM_VARIABLES = [
 // Commands at the start of an action line.
 const ACTION_COMMANDS = [
 	'quietly together echo echo_cvt mkdir copyfile del rem set goto if not',
-	'exist call call_filtered set_filter clr_filters enter_critsec',
+	'exist call call_filtered call_1core call_1core_filtered set_filter clr_filters enter_critsec',
 	'leave_critsec',
 ].join(' ');
 
