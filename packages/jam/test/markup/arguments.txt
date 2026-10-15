@@ -1,0 +1,20 @@
+Echo a default existing for rule Depends include in on ;
+Depends $(target) : [ Match "(.*)" : $(path) ] [ BaseName $(path) include ] ;
+Sources =
+  include.cpp
+  rule.cpp
+;
+Names default = for while ;
+Flags on $(target) = include ;
+local libs = rule switch ;
+for f in include rule {
+  Echo $(f) ;
+}
+switch $(mode) {
+  case debug : Echo debug ;
+}
+include $(Root)/settings.jam ;
+rule BaseName path
+{
+  return include rule $(path) ;
+}
