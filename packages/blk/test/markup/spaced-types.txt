@@ -1,0 +1,6 @@
+a : t = x
+b : i = 1
+"quoted" : r = 2.5
+"include" : t = "x"
+c:t [] = [x;]
+d : b[]=[yes;]

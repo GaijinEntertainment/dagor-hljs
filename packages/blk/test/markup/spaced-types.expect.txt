@@ -1,0 +1,6 @@
+<span class="hljs-property">a</span> : <span class="hljs-built_in">t</span> = <span class="hljs-string">x</span>
+<span class="hljs-property">b</span> : <span class="hljs-built_in">i</span> = <span class="hljs-number">1</span>
+<span class="hljs-property">&quot;quoted&quot;</span> : <span class="hljs-built_in">r</span> = <span class="hljs-number">2.5</span>
+<span class="hljs-property">&quot;include&quot;</span> : <span class="hljs-built_in">t</span> = <span class="hljs-string">&quot;x&quot;</span>
+<span class="hljs-property">c</span>:<span class="hljs-built_in">t</span> [] = [<span class="hljs-string">x</span>;]
+<span class="hljs-property">d</span> : <span class="hljs-built_in">b</span>[]=[<span class="hljs-literal">yes</span>;]
