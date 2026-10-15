@@ -15,7 +15,7 @@
 <span class="hljs-keyword">let</span> message = <span class="hljs-string">&quot;tab\t<span class="hljs-template-variable">{letter}</span> and <span class="hljs-template-variable">{<span class="hljs-literal">MAX_COUNT</span> + <span class="hljs-number">1u</span>}</span>&quot;</span>
 
 <span class="hljs-keyword">struct</span> <span class="hljs-type">Item</span> {
-    name : <span class="hljs-built_in">string</span>
+    name : <span class="hljs-type">string</span>
 }
 
 <span class="hljs-keyword">variant</span> <span class="hljs-type">Gear</span> {
@@ -24,13 +24,13 @@
 }
 
 <span class="hljs-keyword">class</span> <span class="hljs-type">Inventory</span> {
-    items : <span class="hljs-built_in">array</span>&lt;Item&gt;
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">count</span> : <span class="hljs-built_in">int</span> {
+    items : <span class="hljs-type">array</span>&lt;Item&gt;
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">count</span> : <span class="hljs-type">int</span> {
         <span class="hljs-keyword">return</span> <span class="hljs-title function_">length</span>(<span class="hljs-variable language_">self</span>.<span class="hljs-property">items</span>)
     }
 }
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">count_items</span>(<span class="hljs-keyword">var</span> inventory : Inventory?; gear : Gear) : <span class="hljs-built_in">int</span> {
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">count_items</span>(<span class="hljs-keyword">var</span> inventory : Inventory?; gear : Gear) : <span class="hljs-type">int</span> {
     <span class="hljs-keyword">let</span> total = inventory != <span class="hljs-literal">null</span> ? inventory-&gt;<span class="hljs-title function_">count</span>() : <span class="hljs-number">0</span>
     <span class="hljs-keyword">let</span> first = inventory?.<span class="hljs-property">items</span>?[<span class="hljs-number">0</span>]?.<span class="hljs-property">name</span> ?? <span class="hljs-string">&quot;&quot;</span>
     <span class="hljs-keyword">if</span> (gear <span class="hljs-keyword">is</span> weapon &amp;&amp; gear <span class="hljs-keyword">!is</span> shield) {

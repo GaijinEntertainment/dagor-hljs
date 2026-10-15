@@ -1,8 +1,8 @@
 <span class="hljs-keyword">options</span> gen2
 
 <span class="hljs-keyword">struct</span> <span class="hljs-type">Point</span> {
-    x : <span class="hljs-built_in">float</span>
-    y : <span class="hljs-built_in">float</span>
+    x : <span class="hljs-type">float</span>
+    y : <span class="hljs-type">float</span>
 }
 
 <span class="hljs-keyword">class</span> <span class="hljs-type">Shape</span> {

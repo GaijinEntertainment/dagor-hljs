@@ -40,7 +40,7 @@ export default function daslang(hljs: HLJSApi): Language {
 	const KEYWORD_OBJECT = {
 		keyword: KEYWORDS,
 		literal: LITERALS,
-		built_in: BUILT_IN_TYPES,
+		type: BUILT_IN_TYPES,
 	};
 
 	// Matches a whole name that is not a reserved word, so `if (` is not a call.
