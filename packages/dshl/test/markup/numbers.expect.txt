@@ -4,11 +4,11 @@
 <span class="hljs-type">int</span> mask = <span class="hljs-number">0xFF</span>;
 <span class="hljs-type">int</span> packed = <span class="hljs-number">1Fh</span>;
 
-<span class="hljs-keyword">shader</span> <span class="hljs-title">numbers_demo</span>
+<span class="hljs-keyword">shader</span> <span class="hljs-title class_">numbers_demo</span>
 {
   <span class="hljs-built_in">(ps)</span> { scale<span class="hljs-type">@f1</span> = (scale); }
   <span class="hljs-keyword">hlsl</span><span class="hljs-built_in">(ps)</span> {
-    <span class="hljs-type">float4</span> <span class="hljs-title function_">numbers_ps</span>() : <span class="hljs-attr">SV_Target</span>
+    <span class="hljs-type">float4</span> <span class="hljs-title">numbers_ps</span>() : <span class="hljs-built_in">SV_Target</span>
     {
       <span class="hljs-type">half</span> m = (<span class="hljs-number">1</span> &gt;= <span class="hljs-number">0.5</span>) ? <span class="hljs-number">1.</span> : <span class="hljs-number">0.</span>;
       <span class="hljs-type">float</span> e = <span class="hljs-number">1.5e-3f</span> + <span class="hljs-number">.25</span> + <span class="hljs-number">2.e2</span> + <span class="hljs-number">0xFFu</span>;
