@@ -155,8 +155,9 @@ export default function dshl(hljs: HLJSApi): Language {
 	// A line in an HLSL body that starts with `#` is a preprocessor line.
 	const HLSL_PREPROCESSOR: Mode = {
 		scope: 'meta',
-		begin: /^\s*#/,
+		begin: /^[ \t]*#/,
 		end: /$/,
+		contains: [{begin: /\\\r?\n/, relevance: 0}],
 	};
 
 	const HLSL_SEMANTIC: Mode = {
