@@ -1,36 +1,36 @@
-<span class="hljs-variable">Root</span>    ?= ../../../../.. ;
-<span class="hljs-variable">StrictCompile</span> = yes ;
-<span class="hljs-keyword">include</span> $(<span class="hljs-variable">Root</span>)/prog/_jBuild/defaults.jam ;
+Root    ?= ../../../../.. ;
+StrictCompile = yes ;
+<span class="hljs-keyword">include</span> <span class="hljs-template-variable">$(Root)</span>/prog/_jBuild/defaults.jam ;
 
-<span class="hljs-variable">Location</span> = prog/gameLibs/webui/plugins/webView ;
+Location = prog/gameLibs/webui/plugins/webView ;
 
-<span class="hljs-variable">TargetType</span>  = lib ;
-<span class="hljs-variable">Target</span>      = gameLibs/webui/plugins/webview.lib ;
+TargetType  = lib ;
+Target      = gameLibs/webui/plugins/webview.lib ;
 
-<span class="hljs-variable">AddIncludes</span> =  
-  $(<span class="hljs-variable">Root</span>)/prog/gameLibs/publicInclude
-  $(<span class="hljs-variable">Root</span>)/prog/dagorInclude
+AddIncludes =  
+  <span class="hljs-template-variable">$(Root)</span>/prog/gameLibs/publicInclude
+  <span class="hljs-template-variable">$(Root)</span>/prog/dagorInclude
 ;
 
-<span class="hljs-variable">WebViewLocation</span> = $(<span class="hljs-variable">Root</span>)/$(<span class="hljs-variable">Location</span>) ;
+WebViewLocation = <span class="hljs-template-variable">$(Root)</span>/<span class="hljs-template-variable">$(Location)</span> ;
 
 <span class="hljs-keyword">actions</span> <span class="hljs-keyword">together</span> <span class="hljs-keyword">quietly</span> <span class="hljs-title function_">make_serve_files</span>
 {
-  <span class="hljs-keyword">echo</span> $(<span class="hljs-variable">var_name</span>) = $(<span class="hljs-variable">ref_var</span>) ; &gt;$(<span class="hljs-variable">1</span><span class="hljs-type">:S</span>=.jam)
-  <span class="hljs-keyword">call</span> $(<span class="hljs-variable">PYTHON_EXE</span>) $(<span class="hljs-variable">WebViewLocation</span>)/make_serve_cpp.py $(<span class="hljs-variable">1</span>) $(<span class="hljs-variable">var</span>)
+  <span class="hljs-keyword">echo</span> <span class="hljs-template-variable">$(var_name)</span> = <span class="hljs-template-variable">$(ref_var)</span> ; &gt;<span class="hljs-template-variable">$(1:S=.jam)</span>
+  <span class="hljs-keyword">call</span> <span class="hljs-template-variable">$(PYTHON_EXE)</span> <span class="hljs-template-variable">$(WebViewLocation)</span>/make_serve_cpp.py <span class="hljs-template-variable">$(1)</span> <span class="hljs-template-variable">$(var)</span>
 }
-<span class="hljs-keyword">rule</span> <span class="hljs-title function_">ServeFilesDeps</span><span class="hljs-variable"> dest_cpp : target</span>
+<span class="hljs-keyword">rule</span> <span class="hljs-title function_">ServeFilesDeps</span> dest_cpp : target
 {
-  <span class="hljs-keyword">for</span> <span class="hljs-variable">f</span> <span class="hljs-keyword">in</span> $($(<span class="hljs-variable">target</span>)) {
-    <span class="hljs-keyword">local</span> <span class="hljs-variable">o_split</span> = [ <span class="hljs-keyword">MATCH</span> <span class="hljs-string">&quot;([^\.\-]*)[\.\-]([^\.\-]*)?[\.\-]?([^\.\-]*)?[\.\-]?([^\.\-]*)?[\.\-]?([^\.\-]*)?&quot;</span> : $(<span class="hljs-variable">f</span><span class="hljs-type">:D</span>=) ] ;
-    <span class="hljs-keyword">local</span> <span class="hljs-variable">o</span> = ;
-    <span class="hljs-keyword">for</span> <span class="hljs-variable">c</span> <span class="hljs-keyword">in</span> $(<span class="hljs-variable">o_split</span>) { <span class="hljs-keyword">if</span> $(<span class="hljs-variable">c</span>) != <span class="hljs-string">&quot;&quot;</span> { <span class="hljs-variable">o</span> += $(<span class="hljs-variable">c</span>) ; } }
-    <span class="hljs-keyword">if</span> ! [ <span class="hljs-keyword">GLOB</span> $(<span class="hljs-variable">dest_cpp</span><span class="hljs-type">:D</span>) : $(<span class="hljs-variable">o</span><span class="hljs-type">:J</span>=_).inl ] { <span class="hljs-keyword">ALWAYS</span> $(<span class="hljs-variable">target</span>) ; <span class="hljs-keyword">break</span> ; }
+  <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> <span class="hljs-template-variable">$(<span class="hljs-template-variable">$(target)</span>)</span> {
+    <span class="hljs-keyword">local</span> o_split = [ <span class="hljs-built_in">MATCH</span> <span class="hljs-string">&quot;([^\.\-]*)[\.\-]([^\.\-]*)?[\.\-]?([^\.\-]*)?[\.\-]?([^\.\-]*)?[\.\-]?([^\.\-]*)?&quot;</span> : <span class="hljs-template-variable">$(f:D=)</span> ] ;
+    <span class="hljs-keyword">local</span> o = ;
+    <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-template-variable">$(o_split)</span> { <span class="hljs-keyword">if</span> <span class="hljs-template-variable">$(c)</span> != <span class="hljs-string">&quot;&quot;</span> { o += <span class="hljs-template-variable">$(c)</span> ; } }
+    <span class="hljs-keyword">if</span> ! [ <span class="hljs-built_in">GLOB</span> <span class="hljs-template-variable">$(dest_cpp:D)</span> : <span class="hljs-template-variable">$(o:J=_)</span>.inl ] { <span class="hljs-built_in">ALWAYS</span> <span class="hljs-template-variable">$(target)</span> ; <span class="hljs-keyword">break</span> ; }
   }
 }
-<span class="hljs-variable">make_serve_files_DEPS</span> = $(<span class="hljs-variable">Root</span>)/$(<span class="hljs-variable">Location</span>)/make_serve_cpp.py ;
+make_serve_files_DEPS = <span class="hljs-template-variable">$(Root)</span>/<span class="hljs-template-variable">$(Location)</span>/make_serve_cpp.py ;
 
-<span class="hljs-variable">SourcesWebFolders</span> = 
+SourcesWebFolders = 
   vue
   vue/components
   vue/core
@@ -39,27 +39,27 @@
   vue/vendor/font-awesome/fonts
 ;
 
-<span class="hljs-variable">ServeFiles</span> =
+ServeFiles =
 ;
 
-<span class="hljs-title function_">AutoscanBuildLists</span> $(<span class="hljs-variable">SourcesWebFolders</span>) : *.vue : ServeFiles ;
-<span class="hljs-title function_">AutoscanBuildLists</span> $(<span class="hljs-variable">SourcesWebFolders</span>) : *.eot : ServeFiles ;
-<span class="hljs-title function_">AutoscanBuildLists</span> $(<span class="hljs-variable">SourcesWebFolders</span>) : *.svg : ServeFiles ;
-<span class="hljs-title function_">AutoscanBuildLists</span> $(<span class="hljs-variable">SourcesWebFolders</span>) : *.ttf : ServeFiles ;
-<span class="hljs-title function_">AutoscanBuildLists</span> $(<span class="hljs-variable">SourcesWebFolders</span>) : *.woff : ServeFiles ;
-<span class="hljs-title function_">AutoscanBuildLists</span> $(<span class="hljs-variable">SourcesWebFolders</span>) : *.woff2 : ServeFiles ;
-<span class="hljs-title function_">AutoscanBuildLists</span> $(<span class="hljs-variable">SourcesWebFolders</span>) : *.js : ServeFiles ;
-<span class="hljs-title function_">AutoscanBuildLists</span> $(<span class="hljs-variable">SourcesWebFolders</span>) : *.css : ServeFiles ;
-<span class="hljs-title function_">AutoscanBuildLists</span> $(<span class="hljs-variable">SourcesWebFolders</span>) : *.html : ServeFiles ;
+<span class="hljs-title function_">AutoscanBuildLists</span> <span class="hljs-template-variable">$(SourcesWebFolders)</span> : *.vue : ServeFiles ;
+<span class="hljs-title function_">AutoscanBuildLists</span> <span class="hljs-template-variable">$(SourcesWebFolders)</span> : *.eot : ServeFiles ;
+<span class="hljs-title function_">AutoscanBuildLists</span> <span class="hljs-template-variable">$(SourcesWebFolders)</span> : *.svg : ServeFiles ;
+<span class="hljs-title function_">AutoscanBuildLists</span> <span class="hljs-template-variable">$(SourcesWebFolders)</span> : *.ttf : ServeFiles ;
+<span class="hljs-title function_">AutoscanBuildLists</span> <span class="hljs-template-variable">$(SourcesWebFolders)</span> : *.woff : ServeFiles ;
+<span class="hljs-title function_">AutoscanBuildLists</span> <span class="hljs-template-variable">$(SourcesWebFolders)</span> : *.woff2 : ServeFiles ;
+<span class="hljs-title function_">AutoscanBuildLists</span> <span class="hljs-template-variable">$(SourcesWebFolders)</span> : *.js : ServeFiles ;
+<span class="hljs-title function_">AutoscanBuildLists</span> <span class="hljs-template-variable">$(SourcesWebFolders)</span> : *.css : ServeFiles ;
+<span class="hljs-title function_">AutoscanBuildLists</span> <span class="hljs-template-variable">$(SourcesWebFolders)</span> : *.html : ServeFiles ;
 
 <span class="hljs-title function_">StringifySourceFile</span> vue/index.html : vue/index.html.inl : webViewPlugin.cpp : --array ;
 
-<span class="hljs-variable">ServeFiles_action</span> = make_serve_files ;
-<span class="hljs-variable">ServeFiles_dep_rule</span> = ServeFilesDeps ;
+ServeFiles_action = make_serve_files ;
+ServeFiles_dep_rule = ServeFilesDeps ;
 
-<span class="hljs-variable">Sources</span> =
+Sources =
   ServeFiles.jamvar
   webViewPlugin.cpp
 ;
 
-<span class="hljs-keyword">include</span> $(<span class="hljs-variable">Root</span>)/prog/_jBuild/build.jam ;
+<span class="hljs-keyword">include</span> <span class="hljs-template-variable">$(Root)</span>/prog/_jBuild/build.jam ;

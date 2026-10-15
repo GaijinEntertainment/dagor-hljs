@@ -7,3 +7,6 @@ switch $(x) {
 }
   Indented call ;
   Count = 1 ;
+SubInclude TOP prog lib ;
+TargetLib = $(Root)/lib ;
+Library $(TargetLib) : $(Sources) ;

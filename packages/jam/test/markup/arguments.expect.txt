@@ -1,20 +1,20 @@
-<span class="hljs-keyword">Echo</span> a default existing for rule Depends include in on ;
-<span class="hljs-keyword">Depends</span> $(<span class="hljs-variable">target</span>) : [ <span class="hljs-keyword">Match</span> <span class="hljs-string">&quot;(.*)&quot;</span> : $(<span class="hljs-variable">path</span>) ] [ <span class="hljs-title function_">BaseName</span> $(<span class="hljs-variable">path</span>) include ] ;
-<span class="hljs-variable">Sources</span> =
+<span class="hljs-built_in">Echo</span> a default existing for rule Depends include in on ;
+<span class="hljs-built_in">Depends</span> <span class="hljs-template-variable">$(target)</span> : [ <span class="hljs-built_in">Match</span> <span class="hljs-string">&quot;(.*)&quot;</span> : <span class="hljs-template-variable">$(path)</span> ] [ <span class="hljs-title function_">BaseName</span> <span class="hljs-template-variable">$(path)</span> include ] ;
+Sources =
   include.cpp
   rule.cpp
 ;
-<span class="hljs-variable">Names</span> <span class="hljs-keyword">default</span> = for while ;
-<span class="hljs-variable">Flags</span> <span class="hljs-keyword">on</span> $(<span class="hljs-variable">target</span>) = include ;
-<span class="hljs-keyword">local</span> <span class="hljs-variable">libs</span> = rule switch ;
-<span class="hljs-keyword">for</span> <span class="hljs-variable">f</span> <span class="hljs-keyword">in</span> include rule {
-  <span class="hljs-keyword">Echo</span> $(<span class="hljs-variable">f</span>) ;
+Names <span class="hljs-keyword">default</span> = for while ;
+Flags <span class="hljs-keyword">on</span> <span class="hljs-template-variable">$(target)</span> = include ;
+<span class="hljs-keyword">local</span> libs = rule switch ;
+<span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> include rule {
+  <span class="hljs-built_in">Echo</span> <span class="hljs-template-variable">$(f)</span> ;
 }
-<span class="hljs-keyword">switch</span> $(<span class="hljs-variable">mode</span>) {
-  <span class="hljs-keyword">case</span> debug : <span class="hljs-keyword">Echo</span> debug ;
+<span class="hljs-keyword">switch</span> <span class="hljs-template-variable">$(mode)</span> {
+  <span class="hljs-keyword">case</span> debug : <span class="hljs-built_in">Echo</span> debug ;
 }
-<span class="hljs-keyword">include</span> $(<span class="hljs-variable">Root</span>)/settings.jam ;
-<span class="hljs-keyword">rule</span> <span class="hljs-title function_">BaseName</span><span class="hljs-variable"> path</span>
+<span class="hljs-keyword">include</span> <span class="hljs-template-variable">$(Root)</span>/settings.jam ;
+<span class="hljs-keyword">rule</span> <span class="hljs-title function_">BaseName</span> path
 {
-  <span class="hljs-keyword">return</span> include rule $(<span class="hljs-variable">path</span>) ;
+  <span class="hljs-keyword">return</span> include rule <span class="hljs-template-variable">$(path)</span> ;
 }
