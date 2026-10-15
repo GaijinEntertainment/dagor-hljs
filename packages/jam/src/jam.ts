@@ -126,7 +126,7 @@ export default function jam(_hljs: HLJSApi): Language {
 		{scope: 'meta', begin: /^[ \t]*#(?:async|respfile-ln|no-respfile|respfile)\b/},
 		// The markers that flip slashes in an action line.
 		{scope: 'meta', begin: /#\/\(|\)\/#|#\\\(|\)\\#/},
-		{scope: 'string', begin: /^[ \t]*:\w+/},
+		{scope: 'string', begin: /^[ \t]*:\S+/},
 		{scope: 'comment', begin: /^[ \t]*#/, end: /$/},
 		{match: [/(?<=^[ \t]*)[rR][eE][mM](?=\s|$)/, /.*/], scope: {1: 'keyword', 2: 'comment'}},
 		ACTION_STRING,
