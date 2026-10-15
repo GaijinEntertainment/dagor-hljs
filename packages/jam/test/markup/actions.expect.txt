@@ -1,0 +1,4 @@
+<span class="hljs-keyword">actions</span> <span class="hljs-keyword">quietly</span> <span class="hljs-title function_">Link</span> <span class="hljs-keyword">bind</span> <span class="hljs-variable">NEEDLIBS</span> <span class="hljs-variable">LINKFLAGS</span>
+{
+  <span class="hljs-keyword">call</span> $(<span class="hljs-variable">LINK</span>) $(<span class="hljs-variable">LINKFLAGS</span>) $(<span class="hljs-variable">1</span>)
+}
