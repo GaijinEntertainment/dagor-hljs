@@ -7,29 +7,29 @@
 <span class="hljs-keyword">interval</span> editorEnableZ : no&lt;<span class="hljs-number">1</span>, yes;
 
 <span class="hljs-type">float</span> sky_scale = <span class="hljs-number">0</span>;   <span class="hljs-comment">// Not used.</span>
-<span class="hljs-keyword">shader</span> <span class="hljs-title">editor_helper, editor_helper_no_tex, editor_helper_no_tex_blend</span>
+<span class="hljs-keyword">shader</span> <span class="hljs-title class_">editor_helper, editor_helper_no_tex, editor_helper_no_tex_blend</span>
 {
-  <span class="hljs-attr">z_write</span>=<span class="hljs-literal">false</span>;
-  <span class="hljs-attr">cull_mode</span>=<span class="hljs-literal">none</span>;
+  <span class="hljs-built_in">z_write</span>=<span class="hljs-literal">false</span>;
+  <span class="hljs-built_in">cull_mode</span>=<span class="hljs-literal">none</span>;
   <span class="hljs-keyword">hlsl</span> {
-    <span class="hljs-keyword">struct</span> <span class="hljs-title">VSOutput</span>
+    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">VSOutput</span>
     {
-      <span class="hljs-title function_">VS_OUT_POSITION</span>(pos)
-      <span class="hljs-meta">##if</span> <span class="hljs-keyword">shader</span> == editor_helper
-      <span class="hljs-type">float2</span> texcoord : <span class="hljs-attr">TEXCOORD0</span>;
-      <span class="hljs-meta">##endif</span>
-      <span class="hljs-type">float4</span> color : <span class="hljs-attr">COLOR0</span>;
+      <span class="hljs-built_in">VS_OUT_POSITION</span>(pos)
+      <span class="hljs-meta">##<span class="hljs-keyword">if</span> shader == editor_helper</span>
+      <span class="hljs-type">float2</span> texcoord : <span class="hljs-built_in">TEXCOORD0</span>;
+      <span class="hljs-meta">##<span class="hljs-keyword">endif</span></span>
+      <span class="hljs-type">float4</span> color : <span class="hljs-built_in">COLOR0</span>;
     };
   }
 
   <span class="hljs-keyword">if</span> (<span class="hljs-keyword">shader</span>==editor_helper || <span class="hljs-keyword">shader</span>==editor_helper_no_tex_blend)
   {
-    <span class="hljs-attr">blend_src</span>=sa; <span class="hljs-attr">blend_dst</span>=isa;
+    <span class="hljs-built_in">blend_src</span>=sa; <span class="hljs-built_in">blend_dst</span>=isa;
   }
   
-  <span class="hljs-keyword">channel</span> <span class="hljs-type">float3</span> <span class="hljs-attr">pos</span>=<span class="hljs-attr">pos</span>;
-  <span class="hljs-keyword">channel</span> <span class="hljs-type">color8</span> <span class="hljs-attr">vcol</span>=<span class="hljs-attr">vcol</span>;
-  <span class="hljs-keyword">channel</span> <span class="hljs-type">float2</span> <span class="hljs-attr">tc</span>[<span class="hljs-number">0</span>]=<span class="hljs-attr">tc</span>[<span class="hljs-number">0</span>];
+  <span class="hljs-keyword">channel</span> <span class="hljs-type">float3</span> <span class="hljs-built_in">pos</span>=<span class="hljs-built_in">pos</span>;
+  <span class="hljs-keyword">channel</span> <span class="hljs-type">color8</span> <span class="hljs-built_in">vcol</span>=<span class="hljs-built_in">vcol</span>;
+  <span class="hljs-keyword">channel</span> <span class="hljs-type">float2</span> <span class="hljs-built_in">tc</span>[<span class="hljs-number">0</span>]=<span class="hljs-built_in">tc</span>[<span class="hljs-number">0</span>];
 
   <span class="hljs-keyword">if</span> (<span class="hljs-keyword">shader</span>==editor_helper)
   {
@@ -41,16 +41,16 @@
 
   <span class="hljs-keyword">if</span> (<span class="hljs-keyword">shader</span>==editor_helper)
   {
-    <span class="hljs-attr">stencil</span>=<span class="hljs-literal">true</span>;
-    <span class="hljs-attr">stencil_func</span>=always;
-    <span class="hljs-attr">stencil_pass</span>=replace;
-    <span class="hljs-attr">stencil_ref</span>=<span class="hljs-number">255</span>;
-    <span class="hljs-attr">stencil_zfail</span>=keep;
-    <span class="hljs-attr">stencil_fail</span>=keep;
+    <span class="hljs-built_in">stencil</span>=<span class="hljs-literal">true</span>;
+    <span class="hljs-built_in">stencil_func</span>=always;
+    <span class="hljs-built_in">stencil_pass</span>=replace;
+    <span class="hljs-built_in">stencil_ref</span>=<span class="hljs-number">255</span>;
+    <span class="hljs-built_in">stencil_zfail</span>=keep;
+    <span class="hljs-built_in">stencil_fail</span>=keep;
 
     <span class="hljs-keyword">hlsl</span><span class="hljs-built_in">(ps)</span> {
 
-      <span class="hljs-type">float4</span> <span class="hljs-title function_">editor_helper_ps</span>(VSOutput input) : <span class="hljs-attr">SV_Target</span>
+      <span class="hljs-type">float4</span> <span class="hljs-title">editor_helper_ps</span>(VSOutput input) : <span class="hljs-built_in">SV_Target</span>
       {
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">tex2D</span>(tex, input.texcoord) * input.color;
       }
@@ -58,30 +58,30 @@
   }
   <span class="hljs-keyword">else</span>
   {
-    <span class="hljs-attr">stencil</span>=<span class="hljs-literal">false</span>;
-    <span class="hljs-keyword">hlsl</span><span class="hljs-built_in">(ps)</span> { <span class="hljs-type">float4</span> <span class="hljs-title function_">editor_helper_ps</span>(VSOutput input) : <span class="hljs-attr">SV_Target</span> { <span class="hljs-keyword">return</span> input.color; } }
+    <span class="hljs-built_in">stencil</span>=<span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">hlsl</span><span class="hljs-built_in">(ps)</span> { <span class="hljs-type">float4</span> <span class="hljs-title">editor_helper_ps</span>(VSOutput input) : <span class="hljs-built_in">SV_Target</span> { <span class="hljs-keyword">return</span> input.color; } }
   }
   
   <span class="hljs-keyword">compile</span>(<span class="hljs-string">&quot;target_ps&quot;</span>, <span class="hljs-string">&quot;editor_helper_ps&quot;</span>);
 
   <span class="hljs-built_in">(vs)</span>
   {
-    <span class="hljs-literal">globtm</span><span class="hljs-type">@f44</span> = <span class="hljs-literal">globtm</span>;
+    <span class="hljs-built_in">globtm</span><span class="hljs-type">@f44</span> = <span class="hljs-built_in">globtm</span>;
   }
 
   <span class="hljs-keyword">hlsl</span><span class="hljs-built_in">(vs)</span> {
 
-    VSOutput <span class="hljs-title function_">editor_helper_vs</span>(
-      <span class="hljs-type">float4</span> pos: <span class="hljs-attr">POSITION</span>,
-      <span class="hljs-type">float4</span> color : <span class="hljs-attr">COLOR0</span>,
-      <span class="hljs-type">float2</span> texcoord : <span class="hljs-attr">TEXCOORD0</span>)
+    VSOutput <span class="hljs-title">editor_helper_vs</span>(
+      <span class="hljs-type">float4</span> pos: <span class="hljs-built_in">POSITION</span>,
+      <span class="hljs-type">float4</span> color : <span class="hljs-built_in">COLOR0</span>,
+      <span class="hljs-type">float2</span> texcoord : <span class="hljs-built_in">TEXCOORD0</span>)
     {
       VSOutput output;
-      output.pos = <span class="hljs-built_in">mul</span>(pos, <span class="hljs-literal">globtm</span>);
+      output.pos = <span class="hljs-built_in">mul</span>(pos, <span class="hljs-built_in">globtm</span>);
       output.color = color;
-    <span class="hljs-meta">##if</span> <span class="hljs-keyword">shader</span> == editor_helper
+    <span class="hljs-meta">##<span class="hljs-keyword">if</span> shader == editor_helper</span>
       output.texcoord = texcoord;
-    <span class="hljs-meta">##endif</span>
+    <span class="hljs-meta">##<span class="hljs-keyword">endif</span></span>
       <span class="hljs-keyword">return</span> output;
     }
   }

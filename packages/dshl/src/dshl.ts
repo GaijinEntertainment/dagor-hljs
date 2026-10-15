@@ -42,10 +42,11 @@ const DSHL_STATES = [
 	'z_bias slope_z_bias pos norm tc vcol extra diffuse emissive specular ambient',
 ].join(' ');
 
-// Values that states, supports and assume take.
+const DSHL_LITERALS = 'none true false NULL';
+
+// Values that states, supports and assume take, and the built-in bindings of a shader.
 const DSHL_VALUES = [
-	'fsh_4_0 fsh_5_0 fsh_6_0 fsh_6_2 fsh_6_6 bindless mesh',
-	'none true false NULL globtm projtm viewprojtm',
+	'fsh_4_0 fsh_5_0 fsh_6_0 fsh_6_2 fsh_6_6 bindless mesh globtm projtm viewprojtm',
 	'local_view_x local_view_y local_view_z local_view_pos',
 	'world_local_x world_local_y world_local_z world_local_pos',
 ].join(' ');
@@ -103,17 +104,20 @@ const HLSL_TYPE_SET = new Set(HLSL_TYPE_WORDS.split(' '));
 
 const HLSL_VECTOR_TYPE = String.raw`(?:bool|int|uint|fixed|half|float|double)[1-4](?:x[1-4])?`;
 
+// Qualifiers that C++ shows as types.
+const HLSL_TYPE_QUALIFIERS = 'const static unsigned Const Static Unsigned';
+
 /**
- * Returns the mode of a function name: a name before `(` that is none of `words` and does not match `pattern`. It
- * colors the name of a definition and of a call alike.
+ * Returns the mode of a function call: a name before `(` that is none of `words` and does not match `pattern`. C++
+ * shows a call as `built_in`.
  */
-function functionName(words: string, pattern?: string): Mode {
+function functionCall(words: string, pattern?: string): Mode {
 	const alternatives = [...new Set(words.split(/\s+/).filter((word) => word !== ''))];
 	if (pattern !== undefined) {
 		alternatives.push(pattern);
 	}
 	return {
-		scope: 'title.function',
+		scope: 'built_in',
 		match: new RegExp(String.raw`\b(?!(?:${alternatives.join('|')})\b)[A-Za-z_]\w*(?=\s*\()`),
 		relevance: 0,
 	};
@@ -122,33 +126,34 @@ function functionName(words: string, pattern?: string): Mode {
 // highlight.js keywords are case sensitive, so each word is listed in both
 // cases. Types are left out here, so that each word has one class.
 const HLSL_KEYWORDS = [...new Set(HLSL_KEYWORDS_LIST.split(/\s+/).flatMap((w) => [w, w.toLowerCase()]))]
-	.filter((w) => w !== '' && !HLSL_TYPE_SET.has(w))
+	.filter((w) => w !== '' && !HLSL_TYPE_SET.has(w) && !HLSL_TYPE_QUALIFIERS.split(' ').includes(w))
 	.join(' ');
 
 export default function dshl(hljs: HLJSApi): Language {
+	// Render states, built-in values, and built-in bindings take the scope of the built-in variables of GLSL.
 	const DSHL_KEYWORD_OBJECT = {
 		keyword: DSHL_KEYWORDS,
 		type: DSHL_TYPES,
-		attr: DSHL_STATES,
-		literal: DSHL_VALUES,
-		built_in: DSHL_INTRINSICS,
+		literal: DSHL_LITERALS,
+		built_in: [DSHL_INTRINSICS, DSHL_STATES, DSHL_VALUES].join(' '),
 	};
 
 	const HLSL_KEYWORD_OBJECT = {
 		keyword: HLSL_KEYWORDS,
-		type: HLSL_TYPE_WORDS,
-		built_in: HLSL_INTRINSICS,
-		attr: HLSL_SEMANTICS,
-		// Builtin bindings that a shader can read from the HLSL body.
-		literal: [
-			'true false globtm projtm viewprojtm immediate_dword_count',
+		type: `${HLSL_TYPE_WORDS} ${HLSL_TYPE_QUALIFIERS}`,
+		literal: 'true false',
+		built_in: [
+			HLSL_INTRINSICS,
+			HLSL_SEMANTICS,
+			// Built-in bindings that a shader can read from the HLSL body.
+			'globtm projtm viewprojtm immediate_dword_count',
 			'local_view_x local_view_y local_view_z local_view_pos',
 			'world_local_x world_local_y world_local_z world_local_pos',
 		].join(' '),
 	};
 
-	const DSHL_FUNCTION = functionName(Object.values(DSHL_KEYWORD_OBJECT).join(' '));
-	const HLSL_FUNCTION = functionName(Object.values(HLSL_KEYWORD_OBJECT).join(' '), HLSL_VECTOR_TYPE);
+	const DSHL_CALL = functionCall(Object.values(DSHL_KEYWORD_OBJECT).join(' '));
+	const HLSL_CALL = functionCall(Object.values(HLSL_KEYWORD_OBJECT).join(' '), HLSL_VECTOR_TYPE);
 
 	// `~` escapes the next character, so `~"` does not end the string.
 	const STRING: Mode = {
@@ -185,39 +190,42 @@ export default function dshl(hljs: HLJSApi): Language {
 
 	const LINE_CONTINUATION: Mode = {begin: /\\\r?\n/, relevance: 0};
 
-	// A directive of the HLSL preprocessor. Only the directive is meta; the rest of the line keeps its colors.
-	const HLSL_PREPROCESSOR: Mode = {
-		begin: [/^[ \t]*/, /#[ \t]*(?:if|ifdef|ifndef|elif|else|endif|define|undef|include|pragma|line|error|warning)\b/],
-		beginScope: {2: 'meta'},
+	// A preprocessor directive is meta to the end of its line, as in C++, with the directive word as a keyword.
+	const directive = (marker: string, words: string, contains: Mode[]): Mode => ({
+		scope: 'meta',
+		begin: [new RegExp(String.raw`(?<=^[ \t]*)${marker}[ \t]*`), new RegExp(String.raw`(?:${words})\b`)],
+		beginScope: {2: 'keyword'},
 		end: /$/,
-		keywords: {keyword: 'defined'},
-		contains: [
-			LINE_CONTINUATION,
-			{scope: 'string', begin: /<(?=[^<>\n]*>)/, end: />/},
-			STRING,
-			NUMBER,
-			HLSL_TYPE_VECTOR,
-			...COMMENTS,
-		],
-	};
+		contains: [LINE_CONTINUATION, STRING, ...contains, ...COMMENTS],
+	});
 
-	// A `##` directive of the shader compiler, whose condition is a DSHL condition.
-	const SHADER_DIRECTIVE: Mode = {
-		begin: [/^[ \t]*/, /##[ \t]*(?:if|elif|else|endif|bool|declare|assert)\b/],
-		beginScope: {2: 'meta'},
-		end: /$/,
-		keywords: {keyword: 'hardware maybe shader', literal: DSHL_VALUES},
-		contains: [STRING, NUMBER, ...COMMENTS],
-	};
+	// Only `#include` takes a header in angle brackets.
+	const HLSL_INCLUDE = directive('#', 'include', [{scope: 'string', begin: /<[^<>\n]*>/}]);
+	const HLSL_PREPROCESSOR = directive(
+		'#',
+		'if|ifdef|ifndef|elif|else|endif|define|undef|pragma|line|error|warning',
+		[],
+	);
+
+	// A `##` directive of the shader compiler.
+	const SHADER_DIRECTIVE = directive('##', 'if|elif|else|endif|bool|declare|assert', []);
 
 	const HLSL_SEMANTIC: Mode = {
-		scope: 'attr',
+		scope: 'built_in',
 		begin: /\bSV_[A-Za-z]+\d*\b|\b(?:COLOR|NORMAL|POSITION)[0-1]\b|\bTEXCOORD(?:1[0-5]|\d)\b/,
 	};
 
 	const HLSL_STRUCT_DECLARATION: Mode = {
 		match: [/\b(?:struct|class|interface)\b/, /\s+/, /[A-Za-z_]\w*/],
-		scope: {1: 'keyword', 3: 'title'},
+		scope: {1: 'keyword', 3: 'title.class'},
+	};
+
+	// The name of a function definition: a name before `(` after a return type that starts a line or a statement.
+	const HLSL_FUNCTION_DEFINITION: Mode = {
+		scope: 'title',
+		match:
+			/(?<=(?:^|[{};])[ \t]*(?:(?!(?:return|else|case|do|goto|throw)\b)[A-Za-z_]\w*(?:<[^<>\n]*>)?[ \t]+)+)[A-Za-z_]\w*(?=\s*\()/,
+		relevance: 0,
 	};
 
 	// Rules that apply inside an HLSL body. The HLSL body is plain HLSL, so the
@@ -227,13 +235,15 @@ export default function dshl(hljs: HLJSApi): Language {
 		STRING,
 		HLSL_STRUCT_DECLARATION,
 		SHADER_DIRECTIVE,
+		HLSL_INCLUDE,
 		HLSL_PREPROCESSOR,
 		MACRO_TOKEN,
 		NUMBER,
 		BINDING_TYPE,
 		HLSL_SEMANTIC,
 		HLSL_TYPE_VECTOR,
-		HLSL_FUNCTION,
+		HLSL_FUNCTION_DEFINITION,
+		HLSL_CALL,
 	];
 
 	// A brace inside an HLSL body opens a nested block, which can hold more braces.
@@ -284,11 +294,16 @@ export default function dshl(hljs: HLJSApi): Language {
 	// `shader name1, name2` names one shader under several names.
 	const SHADER_DECLARATION: Mode = {
 		match: [/\bshader\b/, /\s+/, /[A-Za-z_]\w*(?:\s*,\s*[A-Za-z_]\w*)*/],
-		scope: {1: 'keyword', 3: 'title'},
+		scope: {1: 'keyword', 3: 'title.class'},
 	};
 
 	const BLOCK_DECLARATION: Mode = {
 		match: [/\bblock\b/, /\s*\(\s*[A-Za-z_]\w*\s*\)\s*/, NAME],
+		scope: {1: 'keyword', 3: 'title.class'},
+	};
+
+	const MACRO_DEFINITION: Mode = {
+		match: [/\b(?:macro|define_macro_if_not_defined)\b/, /\s+/, NAME],
 		scope: {1: 'keyword', 3: 'title'},
 	};
 
@@ -296,12 +311,14 @@ export default function dshl(hljs: HLJSApi): Language {
 		...COMMENTS,
 		STRING,
 		HLSL_BLOCK,
+		SHADER_DIRECTIVE,
 		MACRO_TOKEN,
 		BINDING_TYPE,
 		NUMBER,
 		SHADER_DECLARATION,
 		BLOCK_DECLARATION,
-		DSHL_FUNCTION,
+		MACRO_DEFINITION,
+		DSHL_CALL,
 	];
 
 	STAGE_NESTED.contains = [...DSHL_RULES, STAGE_NESTED];
