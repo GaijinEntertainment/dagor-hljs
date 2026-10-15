@@ -16,26 +16,23 @@ an npm package of its own. The repository is public.
 - Lexical rules (numbers, strings and escapes, comments, keywords) follow the compiler or engine of the language: the
   lexer of GaijinEntertainment/daScript, the compiler of GaijinEntertainment/quirrel, the BLK parser and the shader
   compiler of GaijinEntertainment/DagorEngine, and GaijinEntertainment/jam-G8.
-- Every grammar gives a kind of token the same class, chosen for the colors of the Gerrit diff view
-  (`embed/diff/gr-syntax-themes/gr-syntax-theme.ts` and `styles/themes/` of `polygerrit-ui/app`):
-  - `keyword` - every keyword, also the keywords of imports, includes, modules, and macro definitions.
-  - `meta` - the token of a preprocessor directive (`#if`, `##if`) or of an annotation; not the rest of its line.
-  - `title.function` - the name of a function or a macro, where it is defined and where it is called.
-  - `title` - the name that a declaration of a type, a shader, a block, or a class introduces.
-  - `type` - built-in types, type suffixes such as `@f4` and `:r`, and type names in a type position.
-  - `built_in` - built-in functions and built-in values such as `this`.
-  - `literal` - `true`, `false`, `null`, named built-in constants, and in Daslang and Quirrel a name in capital
-    letters, which those languages give to a constant.
-  - `attr` - render states and other built-in setting names, HLSL semantics, and BLK parameter names, as Gerrit colors
-    the keys of JSON.
-  - `template-variable` - a variable expansion, such as `$(Root)` in Jam.
-  - `number`, `string`, `comment` - every number, string, and comment, also in values and directives.
-- Do not use `property`, `variable`, `params`, `function`, `attribute`, `quote`, `strong`, or `emphasis`: the light
-  theme of Gerrit shows them in the default text color.
+- Every grammar gives a kind of token the scope that the highlight.js grammar of its reference language gives to the
+  same kind of token. A Dagor file then looks like a file of the reference language in every highlight.js theme and in
+  the Gerrit diff view:
+  - DSHL and its HLSL code - C++ (`cpp`), and GLSL (`glsl`) for the built-in names of a shader.
+  - Daslang - Rust (`rust`).
+  - Quirrel - JavaScript (`javascript`).
+  - BLK - INI (`ini`) and YAML (`yaml`).
+  - Jam - Makefile (`makefile`), Bash (`bash`) for rule definitions and built-in rules, and Batch (`dos`) for the
+    commands of an action body.
+- To find a scope, highlight a sample of the reference language with highlight.js and read the class of the token. A
+  kind of token that the reference language does not have takes the scope of the nearest kind that it has. For
+  example, a DSHL render state takes the scope of a GLSL built-in variable.
+- Gerrit shows only the classes of `CLASS_SAFELIST` in
+  `polygerrit-ui/app/embed/diff/gr-syntax-layer/gr-syntax-layer-worker.ts`, and shows a token of another scope, such as
+  `title.class`, in the default text color. Do not choose a scope for its color in Gerrit.
 - Every fixture input is code that the compiler of its language accepts.
 - A grammar package also changes the language table of `README.md`.
-- Give a token only a class from `CLASS_SAFELIST` in Gerrit's
-  `polygerrit-ui/app/embed/diff/gr-syntax-layer/gr-syntax-layer-worker.ts`. The Gerrit diff view shows no other class.
 - A fixture is `test/markup/<name>.txt` with `<name>.expect.txt` beside it. `vp test run -u` writes a new expectation;
   read its diff before the commit, because the expectation is what the test holds the grammar to.
 
