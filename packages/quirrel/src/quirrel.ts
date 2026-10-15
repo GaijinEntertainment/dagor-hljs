@@ -126,6 +126,11 @@ export default function quirrel(hljs: HLJSApi): Language {
 		match: /(?<=\bclass(?:\s+[A-Za-z_]\w*)?\s*\(\s*)[A-Za-z_]\w*(?=\s*\))/,
 	};
 
+	const CATCH_CLASS: Mode = {
+		scope: 'type',
+		match: /(?<=\bcatch\s*\(\s*)[A-Za-z_]\w*(?=\s+[A-Za-z_]\w*\s*\))/,
+	};
+
 	const CONSTRUCTOR: Mode = {
 		scope: 'title.function',
 		begin: /\bconstructor\b/,
@@ -178,6 +183,7 @@ export default function quirrel(hljs: HLJSApi): Language {
 		FUNCTION_DEFINITION,
 		TYPE_DEFINITION,
 		CLASS_BASE,
+		CATCH_CLASS,
 		CONSTRUCTOR,
 		THIS_OR_BASE,
 		METHOD_CALL,
