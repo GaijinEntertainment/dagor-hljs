@@ -1,26 +1,28 @@
-<span class="hljs-property">text</span>:<span class="hljs-type">t</span>=<span class="hljs-string">70</span>
-<span class="hljs-property">words</span>:<span class="hljs-type">t</span>=<span class="hljs-string">hello world</span>
-<span class="hljs-property">flag</span>:<span class="hljs-type">b</span>=<span class="hljs-literal">yes</span>
-<span class="hljs-property">off</span>:<span class="hljs-type">b</span>=<span class="hljs-literal">no</span>
-<span class="hljs-property">whole</span>:<span class="hljs-type">i</span>=<span class="hljs-number">12</span>
-<span class="hljs-property">long</span>:<span class="hljs-type">i64</span>=<span class="hljs-number">-9000000000</span>
-<span class="hljs-property">real</span>:<span class="hljs-type">r</span>=<span class="hljs-number">.5</span>
-<span class="hljs-property">plus</span>:<span class="hljs-type">r</span>=<span class="hljs-number">+1</span>
-<span class="hljs-property">exp</span>:<span class="hljs-type">r</span>=<span class="hljs-number">1e3</span>
-<span class="hljs-property">color</span>:<span class="hljs-type">c</span>=<span class="hljs-number">255, 128, 0, 255</span>
-<span class="hljs-property">pos</span>:<span class="hljs-type">p3</span>=<span class="hljs-number">1.5, -2, 3e2</span>
-<span class="hljs-property">grid</span>:<span class="hljs-type">ip2</span>=<span class="hljs-number">4,4</span>
-<span class="hljs-property">matrix</span>:<span class="hljs-type">m</span>=<span class="hljs-number">[[1,0,0] [0,1,0] [0,0,1] [0,0,0]]</span>
-<span class="hljs-property">untyped</span> = <span class="hljs-string">5</span>
-<span class="hljs-property">untyped_bool</span> = <span class="hljs-string">yes</span>
-<span class="hljs-property">percent</span> = <span class="hljs-string">50%pw</span>
-<span class="hljs-property">quoted</span>:<span class="hljs-type">i</span>=<span class="hljs-string">&quot;12&quot;</span>
-<span class="hljs-property">numbers</span>:<span class="hljs-type">r</span>[]=[<span class="hljs-number">.5</span>; <span class="hljs-number">+1</span>; <span class="hljs-number">1e3</span>; <span class="hljs-number">-2</span>;]
-<span class="hljs-property">flags</span>:<span class="hljs-type">b</span>[]=[<span class="hljs-literal">yes</span>; <span class="hljs-literal">no</span>; <span class="hljs-literal">on</span>; <span class="hljs-literal">off</span>;]
-<span class="hljs-property">names</span>:<span class="hljs-type">t</span>[]=[<span class="hljs-string">&quot;a&quot;</span>; <span class="hljs-string">b</span>; <span class="hljs-string">yes please</span>;]
-<span class="hljs-property">pairs</span>:<span class="hljs-type">ip2</span>[]=[<span class="hljs-number">32, 64</span>; <span class="hljs-number">128, 256</span>;]
-<span class="hljs-property">spaced</span>:<span class="hljs-type">t</span>[] = [
+text:<span class="hljs-type">t</span>=<span class="hljs-string">70</span>
+words:<span class="hljs-type">t</span>=<span class="hljs-string">hello world</span>
+flag:<span class="hljs-type">b</span>=<span class="hljs-literal">yes</span>
+off:<span class="hljs-type">b</span>=<span class="hljs-literal">no</span>
+whole:<span class="hljs-type">i</span>=<span class="hljs-number">12</span>
+long:<span class="hljs-type">i64</span>=<span class="hljs-number">-9000000000</span>
+real:<span class="hljs-type">r</span>=<span class="hljs-number">.5</span>
+plus:<span class="hljs-type">r</span>=<span class="hljs-number">+1</span>
+exp:<span class="hljs-type">r</span>=<span class="hljs-number">1e3</span>
+color:<span class="hljs-type">c</span>=<span class="hljs-number">255, 128, 0, 255</span>
+pos:<span class="hljs-type">p3</span>=<span class="hljs-number">1.5, -2, 3e2</span>
+grid:<span class="hljs-type">ip2</span>=<span class="hljs-number">4,4</span>
+matrix:<span class="hljs-type">m</span>=<span class="hljs-number">[[1,0,0] [0,1,0] [0,0,1] [0,0,0]]</span>
+untyped = <span class="hljs-string">5</span>
+untyped_bool = <span class="hljs-string">yes</span>
+percent = <span class="hljs-string">50%pw</span>
+quoted:<span class="hljs-type">i</span>=<span class="hljs-string">&quot;12&quot;</span>
+numbers:<span class="hljs-type">r</span>[]=[<span class="hljs-number">.5</span>; <span class="hljs-number">+1</span>; <span class="hljs-number">1e3</span>; <span class="hljs-number">-2</span>;]
+flags:<span class="hljs-type">b</span>[]=[<span class="hljs-literal">yes</span>; <span class="hljs-literal">no</span>; <span class="hljs-literal">on</span>; <span class="hljs-literal">off</span>;]
+names:<span class="hljs-type">t</span>[]=[<span class="hljs-string">&quot;a&quot;</span>; <span class="hljs-string">b</span>; <span class="hljs-string">yes please</span>;]
+pairs:<span class="hljs-type">ip2</span>[]=[<span class="hljs-number">32, 64</span>; <span class="hljs-number">128, 256</span>;]
+spaced:<span class="hljs-type">t</span>[] = [
   <span class="hljs-string">&quot;first&quot;</span>
   <span class="hljs-string">bare value</span>
 ]
-<span class="hljs-property">empty</span>:<span class="hljs-type">p3</span>[]=[]
+empty:<span class="hljs-type">p3</span>[]=[]
+<span class="hljs-built_in">_built_in</span>:<span class="hljs-type">r</span>=<span class="hljs-number">1</span>
+<span class="hljs-built_in">_untyped_built_in</span> = <span class="hljs-string">x</span>

@@ -24,3 +24,5 @@ spaced:t[] = [
   bare value
 ]
 empty:p3[]=[]
+_built_in:r=1
+_untyped_built_in = x

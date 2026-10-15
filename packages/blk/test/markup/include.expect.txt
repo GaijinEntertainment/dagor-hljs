@@ -14,7 +14,7 @@
 }
 <span class="hljs-keyword">include</span>;
 <span class="hljs-title">include</span>{}
-<span class="hljs-property">Include</span>:<span class="hljs-type">t</span>=<span class="hljs-string">&quot;x&quot;</span>
-<span class="hljs-property">include</span> = <span class="hljs-string">y</span>
-<span class="hljs-property">include.x</span>:<span class="hljs-type">i</span>=<span class="hljs-number">1</span>
-<span class="hljs-property">AddIncludes</span> = <span class="hljs-string">$(Root)/include</span>
+Include:<span class="hljs-type">t</span>=<span class="hljs-string">&quot;x&quot;</span>
+include = <span class="hljs-string">y</span>
+include.x:<span class="hljs-type">i</span>=<span class="hljs-number">1</span>
+AddIncludes = <span class="hljs-string">$(Root)/include</span>
