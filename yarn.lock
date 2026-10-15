@@ -83,6 +83,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@gaijin/highlightjs-quirrel@workspace:packages/quirrel":
+  version: 0.0.0-use.local
+  resolution: "@gaijin/highlightjs-quirrel@workspace:packages/quirrel"
+  peerDependencies:
+    highlight.js: ^11.12.0
+  languageName: unknown
+  linkType: soft
+
 "@isaacs/fs-minipass@npm:^4.0.0":
   version: 4.0.1
   resolution: "@isaacs/fs-minipass@npm:4.0.1"
