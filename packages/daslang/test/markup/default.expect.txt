@@ -62,8 +62,8 @@
     } <span class="hljs-keyword">else</span> {
         <span class="hljs-title function_">print</span>(<span class="hljs-string">&quot;small\n&quot;</span>)
     }
-    <span class="hljs-keyword">let</span> pick = @(p : Point) =&gt; p.<span class="hljs-property">x</span> + p.<span class="hljs-property">y</span> * scale
-    squares |&gt; <span class="hljs-title function_">each</span>() &lt;| $(v) {
+    <span class="hljs-keyword">let</span> pick = <span class="hljs-keyword">@</span>(p : Point) =&gt; p.<span class="hljs-property">x</span> + p.<span class="hljs-property">y</span> * scale
+    squares |&gt; <span class="hljs-title function_">each</span>() &lt;| <span class="hljs-keyword">$</span>(v) {
         counter++
     }
     <span class="hljs-keyword">let</span> shape = <span class="hljs-keyword">new</span> <span class="hljs-type">Shape</span>(origin = <span class="hljs-type">Point</span>(x = <span class="hljs-number">1.0</span>, y = <span class="hljs-number">2.0</span>))

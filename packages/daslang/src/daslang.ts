@@ -102,6 +102,11 @@ export default function daslang(hljs: HLJSApi): Language {
 		begin: /#\d+,\d+,"[^"]+"#/,
 	};
 
+	const BLOCK_MARKER: Mode = {
+		scope: 'keyword',
+		begin: /(?<!\$)(?:@@|@|\$)(?=\s*(?:[([{]|capture\b))/,
+	};
+
 	const MACRO_VARIABLE: Mode = {
 		scope: 'meta',
 		begin: /\$[eivbatcf]\b|@@?[_a-zA-Z]\w*/,
@@ -185,6 +190,7 @@ export default function daslang(hljs: HLJSApi): Language {
 		STRING,
 		CHARACTER,
 		READER_MACRO,
+		BLOCK_MARKER,
 		MACRO_VARIABLE,
 		NEGATED_KEYWORD,
 		NUMBER,

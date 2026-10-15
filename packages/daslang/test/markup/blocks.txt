@@ -1,0 +1,32 @@
+options gen2
+
+def apply(blk : block<(x : int) : int>) : int {
+    return invoke(blk, 1)
+}
+
+def run(blk : block) {
+    invoke(blk)
+}
+
+def keep(fn : lambda<(x : int) : int>) : int {
+    return invoke(fn, 2)
+}
+
+[export]
+def main() {
+    let doubled = apply($(x : int) : int {
+        return x * 2
+    })
+    run() $ {
+        print("bare block\n")
+    }
+    let tripled = keep(@(x : int) : int => x * 3)
+    var total = 10
+    let shifted = keep(@capture(= total) (x : int) : int {
+        return x + total
+    })
+    let local_function = @@(a : int) : int {
+        return a + 1
+    }
+    print("{doubled} {tripled} {shifted} {invoke(local_function, 1)}\n")
+}
