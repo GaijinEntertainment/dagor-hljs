@@ -7,6 +7,8 @@
  * gr-syntax-layer-worker.ts are shown in the diff.
  */
 
+import type {HLJSApi, Language, Mode} from 'highlight.js';
+
 const TYPE_WORDS = ['i64', 'ip2', 'ip3', 'ip4', 'p2', 'p3', 'p4', 't', 'i', 'b', 'c', 'r', 'm'];
 
 const BOOLEAN_WORDS = ['yes', 'no', 'true', 'false', 'on', 'off'];
@@ -17,12 +19,12 @@ const NAME = '[A-Za-z0-9_.~-]+';
 // A quoted name. The BLK parser accepts both triple and single quotes.
 const QUOTE = '(?:"""|\'\'\'|"|\')';
 
-function words(list) {
+function words(list: readonly string[]): RegExp {
 	return new RegExp(`\\b(?:${list.join('|')})\\b`);
 }
 
-export default function (hljs) {
-	const STRING = {
+export default function blk(hljs: HLJSApi): Language {
+	const STRING: Mode = {
 		className: 'string',
 		variants: [
 			{begin: /"""/, end: /"""/},
@@ -32,26 +34,26 @@ export default function (hljs) {
 		],
 	};
 
-	const NUMBER = {
+	const NUMBER: Mode = {
 		className: 'number',
 		begin: /-?\d+(?:\.\d+)?(?![\w%.])/,
 	};
 
-	const BOOLEAN = {
+	const BOOLEAN: Mode = {
 		className: 'literal',
 		begin: words(BOOLEAN_WORDS),
 	};
 
 	// Matches the rest of an unquoted value, so `lod01.dag` and `50%pw` are
 	// one token and NUMBER does not match their first digits.
-	const RAW_VALUE = {
+	const RAW_VALUE: Mode = {
 		className: 'string',
 		begin: /[^\s;,[\]"{}]+/,
 	};
 
 	// The value of `name = value`. It ends at `;`, the end of the line, `}` or
 	// a trailing comment. Arrays can span lines, so ARRAY is a nested mode.
-	const VALUE = {
+	const VALUE: Mode = {
 		begin: /=/,
 		end: /(?=;|\n|\}|\s*\/\/)/,
 		contains: [
@@ -68,13 +70,13 @@ export default function (hljs) {
 	};
 
 	// The type after `name:`, such as `r` in `range:r=70`.
-	const TYPE = {
+	const TYPE: Mode = {
 		begin: /:/,
 		end: /(?=\[|=|;|\s|\n|$)/,
 		contains: [{className: 'built_in', begin: words(TYPE_WORDS)}],
 	};
 
-	const BLOCK_COMMENT = {
+	const BLOCK_COMMENT: Mode = {
 		className: 'comment',
 		begin: /\/\*/,
 		end: /\*\//,
@@ -82,7 +84,7 @@ export default function (hljs) {
 	};
 
 	// Must come before the name rules, because `include = x` is not a name.
-	const INCLUDE = {
+	const INCLUDE: Mode = {
 		beginKeywords: 'include Include INCLUDE',
 		end: /$/,
 		contains: [STRING, {className: 'string', begin: /[^\s"=][^\n]*/}],
