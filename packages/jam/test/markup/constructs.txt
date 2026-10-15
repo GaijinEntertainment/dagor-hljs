@@ -1,0 +1,29 @@
+# A comment line
+SEARCH on $(target) = $(Root)/src ;
+OutDir ?= $(Root)/out ;
+Flags += -O2 ; # A trailing comment
+
+rule CompileShader target : source : flags
+{
+  local out = $(target:S=.bin) ;
+  Depends $(target) : $(source) ;
+  NoCare $(source) ;
+  for f in $(flags[1-2]) {
+    Echo "flag: \"$(f)\" on $(OS)" ;
+  }
+  switch $(OSPLAT) {
+    case X86 : Exit unsupported ;
+    case * : CompileShaderCmd $(target) : $(source) ;
+  }
+  while $(out) { out = [ Match "(.*)/[^/]*" : $(out) ] ; }
+  local name = [ BaseName $(source) ] ;
+}
+
+actions quietly CompileShaderCmd bind flags
+{
+#async
+  :retry
+  call $(COMPILER) #\(-o $(1)\)# $(2)
+  if errorlevel 1 goto retry
+  { echo nested braces }
+}

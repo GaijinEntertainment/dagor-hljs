@@ -15,8 +15,8 @@ export default defineConfig({
 	},
 	lint: {
 		extends: [javascript, typescript, vitest],
-		// The JavaScript grammars at the root have no types; each leaves this list when it moves into packages/.
-		ignorePatterns: ['**/dist/**', 'index.js', 'jam.js', 'test/smoke.test.mjs'],
+		// index.js and its smoke test are untyped JavaScript.
+		ignorePatterns: ['**/dist/**', 'index.js', 'test/smoke.test.mjs'],
 		options: {
 			typeAware: true,
 			typeCheck: true,
