@@ -1,0 +1,20 @@
+include "#/develop/gameBase/_common.blk"
+include '%dngSceneBlk/base.blk';
+include shaders_game_internal.blk
+INCLUDE /abs/path.blk // comment
+inClude "mixed.blk"
+block{
+  include
+    "a.blk"
+  Include
+  b.blk
+}
+a{
+  include
+}
+include;
+include{}
+Include:t="x"
+include = y
+include.x:i=1
+AddIncludes = $(Root)/include
