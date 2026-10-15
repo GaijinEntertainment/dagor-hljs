@@ -2,7 +2,7 @@
 import das from './packages/daslang/src/daslang.ts';
 import blk from './packages/blk/src/blk.ts';
 import quirrel from './packages/quirrel/src/quirrel.ts';
-import dshl from './dshl.js';
+import dshl from './packages/dshl/src/dshl.ts';
 import jam from './jam.js';
 
 // The names are the highlight.js language names, as in { language: 'dshl' }.

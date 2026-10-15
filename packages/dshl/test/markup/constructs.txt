@@ -1,0 +1,34 @@
+include_optional "extra.dshl"
+
+macro USE_TINT()
+  (ps) { tint@f4 = tint; }
+endmacro
+
+block(frame) frame_scene
+{
+  (ps) { fog_color@f4 = fog_color; }
+}
+
+texture noise_tex;
+float4 tint = (1, 0.5, 0.25, 1);
+assume use_fog = 1;
+
+shader tinted
+{
+  supports frame_scene;
+  USE_TINT()
+  render_stage opaque;
+  hlsl(ps) {
+    #define TINT_SCALE 0x10
+    Texture2D noise : register(t0);
+    float4 tinted_ps(float4 pos : SV_Position) : SV_Target0
+    {
+      float4x4 m = (float4x4)0;
+      half3 c = lerp(tint.rgb, 1.5h, 0.25f);
+      if (pos.x > 2) discard;
+      return float4(c * TINT_SCALE, 1);
+    }
+  }
+  compile("target_ps", "tinted_ps");
+  error("a ~"quoted~" word");
+}

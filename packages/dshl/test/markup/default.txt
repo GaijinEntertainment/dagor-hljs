@@ -1,0 +1,89 @@
+include "shader_global.dshl"
+include "gbuffer.dshl"
+
+int pass_type = 0;
+
+int editorEnableZ = 1;
+interval editorEnableZ : no<1, yes;
+
+float sky_scale = 0;   // Not used.
+shader editor_helper, editor_helper_no_tex, editor_helper_no_tex_blend
+{
+  z_write=false;
+  cull_mode=none;
+  hlsl {
+    struct VSOutput
+    {
+      VS_OUT_POSITION(pos)
+      ##if shader == editor_helper
+      float2 texcoord : TEXCOORD0;
+      ##endif
+      float4 color : COLOR0;
+    };
+  }
+
+  if (shader==editor_helper || shader==editor_helper_no_tex_blend)
+  {
+    blend_src=sa; blend_dst=isa;
+  }
+  
+  channel float3 pos=pos;
+  channel color8 vcol=vcol;
+  channel float2 tc[0]=tc[0];
+
+  if (shader==editor_helper)
+  {
+    dynamic texture tex;
+    (ps){ tex@smp2d = tex; }
+  }
+
+  (ps){ sky_scale@f1 = (sky_scale); }
+
+  if (shader==editor_helper)
+  {
+    stencil=true;
+    stencil_func=always;
+    stencil_pass=replace;
+    stencil_ref=255;
+    stencil_zfail=keep;
+    stencil_fail=keep;
+
+    hlsl(ps) {
+
+      float4 editor_helper_ps(VSOutput input) : SV_Target
+      {
+        return tex2D(tex, input.texcoord) * input.color;
+      }
+    }
+  }
+  else
+  {
+    stencil=false;
+    hlsl(ps) { float4 editor_helper_ps(VSOutput input) : SV_Target { return input.color; } }
+  }
+  
+  compile("target_ps", "editor_helper_ps");
+
+  (vs)
+  {
+    globtm@f44 = globtm;
+  }
+
+  hlsl(vs) {
+
+    VSOutput editor_helper_vs(
+      float4 pos: POSITION,
+      float4 color : COLOR0,
+      float2 texcoord : TEXCOORD0)
+    {
+      VSOutput output;
+      output.pos = mul(pos, globtm);
+      output.color = color;
+    ##if shader == editor_helper
+      output.texcoord = texcoord;
+    ##endif
+      return output;
+    }
+  }
+  compile("target_vs", "editor_helper_vs");
+}
