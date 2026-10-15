@@ -1,0 +1,31 @@
+options gen2
+
+struct Point {
+    x : float
+    y : float
+}
+
+class Shape {
+    origin : Point
+}
+
+[export]
+def main() {
+    let copied = Point(x = 1.0, y = 2.0)
+    var source = 1.0
+    let moved = Point(x <- source)
+    let cloned = Point(x := 1.0)
+    let raw = Point(uninitialized)
+    let partial = Point(uninitialized x = 3.0)
+    let zero = Point()
+    var shape = new Shape(origin = copied)
+    var empty = new Shape()
+    var bare = new Point
+    let size = length("abc")
+    print("{copied} {moved} {cloned} {raw} {partial} {zero} {size}\n")
+    unsafe {
+        delete shape
+        delete empty
+        delete bare
+    }
+}
