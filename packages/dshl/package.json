@@ -1,0 +1,47 @@
+{
+	"name": "@gaijin/highlightjs-dshl",
+	"version": "0.0.0",
+	"description": "highlight.js grammar for DSHL, the shader language of the Dagor Engine",
+	"keywords": [
+		"dagor",
+		"dshl",
+		"highlight.js",
+		"highlightjs",
+		"hlsl",
+		"shader",
+		"syntax"
+	],
+	"homepage": "https://github.com/GaijinEntertainment/dagor-hljs/tree/main/packages/dshl#readme",
+	"bugs": {
+		"url": "https://github.com/GaijinEntertainment/dagor-hljs/issues"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Gaijin Entertainment"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/GaijinEntertainment/dagor-hljs.git",
+		"directory": "packages/dshl"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"exports": {
+		".": {
+			"types": "./dist/dshl.d.ts",
+			"default": "./dist/dshl.js"
+		}
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "vp pack"
+	},
+	"peerDependencies": {
+		"highlight.js": "^11.12.0"
+	}
+}

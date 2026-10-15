@@ -7,6 +7,8 @@
  * CLASS_SAFELIST in gr-syntax-layer-worker.ts are shown in the diff.
  */
 
+import type {HLJSApi, Language, Mode} from 'highlight.js';
+
 // Keywords of the DSHL layer, outside an hlsl block.
 const DSHL_KEYWORDS = [
 	'shader block supports channel compile interval local static dynamic',
@@ -99,10 +101,10 @@ const HLSL_TYPE_SET = new Set(HLSL_TYPE_WORDS.split(' '));
 // highlight.js keywords are case sensitive, so each word is listed in both
 // cases. Types are left out here, so that each word has one class.
 const HLSL_KEYWORDS = [...new Set(HLSL_KEYWORDS_LIST.split(/\s+/).flatMap((w) => [w, w.toLowerCase()]))]
-	.filter((w) => w && !HLSL_TYPE_SET.has(w))
+	.filter((w) => w !== '' && !HLSL_TYPE_SET.has(w))
 	.join(' ');
 
-export default function (hljs) {
+export default function dshl(hljs: HLJSApi): Language {
 	const DSHL_KEYWORD_OBJECT = {
 		keyword: DSHL_KEYWORDS,
 		type: DSHL_TYPES,
@@ -125,53 +127,53 @@ export default function (hljs) {
 	};
 
 	// `~` escapes the next character, so `~"` does not end the string.
-	const STRING = {
+	const STRING: Mode = {
 		className: 'string',
 		begin: /"/,
 		end: /"/,
 		contains: [{begin: /~./, relevance: 0}],
 	};
 
-	const NUMBER = {
+	const NUMBER: Mode = {
 		className: 'number',
 		begin: /\b(?:0[xX][0-9a-fA-F]+|\d[0-9a-fA-F]*[hH]|(?:\d+\.\d*|\.\d+|\d+)(?:[eE][+-]?\d+)?)[uUlLfFhH]*\b/,
 	};
 
 	// `name@type` binds a shader variable to a resource type, such as `@tex2d`.
-	const BINDING_TYPE = {
+	const BINDING_TYPE: Mode = {
 		className: 'built_in',
 		begin: /@[A-Za-z_]\w*/,
 	};
 
 	// Used by the DSHL layer and by the HLSL body, which both allow `##` and `#rb`.
-	const MACRO_TOKEN = {
+	const MACRO_TOKEN: Mode = {
 		className: 'meta',
 		begin: /##|#rb\b/,
 	};
 
 	// A line in an HLSL body that starts with `#` is a preprocessor line.
-	const HLSL_PREPROCESSOR = {
+	const HLSL_PREPROCESSOR: Mode = {
 		className: 'meta',
 		begin: /^\s*#/,
 		end: /$/,
 	};
 
-	const HLSL_SEMANTIC = {
+	const HLSL_SEMANTIC: Mode = {
 		className: 'attr',
 		begin:
 			/\b(?:SV_(?:IsFrontFace|InstanceID|Depth|Position|Target)|COLOR|NORMAL|POSITION)[0-1]\b|\bTEXCOORD(?:1[0-5]|\d)\b/,
 	};
 
-	const HLSL_TYPE_VECTOR = {
+	const HLSL_TYPE_VECTOR: Mode = {
 		className: 'type',
 		begin: /\b(?:bool|int|uint|fixed|half|float|double)[1-4](?:x[1-4])?\b/,
 	};
 
-	const COMMENTS = [hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE];
+	const COMMENTS: Mode[] = [hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE];
 
 	// Rules that apply inside an HLSL body. The HLSL body is plain HLSL, so the
 	// DSHL keywords do not apply there.
-	const HLSL_RULES = [
+	const HLSL_RULES: Mode[] = [
 		...COMMENTS,
 		STRING,
 		HLSL_PREPROCESSOR,
@@ -183,7 +185,7 @@ export default function (hljs) {
 	];
 
 	// A brace inside an HLSL body opens a nested block, which can hold more braces.
-	const HLSL_NESTED = {
+	const HLSL_NESTED: Mode = {
 		begin: /\{/,
 		end: /\}/,
 		keywords: HLSL_KEYWORD_OBJECT,
@@ -192,7 +194,7 @@ export default function (hljs) {
 	HLSL_NESTED.contains = [...HLSL_RULES, HLSL_NESTED];
 
 	// The body of `hlsl { ... }`. It ends the enclosing HLSL_BLOCK when it closes.
-	const HLSL_BODY = {
+	const HLSL_BODY: Mode = {
 		begin: /\{/,
 		end: /\}/,
 		endsParent: true,
@@ -203,7 +205,7 @@ export default function (hljs) {
 	// `hlsl`, an optional stage in brackets, and the body. The begin is a
 	// lookahead, so the header is colored by the rules below it. The body
 	// closes this mode through endsParent.
-	const HLSL_BLOCK = {
+	const HLSL_BLOCK: Mode = {
 		begin: /(?=\bhlsl\b\s*(?:\(\s*[A-Za-z_]\w*\s*\)\s*)?\{)/,
 		end: /(?!)/,
 		contains: [
@@ -214,14 +216,14 @@ export default function (hljs) {
 	};
 
 	// A stage block such as `(ps) { ... }`. Its braces can hold `@f44 = { ... }`.
-	const STAGE_NESTED = {
+	const STAGE_NESTED: Mode = {
 		begin: /\{/,
 		end: /\}/,
 		keywords: DSHL_KEYWORD_OBJECT,
 		contains: [],
 	};
 
-	const STAGE_BODY = {
+	const STAGE_BODY: Mode = {
 		begin: /\{/,
 		end: /\}/,
 		endsParent: true,
@@ -229,12 +231,12 @@ export default function (hljs) {
 		contains: [],
 	};
 
-	const DSHL_RULES = [...COMMENTS, STRING, HLSL_BLOCK, MACRO_TOKEN, BINDING_TYPE, NUMBER];
+	const DSHL_RULES: Mode[] = [...COMMENTS, STRING, HLSL_BLOCK, MACRO_TOKEN, BINDING_TYPE, NUMBER];
 
 	STAGE_NESTED.contains = [...DSHL_RULES, STAGE_NESTED];
 	STAGE_BODY.contains = [...DSHL_RULES, STAGE_NESTED];
 
-	const STAGE_BLOCK = {
+	const STAGE_BLOCK: Mode = {
 		begin: /(?=^\s*\(\s*(?:[acdeghlmpv]s|[A-Za-z_]\w{2,})\s*\)\s*\{)/,
 		end: /(?!)/,
 		contains: [{className: 'built_in', begin: /\(\s*[A-Za-z_]\w*\s*\)/}, STAGE_BODY],
