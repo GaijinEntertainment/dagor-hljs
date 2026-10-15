@@ -36,7 +36,7 @@
     <span class="hljs-meta">@tag</span> name : <span class="hljs-built_in">string</span>
 }
 
-<span class="hljs-keyword">class</span> <span class="hljs-type">Shape</span> : Base {
+<span class="hljs-keyword">class</span> <span class="hljs-type">Shape</span> : <span class="hljs-type">Base</span> {
     origin : Point
     <span class="hljs-keyword">def</span> <span class="hljs-keyword">override</span> <span class="hljs-title function_">area</span> : <span class="hljs-built_in">float</span> {
         <span class="hljs-keyword">return</span> <span class="hljs-number">0.0</span>
