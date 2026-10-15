@@ -35,6 +35,22 @@ an npm package of its own. The repository is public.
   (`actions/checkout@<sha> # v7.0.1`), which Dependabot reads to update both. A checkout sets
   `persist-credentials: false`.
 
+## Releasing
+
+- Each package is released on its own. Set `version` in `packages/<language>/package.json` through a pull request,
+  then push the tag `<language>/vX.Y.Z` on the merged commit. The tag starts `.github/workflows/publish.yml`, which
+  checks that the tag matches the version, builds and tests every package, publishes the tagged package to npm, and
+  creates a GitHub release with the attested tarball. A version with a prerelease part, such as `1.0.0-rc.0`, goes to
+  the npm dist-tag `next`. A version that npm has is skipped.
+- A manual run of `publish.yml` rehearses a release: it builds, tests, and packs every package and publishes nothing.
+- npm holds a trusted publisher for each package: the repository `GaijinEntertainment/dagor-hljs`, the workflow
+  `publish.yml`, and the environment `npm`, which accepts deployments only from `*/v*` tags. A new name for the
+  repository, the workflow file, or the environment needs a new trusted publisher for each package.
+- The `protect-release-tags` ruleset forbids moving or deleting a release tag. When a publish job fails for a reason
+  outside the repository, run the failed jobs again; when the fix is a commit, release the next version.
+- A job that can mint an OIDC token (`id-token: write`) runs only GitHub's own actions and the npm CLI. The packages
+  are built in a separate job and reach the publishing job as an artifact.
+
 ## Public repository
 
 - Keyword lists hold no platform names, such as the platform values of DSHL. Some platform names are confidential.

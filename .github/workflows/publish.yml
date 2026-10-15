@@ -1,0 +1,164 @@
+name: Publish a package
+
+on:
+  push:
+    tags: ['*/v*']
+  workflow_dispatch:
+
+concurrency:
+  group: ${{github.workflow}}-${{github.ref}}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build the packages
+    runs-on: ubuntu-24.04
+    outputs:
+      name: ${{steps.tag.outputs.name}}
+      version: ${{steps.tag.outputs.version}}
+      tarball: ${{steps.tag.outputs.tarball}}
+      prerelease: ${{steps.tag.outputs.prerelease}}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Vite+
+        uses: voidzero-dev/setup-vp@68f39c78aaf39be468cabd2afb09c162574c84af # v1.21.2
+        with:
+          node-version: '24'
+          run-install: false
+      - name: Install dependencies
+        run: vp install --frozen-lockfile
+      - name: Read the package and the version from the tag
+        id: tag
+        if: github.event_name == 'push'
+        run: |
+          directory=${GITHUB_REF_NAME%%/*}
+          version=${GITHUB_REF_NAME#*/v}
+          manifest=packages/${directory}/package.json
+          if [[ ! -f ${manifest} ]]; then
+            echo "::error::tag ${GITHUB_REF_NAME} names no package in packages/"
+            exit 1
+          fi
+          manifest_version=$(jq -r .version "${manifest}")
+          if [[ ${manifest_version} != "${version}" ]]; then
+            echo "::error file=${manifest}::tag ${GITHUB_REF_NAME} does not match version ${manifest_version}"
+            exit 1
+          fi
+          name=$(jq -r .name "${manifest}")
+          tarball=${name#@}
+          prerelease=false
+          if [[ ${version} == *-* ]]; then
+            prerelease=true
+          fi
+          {
+            echo "name=${name}"
+            echo "version=${version}"
+            echo "tarball=${tarball//\//-}-${version}.tgz"
+            echo "prerelease=${prerelease}"
+          } >> "${GITHUB_OUTPUT}"
+      - name: Build and test the packages
+        run: vp test run
+      - name: Pack the packages
+        run: |
+          mkdir tarballs
+          for manifest in packages/*/package.json; do
+            (cd "${manifest%/package.json}" && npm pack --pack-destination ../../tarballs)
+          done
+      - name: Upload the packages
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: tarballs
+          path: tarballs/
+          retention-days: 2
+
+  npm:
+    name: Publish to npm
+    if: github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: npm
+      url: https://www.npmjs.com/package/${{needs.build.outputs.name}}
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      - name: Check that npm supports trusted publishing
+        run: |
+          node -e '
+            const [major, minor, patch] = process.argv[1].split(".").map(Number);
+            const supported = major > 11 || (major === 11 && (minor > 5 || (minor === 5 && patch >= 1)));
+            if (!supported) { console.error("npm " + process.argv[1] + " is older than 11.5.1"); process.exit(1); }
+          ' "$(npm --version)"
+      - name: Download the packages
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: tarballs
+          path: tarballs
+      - name: Check whether npm has the version
+        id: published
+        run: |
+          found=$(npm view "${NAME}@${VERSION}" version 2>/dev/null || true)
+          exists=false
+          if [[ -n ${found} ]]; then
+            exists=true
+          fi
+          echo "exists=${exists}" >> "${GITHUB_OUTPUT}"
+        env:
+          NAME: ${{needs.build.outputs.name}}
+          VERSION: ${{needs.build.outputs.version}}
+      - name: Publish to npm
+        if: steps.published.outputs.exists == 'false'
+        run: |
+          dist_tag=latest
+          if [[ ${PRERELEASE} == true ]]; then
+            dist_tag=next
+          fi
+          npm publish "tarballs/${TARBALL}" --provenance --access public --tag "${dist_tag}"
+        env:
+          TARBALL: ${{needs.build.outputs.tarball}}
+          PRERELEASE: ${{needs.build.outputs.prerelease}}
+
+  github-release:
+    name: Create the GitHub release
+    if: github.event_name == 'push'
+    needs: [build, npm]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - name: Download the packages
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: tarballs
+          path: tarballs
+      - name: Attest the package
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: tarballs/${{needs.build.outputs.tarball}}
+      - name: Create the release
+        run: |
+          flags=(--repo "${GITHUB_REPOSITORY}" --title "${NAME} ${VERSION}" --generate-notes)
+          if [[ ${PRERELEASE} == true ]]; then
+            flags+=(--prerelease)
+          fi
+          gh release create "${GITHUB_REF_NAME}" "tarballs/${TARBALL}" "${flags[@]}"
+        env:
+          GH_TOKEN: ${{github.token}}
+          NAME: ${{needs.build.outputs.name}}
+          VERSION: ${{needs.build.outputs.version}}
+          TARBALL: ${{needs.build.outputs.tarball}}
+          PRERELEASE: ${{needs.build.outputs.prerelease}}
