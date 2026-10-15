@@ -38,28 +38,28 @@ export default function quirrel(hljs: HLJSApi): Language {
 	// Interpolated code is highlighted like the rest of the file, so the
 	// contains list is filled in at the end.
 	const INTERPOLATION: Mode = {
-		className: 'template-variable',
+		scope: 'template-variable',
 		begin: /\{/,
 		end: /\}/,
 		contains: [],
 	};
 
 	const STRING: Mode = {
-		className: 'string',
+		scope: 'string',
 		begin: /"/,
 		end: /"/,
 		contains: [hljs.BACKSLASH_ESCAPE],
 	};
 
 	const VERBATIM_STRING: Mode = {
-		className: 'string',
+		scope: 'string',
 		begin: /@"/,
 		end: /"/,
 		contains: [{begin: /""/, skip: true}],
 	};
 
 	const INTERPOLATED_STRING: Mode = {
-		className: 'string',
+		scope: 'string',
 		begin: /\$"/,
 		end: /"/,
 		contains: [hljs.BACKSLASH_ESCAPE, INTERPOLATION],
@@ -67,24 +67,24 @@ export default function quirrel(hljs: HLJSApi): Language {
 
 	// The `@@` form has one quote character after `@@`, then the text.
 	const DOCSTRING: Mode = {
-		className: 'string',
+		scope: 'string',
 		begin: /@@./,
 		end: /"/,
 		contains: [{begin: /""/, skip: true}],
 	};
 
 	const CHARACTER: Mode = {
-		className: 'string',
+		scope: 'string',
 		begin: /'(?:\\[^'\n]*|[^'\\\n])'/,
 	};
 
 	const NUMBER: Mode = {
-		className: 'number',
+		scope: 'number',
 		begin: /\b(?:0[xX][0-9a-fA-F]+|\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)\b/,
 	};
 
 	const DIRECTIVE: Mode = {
-		className: 'meta',
+		scope: 'meta',
 		begin: /#pos:\d+:\S*|#[a-z][a-z-]*(?::[a-z-]+)?/,
 	};
 
@@ -92,11 +92,11 @@ export default function quirrel(hljs: HLJSApi): Language {
 	const ATTRIBUTE: Mode = {
 		begin: /\[(?=\s*(?:pure|nodiscard)\b)/,
 		end: /\]/,
-		contains: [{className: 'attr', begin: /\b(?:pure|nodiscard)\b/}],
+		contains: [{scope: 'attr', begin: /\b(?:pure|nodiscard)\b/}],
 	};
 
 	const LAMBDA: Mode = {
-		className: 'keyword',
+		scope: 'keyword',
 		begin: /@(?=\s*\()/,
 	};
 
@@ -107,7 +107,7 @@ export default function quirrel(hljs: HLJSApi): Language {
 		end: /[([{;\n]/,
 		returnEnd: true,
 		keywords: KEYWORD_OBJECT,
-		contains: [{className: 'title function_', begin: NAME_START}],
+		contains: [{scope: 'title.function', begin: NAME_START}],
 	};
 
 	const TYPE_DEFINITION: Mode = {
@@ -115,42 +115,42 @@ export default function quirrel(hljs: HLJSApi): Language {
 		end: /[{\n]/,
 		returnEnd: true,
 		keywords: KEYWORD_OBJECT,
-		contains: [{className: 'type', begin: NAME_START}],
+		contains: [{scope: 'type', begin: NAME_START}],
 	};
 
 	const CONSTRUCTOR: Mode = {
-		className: 'title function_',
+		scope: 'title.function',
 		begin: /\bconstructor\b/,
 	};
 
 	const THIS_OR_BASE: Mode = {
-		className: 'variable language_',
+		scope: 'variable.language',
 		begin: /\b(?:this|base)\b/,
 	};
 
 	// The dot, `?.` or the name after it is not colored, only the name.
 	const METHOD_CALL: Mode = {
-		className: 'title function_',
+		scope: 'title.function',
 		begin: /(?:\?\.|\.)(?=[A-Za-z_]\w*\s*\()/,
 		end: /(?!\w)/,
 		excludeBegin: true,
 	};
 
 	const FIELD: Mode = {
-		className: 'property',
+		scope: 'property',
 		begin: /(?:\?\.|\.)(?=[A-Za-z_])/,
 		end: /(?!\w)/,
 		excludeBegin: true,
 	};
 
 	const CALL: Mode = {
-		className: 'title function_',
+		scope: 'title.function',
 		begin: new RegExp(`${NAME_START}(?=\\s*\\()`),
 	};
 
 	// Quirrel writes constants in all capitals, such as `MAX_COUNT`.
 	const CONSTANT: Mode = {
-		className: 'literal',
+		scope: 'literal',
 		begin: /\b[A-Z][A-Z0-9_]*\b/,
 	};
 

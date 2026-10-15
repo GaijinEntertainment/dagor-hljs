@@ -49,32 +49,32 @@ export default function daslang(hljs: HLJSApi): Language {
 	// Strings and interpolated code are reached through INTERPOLATION, so the
 	// contains list is filled in at the end.
 	const INTERPOLATION: Mode = {
-		className: 'template-variable',
+		scope: 'template-variable',
 		begin: /\{/,
 		end: /\}/,
 		contains: [],
 	};
 
 	const STRING: Mode = {
-		className: 'string',
+		scope: 'string',
 		begin: /"/,
 		end: /"/,
 		contains: [hljs.BACKSLASH_ESCAPE, INTERPOLATION],
 	};
 
 	const CHARACTER: Mode = {
-		className: 'string',
+		scope: 'string',
 		begin: /'(?:\\['btnfr\\]|[^'\\\n])'[uU]?8?/,
 	};
 
 	const NUMBER: Mode = {
-		className: 'number',
+		scope: 'number',
 		begin: /\b(?:0[xX][0-9a-fA-F_]+|\d[\d_]*(?:\.\d[\d_]*)?(?:[eE][+-]?\d+)?)(?:[uUlLfFhHdD]+8?)?\b/,
 	};
 
 	// The macro body runs up to `%%`, and it may hold a single `%`.
 	const READER_MACRO: Mode = {
-		className: 'meta',
+		scope: 'meta',
 		begin: /%[_a-zA-Z]\w*[~!]/,
 		end: /%%/,
 	};
@@ -86,24 +86,24 @@ export default function daslang(hljs: HLJSApi): Language {
 	};
 
 	const BLOCK_COMMENT: Mode = {
-		className: 'comment',
+		scope: 'comment',
 		begin: /\/\*/,
 		end: /\*\//,
 		contains: ['self'],
 	};
 
 	const LINE_DIRECTIVE: Mode = {
-		className: 'meta',
+		scope: 'meta',
 		begin: /#\d+,\d+,"[^"]+"#/,
 	};
 
 	const MACRO_VARIABLE: Mode = {
-		className: 'meta',
+		scope: 'meta',
 		begin: /\$[eivbatcf]\b|@@?[_a-zA-Z]\w*/,
 	};
 
 	const NEGATED_KEYWORD: Mode = {
-		className: 'keyword',
+		scope: 'keyword',
 		begin: /!\?as\b|!as\b|!is\b/,
 	};
 
@@ -114,7 +114,7 @@ export default function daslang(hljs: HLJSApi): Language {
 		end: /[:(={;\n]/,
 		excludeEnd: true,
 		keywords: KEYWORD_OBJECT,
-		contains: [{className: 'title function_', begin: NAME_START}],
+		contains: [{scope: 'title.function', begin: NAME_START}],
 	};
 
 	const TYPE_DEFINITION: Mode = {
@@ -122,42 +122,42 @@ export default function daslang(hljs: HLJSApi): Language {
 		end: /[:={\n]/,
 		excludeEnd: true,
 		keywords: KEYWORD_OBJECT,
-		contains: [{className: 'type', begin: NAME_START}],
+		contains: [{scope: 'type', begin: NAME_START}],
 	};
 
 	const CALL: Mode = {
-		className: 'title function_',
+		scope: 'title.function',
 		begin: new RegExp(`${NAME_START}(?=\\s*\\()`),
 	};
 
 	// The dot, arrow or `?.` is not colored, only the name after it.
 	const METHOD_CALL: Mode = {
-		className: 'title function_',
+		scope: 'title.function',
 		begin: /(?:->|[?!]?\.)(?=[_a-zA-Z]\w*\s*\()/,
 		end: /(?!\w)/,
 		excludeBegin: true,
 	};
 
 	const FIELD: Mode = {
-		className: 'property',
+		scope: 'property',
 		begin: /(?:->|[?!]?\.)(?=[_a-zA-Z])/,
 		end: /(?!\w)/,
 		excludeBegin: true,
 	};
 
 	const NAMESPACE: Mode = {
-		className: 'title',
+		scope: 'title',
 		begin: /[_a-zA-Z]\w*(?=::)/,
 	};
 
 	// Daslang writes constants in all capitals, such as `SCALE`.
 	const CONSTANT: Mode = {
-		className: 'literal',
+		scope: 'literal',
 		begin: /\b[A-Z][A-Z0-9_]*\b/,
 	};
 
 	const SELF: Mode = {
-		className: 'variable language_',
+		scope: 'variable.language',
 		begin: /\bself\b/,
 	};
 

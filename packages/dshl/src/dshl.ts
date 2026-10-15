@@ -128,44 +128,44 @@ export default function dshl(hljs: HLJSApi): Language {
 
 	// `~` escapes the next character, so `~"` does not end the string.
 	const STRING: Mode = {
-		className: 'string',
+		scope: 'string',
 		begin: /"/,
 		end: /"/,
 		contains: [{begin: /~./, relevance: 0}],
 	};
 
 	const NUMBER: Mode = {
-		className: 'number',
+		scope: 'number',
 		begin: /\b(?:0[xX][0-9a-fA-F]+|\d[0-9a-fA-F]*[hH]|(?:\d+\.\d*|\.\d+|\d+)(?:[eE][+-]?\d+)?)[uUlLfFhH]*\b/,
 	};
 
 	// `name@type` binds a shader variable to a resource type, such as `@tex2d`.
 	const BINDING_TYPE: Mode = {
-		className: 'built_in',
+		scope: 'built_in',
 		begin: /@[A-Za-z_]\w*/,
 	};
 
 	// Used by the DSHL layer and by the HLSL body, which both allow `##` and `#rb`.
 	const MACRO_TOKEN: Mode = {
-		className: 'meta',
+		scope: 'meta',
 		begin: /##|#rb\b/,
 	};
 
 	// A line in an HLSL body that starts with `#` is a preprocessor line.
 	const HLSL_PREPROCESSOR: Mode = {
-		className: 'meta',
+		scope: 'meta',
 		begin: /^\s*#/,
 		end: /$/,
 	};
 
 	const HLSL_SEMANTIC: Mode = {
-		className: 'attr',
+		scope: 'attr',
 		begin:
 			/\b(?:SV_(?:IsFrontFace|InstanceID|Depth|Position|Target)|COLOR|NORMAL|POSITION)[0-1]\b|\bTEXCOORD(?:1[0-5]|\d)\b/,
 	};
 
 	const HLSL_TYPE_VECTOR: Mode = {
-		className: 'type',
+		scope: 'type',
 		begin: /\b(?:bool|int|uint|fixed|half|float|double)[1-4](?:x[1-4])?\b/,
 	};
 
@@ -208,11 +208,7 @@ export default function dshl(hljs: HLJSApi): Language {
 	const HLSL_BLOCK: Mode = {
 		begin: /(?=\bhlsl\b\s*(?:\(\s*[A-Za-z_]\w*\s*\)\s*)?\{)/,
 		end: /(?!)/,
-		contains: [
-			{className: 'keyword', begin: /\bhlsl\b/},
-			{className: 'built_in', begin: /\(\s*[A-Za-z_]\w*\s*\)/},
-			HLSL_BODY,
-		],
+		contains: [{scope: 'keyword', begin: /\bhlsl\b/}, {scope: 'built_in', begin: /\(\s*[A-Za-z_]\w*\s*\)/}, HLSL_BODY],
 	};
 
 	// A stage block such as `(ps) { ... }`. Its braces can hold `@f44 = { ... }`.
@@ -239,7 +235,7 @@ export default function dshl(hljs: HLJSApi): Language {
 	const STAGE_BLOCK: Mode = {
 		begin: /(?=^\s*\(\s*(?:[acdeghlmpv]s|[A-Za-z_]\w{2,})\s*\)\s*\{)/,
 		end: /(?!)/,
-		contains: [{className: 'built_in', begin: /\(\s*[A-Za-z_]\w*\s*\)/}, STAGE_BODY],
+		contains: [{scope: 'built_in', begin: /\(\s*[A-Za-z_]\w*\s*\)/}, STAGE_BODY],
 	};
 
 	return {
