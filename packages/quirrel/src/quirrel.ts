@@ -16,20 +16,25 @@ const KEYWORDS = [
 	'typeof instanceof in not delete clone',
 ].join(' ');
 
-const BUILT_IN_TYPES = [
-	'bool number int float string table array userdata generator',
-	'userpointer thread instance weakref any',
+const TYPE_NAMES = [
+	'bool number int float string table array userdata function generator',
+	'userpointer thread instance class weakref null any',
 ].join(' ');
 
 const LITERALS = 'null true false __LINE__ __FILE__';
 
-const RESERVED_WORDS = [KEYWORDS, BUILT_IN_TYPES, LITERALS].join(' ').split(' ');
+const RESERVED_WORDS = [KEYWORDS, LITERALS].join(' ').split(' ');
 
 export default function quirrel(hljs: HLJSApi): Language {
 	const KEYWORD_OBJECT = {
 		keyword: KEYWORDS,
-		built_in: BUILT_IN_TYPES,
 		literal: LITERALS,
+	};
+
+	const TYPE = `(?:${TYPE_NAMES.split(' ').join('|')})`;
+	const TYPE_ANNOTATION: Mode = {
+		scope: 'built_in',
+		match: new RegExp(`(?<=(?<!:):\\s*\\(?\\s*(?:${TYPE}\\s*\\|\\s*)*)${TYPE}\\b`),
 	};
 
 	// Matches a whole name that is not a reserved word, so `if (` is not a call.
@@ -163,6 +168,7 @@ export default function quirrel(hljs: HLJSApi): Language {
 		INTERPOLATED_STRING,
 		STRING,
 		CHARACTER,
+		TYPE_ANNOTATION,
 		NUMBER,
 		DIRECTIVE,
 		ATTRIBUTE,
