@@ -1,0 +1,8 @@
+<span class="hljs-title">&quot;quoted block&quot;</span>{}
+<span class="hljs-built_in">&quot;_quoted&quot;</span>{}
+<span class="hljs-built_in">&quot;&quot;&quot;_triple&quot;&quot;&quot;</span>{}
+<span class="hljs-built_in">&quot;~_escaped&quot;</span>{}
+<span class="hljs-property">&#x27;quoted name&#x27;</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">&quot;x&quot;</span>
+<span class="hljs-variable language_">&#x27;_q&#x27;</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">x</span>
+<span class="hljs-variable language_">&quot;_simple&quot;</span> = <span class="hljs-string">y</span>
+<span class="hljs-meta">&quot;@delete:vsync&quot;</span>:<span class="hljs-built_in">b</span>=<span class="hljs-literal">no</span>

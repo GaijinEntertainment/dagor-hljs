@@ -1,0 +1,8 @@
+"quoted block"{}
+"_quoted"{}
+"""_triple"""{}
+"~_escaped"{}
+'quoted name':t="x"
+'_q':t=x
+"_simple" = y
+"@delete:vsync":b=no
