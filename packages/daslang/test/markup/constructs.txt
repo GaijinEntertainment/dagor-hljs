@@ -1,3 +1,8 @@
+options gen2
+
+require daslib/stringify
+require math
+
 // A line comment
 /* A block comment /* nests */ here */
 include ../common/defs.das
@@ -7,16 +12,33 @@ let MAX_COUNT = 0x1F_u
 let ratio = 1.5e3f
 let small = 12u8
 let letter = 'a'
-let message = "tab\t{letter} and {MAX_COUNT + 1}"
+let message = "tab\t{letter} and {MAX_COUNT + 1u}"
 
-def Inventory::count(self : Inventory) : int {
-    let total = self.items?.length()
-    item->name = "sword"
-    if (value is Weapon && value !is Shield) {
-        let weapon = value ?as Weapon
-        let other = value !?as Weapon
+struct Item {
+    name : string
+}
+
+variant Gear {
+    weapon : Item
+    shield : Item
+}
+
+class Inventory {
+    items : array<Item>
+    def count : int {
+        return length(self.items)
     }
-    let expr = $e(total + 1)
+}
+
+def count_items(var inventory : Inventory?; gear : Gear) : int {
+    let total = inventory != null ? inventory->count() : 0
+    let first = inventory?.items?[0]?.name ?? ""
+    if (gear is weapon && gear !is shield) {
+        unsafe {
+            let weapon = gear ?as weapon
+            let other = gear !?as weapon
+        }
+    }
     let helper = @@count_items
     let text = %stringify~ raw text with a single % inside %%
     return math::max(total, 0)
