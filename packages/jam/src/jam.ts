@@ -47,6 +47,11 @@ const STATEMENT_START = '(?<=^[ \\t]*|(?:^|\\s)(?:[;{}]|else)\\s+|(?:^|\\s)case\
 
 const ASSIGNMENT_AHEAD = '(?=\\s+(?:(?:\\?=|\\+=|=)(?:\\s|$)|on(?:\\s|$)|default\\s+=(?:\\s|$)))';
 
+const BUILTIN_RULE = `(?:${BUILTIN_RULES.split(' ').join('|')})`;
+
+const STATEMENT_END = /(?<!\S);(?!\S)/;
+const BEFORE_BLOCK = /(?=(?<!\S)\{(?!\S))/;
+
 function words(list: string): RegExp {
 	return new RegExp(`\\b(?:${list.split(' ').join('|')})\\b`);
 }
@@ -54,7 +59,7 @@ function words(list: string): RegExp {
 export default function jam(_hljs: HLJSApi): Language {
 	const KEYWORD_OBJECT = {
 		$pattern: /\S+/,
-		keyword: `${KEYWORDS} ${BUILTIN_RULES}`,
+		keyword: KEYWORDS,
 	};
 
 	const ACTION_OBJECT = {
@@ -153,60 +158,91 @@ export default function jam(_hljs: HLJSApi): Language {
 		],
 	};
 
+	// `[ RuleName args ]`.
+	const BRACKET_ARGUMENTS: Mode = {
+		end: /(?=(?<!\S)\](?!\S))/,
+		contains: [],
+	};
+
+	const BRACKET_CALL: Mode = {
+		begin: /(?<!\S)\[(?!\S)/,
+		end: /(?<!\S)\](?!\S)/,
+		contains: [
+			{scope: 'keyword', begin: new RegExp(`${BUILTIN_RULE}(?!\\S)`), starts: BRACKET_ARGUMENTS},
+			{scope: 'keyword', begin: /on(?!\S)/},
+			{scope: 'title.function', begin: new RegExp(`${NOT_RESERVED}${NAME}(?!\\S)`), starts: BRACKET_ARGUMENTS},
+			STRING,
+			VARIABLE,
+		],
+	};
+
+	const ARGUMENT_CONTENTS: Mode[] = [COMMENT, ESCAPE, STRING, BRACKET_CALL, VARIABLE];
+	BRACKET_ARGUMENTS.contains = ARGUMENT_CONTENTS;
+
+	const ARGUMENTS: Mode = {
+		end: STATEMENT_END,
+		contains: ARGUMENT_CONTENTS,
+	};
+
+	const BLOCK_LIST: Mode = {
+		end: BEFORE_BLOCK,
+		contains: ARGUMENT_CONTENTS,
+	};
+
 	// `local` and the loop variable of `for` name variables.
 	const LOCAL_DEFINITION: Mode = {
-		begin: /(?=^[ \t]*local\b)/,
-		end: /(?=[=;])|$/,
+		begin: new RegExp(`${STATEMENT_START}local(?=\\s|$)`),
+		beginScope: 'keyword',
+		end: STATEMENT_END,
 		contains: [
-			{scope: 'keyword', begin: /\blocal\b/},
-			{scope: 'variable', begin: new RegExp(NAME)},
+			{begin: /(?<!\S)=(?!\S)/, end: /(?=(?<!\S);(?!\S))/, contains: ARGUMENT_CONTENTS},
+			COMMENT,
+			VARIABLE,
+			{scope: 'variable', begin: new RegExp(`(?<!\\S)${NAME}(?!\\S)`)},
 		],
 	};
 
 	const FOR_DEFINITION: Mode = {
-		begin: /(?=^[ \t]*for\b)/,
-		end: /(?=\s+in\b)|$/,
-		contains: [
-			{scope: 'keyword', begin: /\bfor\b/},
-			{scope: 'variable', begin: new RegExp(NAME)},
-		],
+		match: [new RegExp(`${STATEMENT_START}for`), /\s+/, new RegExp(NAME), /\s+/, /in(?=\s|$)/],
+		scope: {1: 'keyword', 3: 'variable', 5: 'keyword'},
+		starts: BLOCK_LIST,
+	};
+
+	const SWITCH: Mode = {
+		scope: 'keyword',
+		begin: new RegExp(`${STATEMENT_START}switch(?=\\s|$)`),
+		starts: BLOCK_LIST,
+	};
+
+	const LIST_STATEMENT: Mode = {
+		scope: 'keyword',
+		begin: new RegExp(`${STATEMENT_START}(?:include|return|break|continue)(?=\\s|$)`),
+		starts: ARGUMENTS,
 	};
 
 	// An assignment to a Jam variable, such as `SEARCH = ...`.
-	const ASSIGN_BUILT_IN: Mode = {
-		scope: 'built_in',
-		begin: new RegExp(`${STATEMENT_START}(?:${JAM_VARIABLES.split(' ').join('|')})${ASSIGNMENT_AHEAD}`),
+	function assignment(name: string, scope: string): Mode[] {
+		return [
+			{
+				match: [new RegExp(`${STATEMENT_START}${name}`), /\s+/, /on(?=\s|$)|default(?=\s+=(?:\s|$))/],
+				scope: {1: scope, 3: 'keyword'},
+				starts: ARGUMENTS,
+			},
+			{scope, begin: new RegExp(`${STATEMENT_START}${name}${ASSIGNMENT_AHEAD}`), starts: ARGUMENTS},
+		];
+	}
+
+	// A statement that starts with a rule name calls that rule.
+	const BUILTIN_CALL: Mode = {
+		scope: 'keyword',
+		begin: new RegExp(`${STATEMENT_START}${BUILTIN_RULE}(?=\\s|$)(?!${ASSIGNMENT_AHEAD})`),
+		starts: ARGUMENTS,
 	};
 
-	const ASSIGN_USER: Mode = {
-		scope: 'variable',
-		begin: new RegExp(`${STATEMENT_START}${NAME}${ASSIGNMENT_AHEAD}`),
-	};
-
-	// `[ RuleName args ]`. A built-in rule is a keyword, so the bracket
-	// mode below handles it instead.
-	const BRACKET_ARGUMENTS: Mode = {
-		end: /(?=\])|$/,
-		contains: [STRING, VARIABLE],
-	};
-
-	const BRACKET_RULE: Mode = {
-		begin: new RegExp(`\\[[ \\t]*(?=${NOT_RESERVED}${NAME})`),
-		end: /\]|$/,
-		contains: [{scope: 'title.function', begin: new RegExp(NAME), starts: BRACKET_ARGUMENTS}],
-	};
-
-	const BRACKET_BUILT_IN: Mode = {
-		begin: /\[/,
-		end: /\]|$/,
-		keywords: KEYWORD_OBJECT,
-		contains: [STRING, VARIABLE],
-	};
-
-	// A statement that starts with a user rule name calls that rule.
 	const STATEMENT_CALL: Mode = {
 		scope: 'title.function',
 		begin: new RegExp(`${STATEMENT_START}${NOT_RESERVED}${NAME}(?=\\s|$)(?!${ASSIGNMENT_AHEAD})`),
+		starts: ARGUMENTS,
 	};
 
 	return {
@@ -221,10 +257,12 @@ export default function jam(_hljs: HLJSApi): Language {
 			RULE_DEFINITION,
 			LOCAL_DEFINITION,
 			FOR_DEFINITION,
-			ASSIGN_BUILT_IN,
-			ASSIGN_USER,
-			BRACKET_RULE,
-			BRACKET_BUILT_IN,
+			SWITCH,
+			LIST_STATEMENT,
+			...assignment(`(?:${JAM_VARIABLES.split(' ').join('|')})`, 'built_in'),
+			...assignment(NAME, 'variable'),
+			BRACKET_CALL,
+			BUILTIN_CALL,
 			STATEMENT_CALL,
 			VARIABLE,
 		],
