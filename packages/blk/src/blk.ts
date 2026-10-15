@@ -93,7 +93,7 @@ export default function blk(hljs: HLJSApi): Language {
 
 	// The type after `name:`, such as `r` in `range:r=70`.
 	const TYPE: Mode = {
-		begin: /:/,
+		begin: /:[ \t]*/,
 		end: /(?=\[|=|;|\s|\n|$)/,
 		contains: [
 			{
