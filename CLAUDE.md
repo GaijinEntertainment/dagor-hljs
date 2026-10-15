@@ -13,7 +13,11 @@ an npm package of its own. The repository is public.
 
 ## Rules
 
-- The header comment of each grammar names the source that the grammar follows. Settle a token question in that source.
+- Lexical rules (numbers, strings and escapes, comments, keywords) follow the compiler or engine of the language: the
+  lexer of GaijinEntertainment/daScript, the compiler of GaijinEntertainment/quirrel, the BLK parser and the shader
+  compiler of GaijinEntertainment/DagorEngine, and GaijinEntertainment/jam-G8. Token classes follow the source that
+  the header comment of each grammar names, a tree-sitter highlights query or a Colorer definition.
+- Every fixture input is code that the compiler of its language accepts.
 - A grammar package also changes the language table of `README.md`.
 - Give a token only a class from `CLASS_SAFELIST` in Gerrit's
   `polygerrit-ui/app/embed/diff/gr-syntax-layer/gr-syntax-layer-worker.ts`. The Gerrit diff view shows no other class.
