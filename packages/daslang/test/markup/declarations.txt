@@ -1,0 +1,11 @@
+options gen2
+
+require daslib/linq
+
+typedef distinct Meters = float
+
+[export]
+def main() {
+    let unique <- distinct([1, 2, 2, 3])
+    print("{unique}\n")
+}
