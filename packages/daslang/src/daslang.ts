@@ -109,7 +109,7 @@ export default function daslang(hljs: HLJSApi): Language {
 
 	const MACRO_VARIABLE: Mode = {
 		scope: 'meta',
-		begin: /\$[eivbatcf]\b|@@?[_a-zA-Z]\w*/,
+		begin: /\$[eivbatcf]\b|(?<!@)@[_a-zA-Z]\w*/,
 	};
 
 	const NEGATED_KEYWORD: Mode = {
@@ -171,6 +171,12 @@ export default function daslang(hljs: HLJSApi): Language {
 		begin: /[_a-zA-Z]\w*(?=::)/,
 	};
 
+	const FUNCTION_ADDRESS: Mode = {
+		begin: /@@(?=[_a-zA-Z])/,
+		end: /(?![\w:])/,
+		contains: [NAMESPACE, {scope: 'title.function', begin: /[_a-zA-Z]\w*/}],
+	};
+
 	// Daslang writes constants in all capitals, such as `SCALE`.
 	const CONSTANT: Mode = {
 		scope: 'literal',
@@ -191,6 +197,7 @@ export default function daslang(hljs: HLJSApi): Language {
 		CHARACTER,
 		READER_MACRO,
 		BLOCK_MARKER,
+		FUNCTION_ADDRESS,
 		MACRO_VARIABLE,
 		NEGATED_KEYWORD,
 		NUMBER,

@@ -39,7 +39,7 @@
             <span class="hljs-keyword">let</span> other = gear <span class="hljs-keyword">!?as</span> weapon
         }
     }
-    <span class="hljs-keyword">let</span> helper = <span class="hljs-meta">@@count_items</span>
+    <span class="hljs-keyword">let</span> helper = @@<span class="hljs-title function_">count_items</span>
     <span class="hljs-keyword">let</span> text = <span class="hljs-meta">%stringify~ raw text with a single % inside %%</span>
     <span class="hljs-keyword">return</span> <span class="hljs-title">math</span>::<span class="hljs-title function_">max</span>(total, <span class="hljs-number">0</span>)
 }
