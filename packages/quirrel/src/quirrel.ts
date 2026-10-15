@@ -126,6 +126,22 @@ export default function quirrel(hljs: HLJSApi): Language {
 		match: /(?<=\bclass(?:\s+[A-Za-z_]\w*)?\s*\(\s*)[A-Za-z_]\w*(?=\s*\))/,
 	};
 
+	const ENUM_BODY: Mode = {
+		begin: /(?<=\benum\s+[A-Za-z_]\w*\s*)\{/,
+		end: /\}/,
+		contains: [
+			hljs.C_LINE_COMMENT_MODE,
+			hljs.C_BLOCK_COMMENT_MODE,
+			{
+				begin: /=/,
+				end: /(?=[,}\n]|\/[/*])/,
+				keywords: {literal: 'true false null'},
+				contains: [VERBATIM_STRING, STRING, CHARACTER, NUMBER],
+			},
+			{scope: 'literal', match: /[A-Za-z_]\w*/},
+		],
+	};
+
 	const CATCH_CLASS: Mode = {
 		scope: 'type',
 		match: /(?<=\bcatch\s*\(\s*)[A-Za-z_]\w*(?=\s+[A-Za-z_]\w*\s*\))/,
@@ -183,6 +199,7 @@ export default function quirrel(hljs: HLJSApi): Language {
 		FUNCTION_DEFINITION,
 		TYPE_DEFINITION,
 		CLASS_BASE,
+		ENUM_BODY,
 		CATCH_CLASS,
 		CONSTRUCTOR,
 		THIS_OR_BASE,

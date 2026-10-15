@@ -1,0 +1,11 @@
+enum State {
+  idle, busy = 2
+  failed = -1 // the last state
+  /* reserved */
+  label = "text", ratio = 0.5, mark = 'c', enabled = true
+}
+
+global enum Speed {
+  FAST
+  SLOW = 0x10
+}
