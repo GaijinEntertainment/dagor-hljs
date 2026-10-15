@@ -9,7 +9,13 @@
 
 import type {HLJSApi, Language, Mode} from 'highlight.js';
 
-const TYPE_WORDS = ['i64', 'ip2', 'ip3', 'ip4', 'p2', 'p3', 'p4', 't', 'i', 'b', 'c', 'r', 'm'];
+const TEXT_TYPES = ['t'];
+
+const BOOLEAN_TYPES = ['b'];
+
+const NUMBER_TYPES = ['i64', 'ip2', 'ip3', 'ip4', 'p2', 'p3', 'p4', 'i', 'c', 'r', 'm'];
+
+const TYPE_WORDS = [...NUMBER_TYPES, ...TEXT_TYPES, ...BOOLEAN_TYPES];
 
 const BOOLEAN_WORDS = ['yes', 'no', 'true', 'false', 'on', 'off'];
 
@@ -23,6 +29,18 @@ function words(list: readonly string[]): RegExp {
 	return new RegExp(`\\b(?:${list.join('|')})\\b`);
 }
 
+function typeName(types: readonly string[]): string {
+	return `${QUOTE}?~?(?:${types.join('|')})${QUOTE}?`;
+}
+
+function unquotedValue(stops: string): string {
+	const slash = '\\/(?![/*])';
+	const first = `(?:[^\\s;}/"'${stops}]|${slash})`;
+	const inner = `(?:[^;}\\r\\n/${stops}]|${slash})`;
+	const last = `(?:[^\\s;}/${stops}]|${slash})`;
+	return `${first}(?:${inner}*${last})?`;
+}
+
 export default function blk(hljs: HLJSApi): Language {
 	const STRING: Mode = {
 		scope: 'string',
@@ -33,23 +51,6 @@ export default function blk(hljs: HLJSApi): Language {
 			{begin: /"/, end: /"|(?=\n)/},
 			{begin: /'/, end: /'|(?=\n)/},
 		],
-	};
-
-	const NUMBER: Mode = {
-		scope: 'number',
-		begin: /-?\d+(?:\.\d+)?(?![\w%.])/,
-	};
-
-	const BOOLEAN: Mode = {
-		scope: 'literal',
-		begin: words(BOOLEAN_WORDS),
-	};
-
-	// Matches the rest of an unquoted value, so `lod01.dag` and `50%pw` are
-	// one token and NUMBER does not match their first digits.
-	const RAW_VALUE: Mode = {
-		scope: 'string',
-		begin: /(?:[^\s;,[\]"{}/]|\/(?![/*]))+/,
 	};
 
 	const BLOCK_COMMENT: Mode = {
@@ -65,32 +66,30 @@ export default function blk(hljs: HLJSApi): Language {
 		end: /\*\//,
 	};
 
-	// The value of `name = value`. It ends at `;`, the end of the line, `}` or
-	// a line comment. Arrays can span lines, so ARRAY is a nested mode.
-	const VALUE: Mode = {
-		begin: /=/,
+	const value = (equals: RegExp, scope: string): Mode => ({
+		begin: equals,
 		end: /(?=;|\n|\}|\s*\/\/)/,
+		contains: [COMMENT_AFTER_UNQUOTED, BLOCK_COMMENT, STRING, {scope, begin: new RegExp(unquotedValue(''))}],
+	});
+
+	const typedEquals = (types: readonly string[]): RegExp => new RegExp(`(?<=:[ \\t]*${typeName(types)}[ \\t]*)=`);
+
+	const ELEMENT = unquotedValue('\\]');
+
+	const ARRAY: Mode = {
+		begin: /(?<=\[\][ \t]*=\s*)\[/,
+		end: /\]/,
 		contains: [
-			{
-				begin: /\[/,
-				end: /\]/,
-				contains: [
-					'self',
-					hljs.C_LINE_COMMENT_MODE,
-					COMMENT_AFTER_UNQUOTED,
-					BLOCK_COMMENT,
-					STRING,
-					NUMBER,
-					BOOLEAN,
-					RAW_VALUE,
-				],
-			},
+			hljs.C_LINE_COMMENT_MODE,
 			COMMENT_AFTER_UNQUOTED,
 			BLOCK_COMMENT,
 			STRING,
-			NUMBER,
-			BOOLEAN,
-			RAW_VALUE,
+			{
+				scope: 'literal',
+				begin: new RegExp(`(?:${BOOLEAN_WORDS.join('|')})(?=[ \\t]*(?:[;}\\]\\r\\n]|\\/[/*]|$))`),
+			},
+			{scope: 'number', begin: new RegExp(`(?=[-+.0-9])${ELEMENT}`)},
+			{scope: 'string', begin: new RegExp(ELEMENT)},
 		],
 	};
 
@@ -124,7 +123,11 @@ export default function blk(hljs: HLJSApi): Language {
 			{scope: 'variable.language', begin: new RegExp(`_${NAME}(?=\\s*[:=])`)},
 			{scope: 'property', begin: new RegExp(`(?!_)${NAME}(?=\\s*[:=])`)},
 			TYPE,
-			VALUE,
+			ARRAY,
+			value(typedEquals(TEXT_TYPES), 'string'),
+			value(typedEquals(BOOLEAN_TYPES), 'literal'),
+			value(typedEquals(NUMBER_TYPES), 'number'),
+			value(/(?<!\[\][ \t]*)=/, 'string'),
 			STRING,
 		],
 	};

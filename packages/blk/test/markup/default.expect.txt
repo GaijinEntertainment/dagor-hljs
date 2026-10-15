@@ -8,9 +8,9 @@
 
 <span class="hljs-title">material</span>{
   <span class="hljs-property">name</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">&quot;metal&quot;</span>; <span class="hljs-property">shader</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">rendinst_simple</span>
-  <span class="hljs-property">diffuse</span>:<span class="hljs-built_in">c</span>=<span class="hljs-number">255</span>, <span class="hljs-number">255</span>, <span class="hljs-number">255</span>, <span class="hljs-number">255</span>
-  <span class="hljs-property">scale</span>:<span class="hljs-built_in">p2</span>=<span class="hljs-number">1.0</span>, <span class="hljs-number">1.0</span>
-  <span class="hljs-property">tm</span>:<span class="hljs-built_in">m</span>=[[<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>] [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>] [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>] [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]]
+  <span class="hljs-property">diffuse</span>:<span class="hljs-built_in">c</span>=<span class="hljs-number">255, 255, 255, 255</span>
+  <span class="hljs-property">scale</span>:<span class="hljs-built_in">p2</span>=<span class="hljs-number">1.0, 1.0</span>
+  <span class="hljs-property">tm</span>:<span class="hljs-built_in">m</span>=<span class="hljs-number">[[1, 0, 0] [0, 1, 0] [0, 0, 1] [0, 0, 0]]</span>
   <span class="hljs-property">enabled</span>:<span class="hljs-built_in">b</span>=<span class="hljs-literal">yes</span>
   <span class="hljs-comment">/* block comments <span class="hljs-comment">/* nest */</span> here */</span>
 }
@@ -20,7 +20,7 @@
 }
 
 <span class="hljs-property">tags</span>:<span class="hljs-built_in">t</span>[]=[<span class="hljs-string">&quot;alpha&quot;</span>; <span class="hljs-string">&quot;beta&quot;</span>; <span class="hljs-string">gamma</span>;]
-<span class="hljs-property">sizes</span>:<span class="hljs-built_in">ip2</span>[]=[<span class="hljs-number">32</span>, <span class="hljs-number">64</span>; <span class="hljs-number">128</span>, <span class="hljs-number">256</span>;]
+<span class="hljs-property">sizes</span>:<span class="hljs-built_in">ip2</span>[]=[<span class="hljs-number">32, 64</span>; <span class="hljs-number">128, 256</span>;]
 <span class="hljs-property">description</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">&quot;&quot;&quot;
 A triple-quoted string keeps its line ends and ~&quot;escapes~&quot;.
 &quot;&quot;&quot;</span>
