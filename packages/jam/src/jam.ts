@@ -20,12 +20,15 @@ const BUILTIN_RULES = [
 	'Always ALWAYS Depends DEPENDS echo Echo ECHO exit Exit EXIT Glob GLOB',
 	'Includes INCLUDES Leaves LEAVES Match MATCH NoCare NOCARE NOTIME NotFile',
 	'NOTFILE NoUpdate NOUPDATE Temporary TEMPORARY',
+	'SplitStringsOnSpace AddEscapesToMakeJamValidForWrite SimplifyComposedPath MakePathAbsolute',
+	'MakePathListAbsolute DepRulePlain DepRuleDotDot',
 ].join(' ');
 
 // Variables that Jam sets itself. They are shown as built-in names.
 const JAM_VARIABLES = [
 	'OS OSPLAT MAC NT OS2 UNIX VMS JAMDATE JAMUNAME JAMVERSION JAMSHELL',
 	'HDRSCAN HDRRULE SEARCH LOCATE SPLITPATH HDRPATTERN',
+	'JAM_CWD JAMTARGETS JAMFILESRC JAM_BUILTINS HDRFS',
 ].join(' ');
 
 // Commands at the start of an action line.

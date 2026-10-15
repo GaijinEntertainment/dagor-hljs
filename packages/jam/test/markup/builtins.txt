@@ -1,0 +1,5 @@
+Parts = [ SplitStringsOnSpace $(line) ] ;
+Echo $(JAM_CWD) $(JAMTARGETS) $(JAMFILESRC) ;
+if ! SimplifyComposedPath in $(JAM_BUILTINS) { Echo missing ; }
+HDRFS = 1 ;
+DepRulePlain target : source ;
