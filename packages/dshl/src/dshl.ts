@@ -136,7 +136,8 @@ export default function dshl(hljs: HLJSApi): Language {
 
 	const NUMBER: Mode = {
 		scope: 'number',
-		begin: /\b(?:0[xX][0-9a-fA-F]+|\d[0-9a-fA-F]*[hH]|(?:\d+\.\d*|\.\d+|\d+)(?:[eE][+-]?\d+)?)[uUlLfFhH]*\b/,
+		begin:
+			/(?<![\w.])(?:0[xX][0-9a-fA-F]+|\d[0-9a-fA-F]*[hH]|(?:\d+\.\d*|\.\d+|\d+)(?:[eE][+-]?\d+)?)[uUlLfFhH]*(?!\w)/,
 	};
 
 	// `name@type` binds a shader variable to a resource type, such as `@tex2d`.
