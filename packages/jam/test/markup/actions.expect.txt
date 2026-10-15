@@ -10,4 +10,5 @@
   <span class="hljs-keyword">rem</span><span class="hljs-comment"> nothing $(1) here</span>
   <span class="hljs-keyword">REM</span><span class="hljs-comment"> an upper-case remark</span>
   <span class="hljs-keyword">del</span> $(<span class="hljs-variable">1</span>)
+  <span class="hljs-keyword">echo</span> #( plain text )# then <span class="hljs-meta">#/(</span>out\$(<span class="hljs-variable">1</span>)<span class="hljs-meta">)/#</span>
 }

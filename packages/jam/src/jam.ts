@@ -113,7 +113,7 @@ export default function jam(_hljs: HLJSApi): Language {
 		// Directives such as `#async` change how the action runs.
 		{scope: 'meta', begin: /^[ \t]*#(?:async|respfile-ln|no-respfile|respfile)\b/},
 		// The markers that flip slashes in an action line.
-		{scope: 'meta', begin: /#\/?\(|\)\/?#|#\\\(|\)\\#/},
+		{scope: 'meta', begin: /#\/\(|\)\/#|#\\\(|\)\\#/},
 		{scope: 'string', begin: /^[ \t]*:\w+/},
 		{scope: 'comment', begin: /^[ \t]*#/, end: /$/},
 		{match: [/(?<=^[ \t]*)[rR][eE][mM](?=\s|$)/, /.*/], scope: {1: 'keyword', 2: 'comment'}},
