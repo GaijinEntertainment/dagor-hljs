@@ -1,0 +1,4 @@
+actions quietly Link bind NEEDLIBS LINKFLAGS
+{
+  call $(LINK) $(LINKFLAGS) $(1)
+}

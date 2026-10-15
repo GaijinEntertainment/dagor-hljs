@@ -136,6 +136,12 @@ export default function jam(_hljs: HLJSApi): Language {
 		keywords: KEYWORD_OBJECT,
 		contains: [
 			{scope: 'keyword', begin: /\bactions\b/},
+			{
+				begin: /(?<!\S)bind(?!\S)/,
+				beginScope: 'keyword',
+				end: BEFORE_BLOCK,
+				contains: [VARIABLE, {scope: 'variable', begin: new RegExp(NAME)}],
+			},
 			{scope: 'title.function', begin: new RegExp(`${NOT_RESERVED}${NAME}(?=\\s*(?:bind\\b|\\{|$))`)},
 			ACTION_BODY,
 		],

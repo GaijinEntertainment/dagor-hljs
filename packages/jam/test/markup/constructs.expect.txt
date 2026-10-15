@@ -19,7 +19,7 @@
   <span class="hljs-keyword">local</span> <span class="hljs-variable">name</span> = [ <span class="hljs-title function_">BaseName</span> $(<span class="hljs-variable">source</span>) ] ;
 }
 
-<span class="hljs-keyword">actions</span> <span class="hljs-keyword">quietly</span> <span class="hljs-title function_">CompileShaderCmd</span> <span class="hljs-keyword">bind</span> <span class="hljs-title function_">flags</span>
+<span class="hljs-keyword">actions</span> <span class="hljs-keyword">quietly</span> <span class="hljs-title function_">CompileShaderCmd</span> <span class="hljs-keyword">bind</span> <span class="hljs-variable">flags</span>
 {
 <span class="hljs-meta">#async</span>
 <span class="hljs-string">  :retry</span>
