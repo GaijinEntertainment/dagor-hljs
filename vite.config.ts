@@ -15,8 +15,7 @@ export default defineConfig({
 	},
 	lint: {
 		extends: [javascript, typescript, vitest],
-		// index.js and its smoke test are untyped JavaScript.
-		ignorePatterns: ['**/dist/**', 'index.js', 'test/smoke.test.mjs'],
+		ignorePatterns: ['**/dist/**'],
 		options: {
 			typeAware: true,
 			typeCheck: true,
@@ -28,7 +27,7 @@ export default defineConfig({
 	},
 	test: {
 		projects: [
-			{test: {name: 'markup', include: ['test/**/*.test.mjs', 'packages/*/test/**/*.test.ts']}},
+			{test: {name: 'source', include: ['packages/*/test/**/*.test.ts']}},
 			{test: {name: 'dist', include: ['test/dist.test.ts'], globalSetup: ['test/build.ts']}},
 		],
 	},
