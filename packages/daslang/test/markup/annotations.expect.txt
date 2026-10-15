@@ -1,7 +1,7 @@
 <span class="hljs-keyword">options</span> gen2
 
 <span class="hljs-meta">[safe_when_uninitialized]</span>
-<span class="hljs-keyword">struct</span> <span class="hljs-type">Plain</span> {
+<span class="hljs-keyword">struct</span> <span class="hljs-title">Plain</span> {
     value : <span class="hljs-type">int</span>
 }
 

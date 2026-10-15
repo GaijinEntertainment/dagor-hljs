@@ -1,12 +1,12 @@
 <span class="hljs-keyword">options</span> gen2
 
-<span class="hljs-keyword">struct</span> <span class="hljs-type">Point</span> {
+<span class="hljs-keyword">struct</span> <span class="hljs-title">Point</span> {
     x : <span class="hljs-type">float</span>
     y : <span class="hljs-type">float</span>
 }
 
-<span class="hljs-keyword">class</span> <span class="hljs-type">Shape</span> {
-    origin : Point
+<span class="hljs-keyword">class</span> <span class="hljs-title">Shape</span> {
+    origin : <span class="hljs-type">Point</span>
 }
 
 <span class="hljs-meta">[export]</span>

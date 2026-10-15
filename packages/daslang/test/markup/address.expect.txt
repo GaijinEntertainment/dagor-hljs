@@ -2,7 +2,7 @@
 
 <span class="hljs-keyword">module</span> addresses
 
-<span class="hljs-keyword">struct</span> <span class="hljs-type">Tagged</span> {
+<span class="hljs-keyword">struct</span> <span class="hljs-title">Tagged</span> {
     <span class="hljs-meta">@tag</span> name : <span class="hljs-type">string</span>
 }
 
@@ -13,6 +13,6 @@
 <span class="hljs-meta">[export]</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>() {
     <span class="hljs-keyword">let</span> plain = @@<span class="hljs-title function_">helper</span>
-    <span class="hljs-keyword">let</span> qualified = @@<span class="hljs-title">addresses</span>::<span class="hljs-title function_">helper</span>
+    <span class="hljs-keyword">let</span> qualified = @@addresses::<span class="hljs-title function_">helper</span>
     <span class="hljs-title function_">print</span>(<span class="hljs-string">&quot;<span class="hljs-template-variable">{<span class="hljs-title function_">invoke</span>(plain, <span class="hljs-number">1</span>)}</span> <span class="hljs-template-variable">{<span class="hljs-title function_">invoke</span>(qualified, <span class="hljs-number">2</span>)}</span>\n&quot;</span>)
 }
