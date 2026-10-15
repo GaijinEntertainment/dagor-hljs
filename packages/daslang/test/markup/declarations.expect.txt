@@ -2,30 +2,30 @@
 
 <span class="hljs-keyword">require</span> daslib/linq
 
-<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">distinct</span> <span class="hljs-type">Meters</span> = <span class="hljs-type">float</span>
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">distinct</span> <span class="hljs-title">Meters</span> = <span class="hljs-type">float</span>
 
-<span class="hljs-keyword">class</span> <span class="hljs-type">Base</span> {
+<span class="hljs-keyword">class</span> <span class="hljs-title">Base</span> {
     id : <span class="hljs-type">int</span>
 }
 
-<span class="hljs-keyword">class</span> <span class="hljs-type">Shape</span> : <span class="hljs-type">Base</span> {
+<span class="hljs-keyword">class</span> <span class="hljs-title">Shape</span> : <span class="hljs-type">Base</span> {
     area : <span class="hljs-type">float</span>
 }
 
-<span class="hljs-keyword">struct</span> <span class="hljs-type">Point</span> {
+<span class="hljs-keyword">struct</span> <span class="hljs-title">Point</span> {
     x : <span class="hljs-type">float</span>
 }
 
-<span class="hljs-keyword">struct</span> <span class="hljs-type">Point3</span> : <span class="hljs-type">Point</span> {
+<span class="hljs-keyword">struct</span> <span class="hljs-title">Point3</span> : <span class="hljs-type">Point</span> {
     z : <span class="hljs-type">float</span>
 }
 
-<span class="hljs-keyword">enum</span> <span class="hljs-type">Color</span> : <span class="hljs-type">uint8</span> {
+<span class="hljs-keyword">enum</span> <span class="hljs-title">Color</span> : <span class="hljs-type">uint8</span> {
     Red
     Green
 }
 
-<span class="hljs-keyword">bitfield</span> <span class="hljs-type">Flags</span> : <span class="hljs-type">uint8</span> {
+<span class="hljs-keyword">bitfield</span> <span class="hljs-title">Flags</span> : <span class="hljs-type">uint8</span> {
     visible
     enabled
 }

@@ -41,5 +41,10 @@ def count_items(var inventory : Inventory?; gear : Gear) : int {
     }
     let helper = @@count_items
     let text = %stringify~ raw text with a single % inside %%
+    let chosen = total > 0 ? first : text
     return math::max(total, 0)
+}
+
+def transform(m : math::float3x3; v : float3) : float3 {
+    return m * v
 }

@@ -2,9 +2,7 @@
  * Daslang (.das) language definition for highlight.js.
  *
  * Written by hand from the tree-sitter grammar in
- * GaijinEntertainment/tree-sitter-daslang (BSD-3-Clause). Its
- * queries/highlights.scm chooses the token classes. Only classes listed in
- * CLASS_SAFELIST in gr-syntax-layer-worker.ts are shown in the diff.
+ * GaijinEntertainment/tree-sitter-daslang (BSD-3-Clause).
  */
 
 import type {HLJSApi, Language, Mode} from 'highlight.js';
@@ -79,9 +77,11 @@ export default function daslang(hljs: HLJSApi): Language {
 
 	// The macro body runs up to `%%`, and it may hold a single `%`.
 	const READER_MACRO: Mode = {
-		scope: 'meta',
+		scope: 'string',
 		begin: /%[_a-zA-Z]\w*[~!]/,
+		beginScope: 'meta',
 		end: /%%/,
+		endScope: 'meta',
 	};
 
 	// The path after `include` is not Daslang code.
@@ -124,6 +124,13 @@ export default function daslang(hljs: HLJSApi): Language {
 		begin: /!\?as\b|!as\b|!is\b/,
 	};
 
+	// The name after the `:` of a declaration is a type, as in `cam : EntityId`. A `?` and a space before the `:` on
+	// the same line make it the `:` of a conditional expression.
+	const TYPE_ANNOTATION: Mode = {
+		match: [/(?<![:?])(?<!\?\s[^\n]*):(?![:=])\s*/, new RegExp(String.raw`${NAME_START}(?:::[_a-zA-Z]\w*)*`)],
+		scope: {2: 'type'},
+	};
+
 	// `def` and the type declarations take a name, and modifiers can come
 	// between them. The name is the first part that is not a reserved word.
 	const FUNCTION_DEFINITION: Mode = {
@@ -140,10 +147,7 @@ export default function daslang(hljs: HLJSApi): Language {
 		end: /[={\n]/,
 		excludeEnd: true,
 		keywords: KEYWORD_OBJECT,
-		contains: [
-			{scope: 'keyword', begin: /\bdistinct\b/},
-			{scope: 'type', begin: NAME_START},
-		],
+		contains: [{scope: 'keyword', begin: /\bdistinct\b/}, TYPE_ANNOTATION, {scope: 'title', begin: NAME_START}],
 	};
 
 	const STRUCT_CONSTRUCTION: Mode = {
@@ -166,15 +170,13 @@ export default function daslang(hljs: HLJSApi): Language {
 		excludeBegin: true,
 	};
 
+	// A field and a module name before `::` stay plain text; the modes keep the other rules off their names.
 	const FIELD: Mode = {
-		scope: 'property',
 		begin: /(?:->|[?!]?\.)(?=[_a-zA-Z])/,
 		end: /(?!\w)/,
-		excludeBegin: true,
 	};
 
 	const NAMESPACE: Mode = {
-		scope: 'title',
 		begin: /[_a-zA-Z]\w*(?=::)/,
 	};
 
@@ -191,7 +193,7 @@ export default function daslang(hljs: HLJSApi): Language {
 	};
 
 	const SELF: Mode = {
-		scope: 'variable.language',
+		scope: 'built_in',
 		begin: /\bself\b/,
 	};
 
@@ -211,6 +213,7 @@ export default function daslang(hljs: HLJSApi): Language {
 		NUMBER,
 		FUNCTION_DEFINITION,
 		TYPE_DEFINITION,
+		TYPE_ANNOTATION,
 		METHOD_CALL,
 		FIELD,
 		STRUCT_CONSTRUCTION,

@@ -8,36 +8,36 @@
 
 <span class="hljs-keyword">expect</span> <span class="hljs-number">30101</span>:<span class="hljs-number">2</span>
 
-<span class="hljs-keyword">typedef</span> <span class="hljs-type">IntArray</span> = <span class="hljs-type">array</span>&lt;<span class="hljs-type">int</span>&gt;
+<span class="hljs-keyword">typedef</span> <span class="hljs-title">IntArray</span> = <span class="hljs-type">array</span>&lt;<span class="hljs-type">int</span>&gt;
 
-<span class="hljs-keyword">tuple</span> <span class="hljs-type">Pair</span> {
+<span class="hljs-keyword">tuple</span> <span class="hljs-title">Pair</span> {
     first : <span class="hljs-type">int</span>
     second : <span class="hljs-type">string</span>
 }
 
-<span class="hljs-keyword">variant</span> <span class="hljs-type">Value</span> {
+<span class="hljs-keyword">variant</span> <span class="hljs-title">Value</span> {
     i : <span class="hljs-type">int</span>
     s : <span class="hljs-type">string</span>
 }
 
-<span class="hljs-keyword">bitfield</span> <span class="hljs-type">Flags</span> : <span class="hljs-type">uint8</span> {
+<span class="hljs-keyword">bitfield</span> <span class="hljs-title">Flags</span> : <span class="hljs-type">uint8</span> {
     visible
     enabled
 }
 
-<span class="hljs-keyword">enum</span> <span class="hljs-type">Color</span> : <span class="hljs-type">uint8</span> {
+<span class="hljs-keyword">enum</span> <span class="hljs-title">Color</span> : <span class="hljs-type">uint8</span> {
     Red
     Green = <span class="hljs-number">4</span>
     Blue
 }
 
-<span class="hljs-keyword">struct</span> <span class="hljs-type">Point</span> {
+<span class="hljs-keyword">struct</span> <span class="hljs-title">Point</span> {
     x, y : <span class="hljs-type">float</span> = <span class="hljs-number">0.0</span>
     <span class="hljs-meta">@tag</span> name : <span class="hljs-type">string</span>
 }
 
-<span class="hljs-keyword">class</span> <span class="hljs-type">Shape</span> : <span class="hljs-type">Base</span> {
-    origin : Point
+<span class="hljs-keyword">class</span> <span class="hljs-title">Shape</span> : <span class="hljs-type">Base</span> {
+    origin : <span class="hljs-type">Point</span>
     <span class="hljs-keyword">def</span> <span class="hljs-keyword">override</span> <span class="hljs-title function_">area</span> : <span class="hljs-type">float</span> {
         <span class="hljs-keyword">return</span> <span class="hljs-number">0.0</span>
     }
@@ -62,7 +62,7 @@
     } <span class="hljs-keyword">else</span> {
         <span class="hljs-title function_">print</span>(<span class="hljs-string">&quot;small\n&quot;</span>)
     }
-    <span class="hljs-keyword">let</span> pick = <span class="hljs-keyword">@</span>(p : Point) =&gt; p.<span class="hljs-property">x</span> + p.<span class="hljs-property">y</span> * scale
+    <span class="hljs-keyword">let</span> pick = <span class="hljs-keyword">@</span>(p : <span class="hljs-type">Point</span>) =&gt; p.x + p.y * scale
     squares |&gt; <span class="hljs-title function_">each</span>() &lt;| <span class="hljs-keyword">$</span>(v) {
         counter++
     }
