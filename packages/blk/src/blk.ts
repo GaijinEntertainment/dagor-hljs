@@ -25,7 +25,7 @@ function words(list: readonly string[]): RegExp {
 
 export default function blk(hljs: HLJSApi): Language {
 	const STRING: Mode = {
-		className: 'string',
+		scope: 'string',
 		variants: [
 			{begin: /"""/, end: /"""/},
 			{begin: /'''/, end: /'''/},
@@ -35,19 +35,19 @@ export default function blk(hljs: HLJSApi): Language {
 	};
 
 	const NUMBER: Mode = {
-		className: 'number',
+		scope: 'number',
 		begin: /-?\d+(?:\.\d+)?(?![\w%.])/,
 	};
 
 	const BOOLEAN: Mode = {
-		className: 'literal',
+		scope: 'literal',
 		begin: words(BOOLEAN_WORDS),
 	};
 
 	// Matches the rest of an unquoted value, so `lod01.dag` and `50%pw` are
 	// one token and NUMBER does not match their first digits.
 	const RAW_VALUE: Mode = {
-		className: 'string',
+		scope: 'string',
 		begin: /[^\s;,[\]"{}]+/,
 	};
 
@@ -73,11 +73,11 @@ export default function blk(hljs: HLJSApi): Language {
 	const TYPE: Mode = {
 		begin: /:/,
 		end: /(?=\[|=|;|\s|\n|$)/,
-		contains: [{className: 'built_in', begin: words(TYPE_WORDS)}],
+		contains: [{scope: 'built_in', begin: words(TYPE_WORDS)}],
 	};
 
 	const BLOCK_COMMENT: Mode = {
-		className: 'comment',
+		scope: 'comment',
 		begin: /\/\*/,
 		end: /\*\//,
 		contains: ['self'],
@@ -87,7 +87,7 @@ export default function blk(hljs: HLJSApi): Language {
 	const INCLUDE: Mode = {
 		beginKeywords: 'include Include INCLUDE',
 		end: /$/,
-		contains: [STRING, {className: 'string', begin: /[^\s"=][^\n]*/}],
+		contains: [STRING, {scope: 'string', begin: /[^\s"=][^\n]*/}],
 	};
 
 	return {
@@ -99,13 +99,13 @@ export default function blk(hljs: HLJSApi): Language {
 			INCLUDE,
 			// A quoted name that starts with `@` is a directive, such as
 			// `"@delete:vsync"`. It is listed before the other quoted names.
-			{className: 'meta', begin: new RegExp(`${QUOTE}~?@[^"'\\n]*?${QUOTE}`)},
-			{className: 'title', begin: new RegExp(`${QUOTE}~?[^"'\\n]*?${QUOTE}(?=\\s*\\{)`)},
-			{className: 'property', begin: new RegExp(`${QUOTE}~?[^"'\\n]*?${QUOTE}(?=\\s*[:=])`)},
-			{className: 'built_in', begin: new RegExp(`_${NAME}(?=\\s*\\{)`)},
-			{className: 'title', begin: new RegExp(`(?!_)${NAME}(?=\\s*\\{)`)},
-			{className: 'variable language_', begin: new RegExp(`_${NAME}(?=\\s*[:=])`)},
-			{className: 'property', begin: new RegExp(`(?!_)${NAME}(?=\\s*[:=])`)},
+			{scope: 'meta', begin: new RegExp(`${QUOTE}~?@[^"'\\n]*?${QUOTE}`)},
+			{scope: 'title', begin: new RegExp(`${QUOTE}~?[^"'\\n]*?${QUOTE}(?=\\s*\\{)`)},
+			{scope: 'property', begin: new RegExp(`${QUOTE}~?[^"'\\n]*?${QUOTE}(?=\\s*[:=])`)},
+			{scope: 'built_in', begin: new RegExp(`_${NAME}(?=\\s*\\{)`)},
+			{scope: 'title', begin: new RegExp(`(?!_)${NAME}(?=\\s*\\{)`)},
+			{scope: 'variable.language', begin: new RegExp(`_${NAME}(?=\\s*[:=])`)},
+			{scope: 'property', begin: new RegExp(`(?!_)${NAME}(?=\\s*[:=])`)},
 			TYPE,
 			VALUE,
 			STRING,

@@ -58,7 +58,7 @@ export default function jam(_hljs: HLJSApi): Language {
 	};
 
 	const COMMENT: Mode = {
-		className: 'comment',
+		scope: 'comment',
 		begin: /(?:^|[ \t])#/,
 		end: /$/,
 	};
@@ -70,19 +70,19 @@ export default function jam(_hljs: HLJSApi): Language {
 		end: /\)|$/,
 		contains: [
 			'self',
-			{className: 'built_in', begin: words(JAM_VARIABLES)},
-			{className: 'type', begin: /:[GBSMDPULEJRTW]+/},
-			{className: 'type', begin: /\[[\d-]+\]/},
-			{className: 'built_in', begin: /[<>]/},
-			{className: 'variable', begin: /\d+/},
-			{className: 'variable', begin: new RegExp(NAME)},
+			{scope: 'built_in', begin: words(JAM_VARIABLES)},
+			{scope: 'type', begin: /:[GBSMDPULEJRTW]+/},
+			{scope: 'type', begin: /\[[\d-]+\]/},
+			{scope: 'built_in', begin: /[<>]/},
+			{scope: 'variable', begin: /\d+/},
+			{scope: 'variable', begin: new RegExp(NAME)},
 		],
 	};
 
 	const ESCAPE: Mode = {begin: /\\./, relevance: 0};
 
 	const STRING: Mode = {
-		className: 'string',
+		scope: 'string',
 		begin: /"/,
 		end: /"|$/,
 		contains: [ESCAPE, VARIABLE],
@@ -98,11 +98,11 @@ export default function jam(_hljs: HLJSApi): Language {
 
 	const ACTION_RULES: Mode[] = [
 		// Directives such as `#async` change how the action runs.
-		{className: 'meta', begin: /^[ \t]*#(?:async|respfile-ln|no-respfile|respfile)\b/},
+		{scope: 'meta', begin: /^[ \t]*#(?:async|respfile-ln|no-respfile|respfile)\b/},
 		// The markers that flip slashes in an action line.
-		{className: 'meta', begin: /#\/?\(|\)\/?#|#\\\(|\)\\#/},
-		{className: 'string', begin: /^[ \t]*:\w+/},
-		{className: 'comment', begin: /^[ \t]*#/, end: /$/},
+		{scope: 'meta', begin: /#\/?\(|\)\/?#|#\\\(|\)\\#/},
+		{scope: 'string', begin: /^[ \t]*:\w+/},
+		{scope: 'comment', begin: /^[ \t]*#/, end: /$/},
 		STRING,
 		VARIABLE,
 	];
@@ -124,8 +124,8 @@ export default function jam(_hljs: HLJSApi): Language {
 		end: /(?!)/,
 		keywords: KEYWORD_OBJECT,
 		contains: [
-			{className: 'keyword', begin: /\bactions\b/},
-			{className: 'title function_', begin: new RegExp(`${NOT_RESERVED}${NAME}(?=\\s*(?:bind\\b|\\{|$))`)},
+			{scope: 'keyword', begin: /\bactions\b/},
+			{scope: 'title.function', begin: new RegExp(`${NOT_RESERVED}${NAME}(?=\\s*(?:bind\\b|\\{|$))`)},
 			ACTION_BODY,
 		],
 	};
@@ -133,7 +133,7 @@ export default function jam(_hljs: HLJSApi): Language {
 	// The parameters of `rule NAME PARAMS {` are variables. The title ends
 	// where the parameters start, and the parameters end at the brace.
 	const RULE_PARAMETERS: Mode = {
-		className: 'variable',
+		scope: 'variable',
 		end: /(?=\{)|$/,
 		endsParent: true,
 	};
@@ -142,8 +142,8 @@ export default function jam(_hljs: HLJSApi): Language {
 		begin: /(?=^[ \t]*rule\b)/,
 		end: /$/,
 		contains: [
-			{className: 'keyword', begin: /\brule\b/},
-			{className: 'title function_', begin: new RegExp(NAME), starts: RULE_PARAMETERS},
+			{scope: 'keyword', begin: /\brule\b/},
+			{scope: 'title.function', begin: new RegExp(NAME), starts: RULE_PARAMETERS},
 		],
 	};
 
@@ -152,8 +152,8 @@ export default function jam(_hljs: HLJSApi): Language {
 		begin: /(?=^[ \t]*local\b)/,
 		end: /(?=[=;])|$/,
 		contains: [
-			{className: 'keyword', begin: /\blocal\b/},
-			{className: 'variable', begin: new RegExp(NAME)},
+			{scope: 'keyword', begin: /\blocal\b/},
+			{scope: 'variable', begin: new RegExp(NAME)},
 		],
 	};
 
@@ -161,19 +161,19 @@ export default function jam(_hljs: HLJSApi): Language {
 		begin: /(?=^[ \t]*for\b)/,
 		end: /(?=\s+in\b)|$/,
 		contains: [
-			{className: 'keyword', begin: /\bfor\b/},
-			{className: 'variable', begin: new RegExp(NAME)},
+			{scope: 'keyword', begin: /\bfor\b/},
+			{scope: 'variable', begin: new RegExp(NAME)},
 		],
 	};
 
 	// An assignment to a Jam variable, such as `SEARCH = ...`.
 	const ASSIGN_BUILT_IN: Mode = {
-		className: 'built_in',
+		scope: 'built_in',
 		begin: new RegExp(`\\b(?:${JAM_VARIABLES.split(' ').join('|')})\\b(?=\\s*(?:\\?=|\\+=|=|on\\b))`),
 	};
 
 	const ASSIGN_USER: Mode = {
-		className: 'variable',
+		scope: 'variable',
 		begin: new RegExp(`${NAME}(?=\\s*(?:\\?=|\\+=|=|on\\b))`),
 	};
 
@@ -187,7 +187,7 @@ export default function jam(_hljs: HLJSApi): Language {
 	const BRACKET_RULE: Mode = {
 		begin: new RegExp(`\\[[ \\t]*(?=${NOT_RESERVED}${NAME})`),
 		end: /\]|$/,
-		contains: [{className: 'title function_', begin: new RegExp(NAME), starts: BRACKET_ARGUMENTS}],
+		contains: [{scope: 'title.function', begin: new RegExp(NAME), starts: BRACKET_ARGUMENTS}],
 	};
 
 	const BRACKET_BUILT_IN: Mode = {
@@ -199,7 +199,7 @@ export default function jam(_hljs: HLJSApi): Language {
 
 	// A line that starts with a user rule name calls that rule.
 	const STATEMENT_CALL: Mode = {
-		className: 'title function_',
+		scope: 'title.function',
 		begin: new RegExp(`^[ \\t]*${NOT_RESERVED}${NAME}(?=\\s|$)(?!\\s*(?:\\?=|\\+=|=|on\\b))`),
 	};
 
