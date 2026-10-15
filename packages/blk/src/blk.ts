@@ -25,6 +25,8 @@ const NAME = '[A-Za-z0-9_.~-]+';
 // A quoted name. The BLK parser accepts both triple and single quotes.
 const QUOTE = '(?:"""|\'\'\'|"|\')';
 
+const INCLUDE_WORD = '[iI][nN][cC][lL][uU][dD][eE]';
+
 function typeName(types: readonly string[]): string {
 	return `${QUOTE}?~?(?:${types.join('|')})${QUOTE}?`;
 }
@@ -104,12 +106,14 @@ export default function blk(hljs: HLJSApi): Language {
 	// Must come before the name rules, because `include = "x` with an unclosed quote is an include of `= "x`.
 	const INCLUDE: Mode = {
 		begin: new RegExp(
-			'(?<![A-Za-z0-9_.~-])[iI][nN][cC][lL][uU][dD][eE](?![A-Za-z0-9_.~-])' +
+			`(?<![A-Za-z0-9_.~-])(?:(${QUOTE})${INCLUDE_WORD}\\1|${INCLUDE_WORD}(?![A-Za-z0-9_.~-]))` +
 				`(?![ \\t]*(?:[{:]|=[ \\t]*(?:[^\\s"']|"[^"\\n]*"|'[^'\\n]*')))`,
 		),
 		beginScope: 'keyword',
 		end: /(?=[;}])/,
 		contains: [
+			BLOCK_COMMENT,
+			hljs.C_LINE_COMMENT_MODE,
 			{...STRING, endsParent: true},
 			{scope: 'string', begin: new RegExp(unquotedValue('')), endsParent: true},
 		],
