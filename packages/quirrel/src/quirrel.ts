@@ -80,7 +80,8 @@ export default function quirrel(hljs: HLJSApi): Language {
 
 	const NUMBER: Mode = {
 		scope: 'number',
-		begin: /\b(?:0[xX][0-9a-fA-F]+|\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)\b/,
+		begin:
+			/(?<![\w.])(?:0[xX]_*[0-9a-fA-F][0-9a-fA-F_]*(?!\w)|(?:0_*(?!\d)|[1-9][\d_]*)(?:\.[\d_]*)?(?:[eE][+-]?\d[\d_]*)?(?![\w.]))/,
 	};
 
 	const DIRECTIVE: Mode = {
