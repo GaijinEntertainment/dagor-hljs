@@ -8,30 +8,30 @@
 <span class="hljs-keyword">include</span> ../common/defs.das
 <span class="hljs-meta">#12,4,&quot;generated.das&quot;#</span>
 
-<span class="hljs-keyword">let</span> <span class="hljs-literal">MAX_COUNT</span> = <span class="hljs-number">0x1F_u</span>
+<span class="hljs-keyword">let</span> MAX_COUNT = <span class="hljs-number">0x1F_u</span>
 <span class="hljs-keyword">let</span> ratio = <span class="hljs-number">1.5e3f</span>
 <span class="hljs-keyword">let</span> small = <span class="hljs-number">12u8</span>
 <span class="hljs-keyword">let</span> letter = <span class="hljs-string">&#x27;a&#x27;</span>
-<span class="hljs-keyword">let</span> message = <span class="hljs-string">&quot;tab\t<span class="hljs-template-variable">{letter}</span> and <span class="hljs-template-variable">{<span class="hljs-literal">MAX_COUNT</span> + <span class="hljs-number">1u</span>}</span>&quot;</span>
+<span class="hljs-keyword">let</span> message = <span class="hljs-string">&quot;tab\t<span class="hljs-subst">{letter}</span> and <span class="hljs-subst">{MAX_COUNT + <span class="hljs-number">1u</span>}</span>&quot;</span>
 
-<span class="hljs-keyword">struct</span> <span class="hljs-title">Item</span> {
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Item</span> {
     name : <span class="hljs-type">string</span>
 }
 
-<span class="hljs-keyword">variant</span> <span class="hljs-title">Gear</span> {
-    weapon : <span class="hljs-type">Item</span>
-    shield : <span class="hljs-type">Item</span>
+<span class="hljs-keyword">variant</span> <span class="hljs-title class_">Gear</span> {
+    weapon : Item
+    shield : Item
 }
 
-<span class="hljs-keyword">class</span> <span class="hljs-title">Inventory</span> {
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Inventory</span> {
     items : <span class="hljs-type">array</span>&lt;Item&gt;
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">count</span> : <span class="hljs-type">int</span> {
-        <span class="hljs-keyword">return</span> <span class="hljs-title function_">length</span>(<span class="hljs-built_in">self</span>.items)
+        <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">length</span>(<span class="hljs-keyword">self</span>.items)
     }
 }
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">count_items</span>(<span class="hljs-keyword">var</span> inventory : <span class="hljs-type">Inventory</span>?; gear : <span class="hljs-type">Gear</span>) : <span class="hljs-type">int</span> {
-    <span class="hljs-keyword">let</span> total = inventory != <span class="hljs-literal">null</span> ? inventory-&gt;<span class="hljs-title function_">count</span>() : <span class="hljs-number">0</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">count_items</span>(<span class="hljs-keyword">var</span> inventory : Inventory?; gear : Gear) : <span class="hljs-type">int</span> {
+    <span class="hljs-keyword">let</span> total = inventory != <span class="hljs-literal">null</span> ? inventory-&gt;<span class="hljs-title function_ invoke__">count</span>() : <span class="hljs-number">0</span>
     <span class="hljs-keyword">let</span> first = inventory?.items?[<span class="hljs-number">0</span>]?.name ?? <span class="hljs-string">&quot;&quot;</span>
     <span class="hljs-keyword">if</span> (gear <span class="hljs-keyword">is</span> weapon &amp;&amp; gear <span class="hljs-keyword">!is</span> shield) {
         <span class="hljs-keyword">unsafe</span> {
@@ -39,12 +39,12 @@
             <span class="hljs-keyword">let</span> other = gear <span class="hljs-keyword">!?as</span> weapon
         }
     }
-    <span class="hljs-keyword">let</span> helper = @@<span class="hljs-title function_">count_items</span>
+    <span class="hljs-keyword">let</span> helper = @@count_items
     <span class="hljs-keyword">let</span> text = <span class="hljs-string"><span class="hljs-meta">%stringify~</span> raw text with a single % inside <span class="hljs-meta">%%</span></span>
     <span class="hljs-keyword">let</span> chosen = total &gt; <span class="hljs-number">0</span> ? first : text
-    <span class="hljs-keyword">return</span> math::<span class="hljs-title function_">max</span>(total, <span class="hljs-number">0</span>)
+    <span class="hljs-keyword">return</span> math::<span class="hljs-title function_ invoke__">max</span>(total, <span class="hljs-number">0</span>)
 }
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">transform</span>(m : <span class="hljs-type">math::float3x3</span>; v : <span class="hljs-type">float3</span>) : <span class="hljs-type">float3</span> {
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">transform</span>(m : math::<span class="hljs-type">float3x3</span>; v : <span class="hljs-type">float3</span>) : <span class="hljs-type">float3</span> {
     <span class="hljs-keyword">return</span> m * v
 }

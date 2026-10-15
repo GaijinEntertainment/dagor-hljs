@@ -2,39 +2,39 @@
 
 <span class="hljs-keyword">require</span> daslib/linq
 
-<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">distinct</span> <span class="hljs-title">Meters</span> = <span class="hljs-type">float</span>
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">distinct</span> <span class="hljs-title class_">Meters</span> = <span class="hljs-type">float</span>
 
-<span class="hljs-keyword">class</span> <span class="hljs-title">Base</span> {
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span> {
     id : <span class="hljs-type">int</span>
 }
 
-<span class="hljs-keyword">class</span> <span class="hljs-title">Shape</span> : <span class="hljs-type">Base</span> {
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Shape</span> : Base {
     area : <span class="hljs-type">float</span>
 }
 
-<span class="hljs-keyword">struct</span> <span class="hljs-title">Point</span> {
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Point</span> {
     x : <span class="hljs-type">float</span>
 }
 
-<span class="hljs-keyword">struct</span> <span class="hljs-title">Point3</span> : <span class="hljs-type">Point</span> {
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Point3</span> : Point {
     z : <span class="hljs-type">float</span>
 }
 
-<span class="hljs-keyword">enum</span> <span class="hljs-title">Color</span> : <span class="hljs-type">uint8</span> {
+<span class="hljs-keyword">enum</span> <span class="hljs-title class_">Color</span> : <span class="hljs-type">uint8</span> {
     Red
     Green
 }
 
-<span class="hljs-keyword">bitfield</span> <span class="hljs-title">Flags</span> : <span class="hljs-type">uint8</span> {
+<span class="hljs-keyword">bitfield</span> <span class="hljs-title class_">Flags</span> : <span class="hljs-type">uint8</span> {
     visible
     enabled
 }
 
 <span class="hljs-meta">[export]</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>() {
-    <span class="hljs-keyword">let</span> unique &lt;- <span class="hljs-title function_">distinct</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+    <span class="hljs-keyword">let</span> unique &lt;- <span class="hljs-title function_ invoke__">distinct</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
     <span class="hljs-keyword">var</span> choice : <span class="hljs-keyword">variant</span>&lt;a : <span class="hljs-type">int</span>; b : <span class="hljs-type">float</span>&gt;
     <span class="hljs-keyword">var</span> flags : <span class="hljs-keyword">bitfield</span>&lt;x; y&gt;
     <span class="hljs-keyword">var</span> pair : <span class="hljs-keyword">tuple</span>&lt;<span class="hljs-type">int</span>; <span class="hljs-type">float</span>&gt;
-    <span class="hljs-title function_">print</span>(<span class="hljs-string">&quot;<span class="hljs-template-variable">{unique}</span> <span class="hljs-template-variable">{choice}</span> <span class="hljs-template-variable">{flags}</span> <span class="hljs-template-variable">{pair}</span>\n&quot;</span>)
+    <span class="hljs-title function_ invoke__">print</span>(<span class="hljs-string">&quot;<span class="hljs-subst">{unique}</span> <span class="hljs-subst">{choice}</span> <span class="hljs-subst">{flags}</span> <span class="hljs-subst">{pair}</span>\n&quot;</span>)
 }

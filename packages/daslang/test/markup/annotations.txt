@@ -5,6 +5,11 @@ struct Plain {
     value : int
 }
 
+[comment(tag = "alive", level = 3)]
+struct Annotated {
+    value : int
+}
+
 [export, unused_argument(args)]
 def main(args : array<string>) {
     let rows = [
