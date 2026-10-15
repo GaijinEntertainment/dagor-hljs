@@ -13,7 +13,7 @@
   }
   <span class="hljs-keyword">switch</span> $(<span class="hljs-built_in">OSPLAT</span>) {
     <span class="hljs-keyword">case</span> X86 : <span class="hljs-keyword">Exit</span> unsupported ;
-    <span class="hljs-keyword">case</span> * : CompileShaderCmd $(<span class="hljs-variable">target</span>) : $(<span class="hljs-variable">source</span>) ;
+    <span class="hljs-keyword">case</span> * : <span class="hljs-title function_">CompileShaderCmd</span> $(<span class="hljs-variable">target</span>) : $(<span class="hljs-variable">source</span>) ;
   }
   <span class="hljs-keyword">while</span> $(<span class="hljs-variable">out</span>) { <span class="hljs-variable">out</span> = [ <span class="hljs-keyword">Match</span> <span class="hljs-string">&quot;(.*)/[^/]*&quot;</span> : $(<span class="hljs-variable">out</span>) ] ; }
   <span class="hljs-keyword">local</span> <span class="hljs-variable">name</span> = [ <span class="hljs-title function_">BaseName</span> $(<span class="hljs-variable">source</span>) ] ;
