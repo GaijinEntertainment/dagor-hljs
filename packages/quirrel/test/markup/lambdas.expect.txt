@@ -1,0 +1,5 @@
+<span class="hljs-keyword">let</span> plain = <span class="hljs-keyword">@</span>(x) x + <span class="hljs-number">1</span>
+<span class="hljs-keyword">let</span> named = <span class="hljs-keyword">@</span> <span class="hljs-title function_">increment</span>(x) x + <span class="hljs-number">1</span>
+<span class="hljs-keyword">let</span> attributed = <span class="hljs-keyword">@</span>[<span class="hljs-attr">pure</span>](x) x * <span class="hljs-number">2</span>
+<span class="hljs-keyword">let</span> both = <span class="hljs-keyword">@</span>[<span class="hljs-attr">pure</span>] <span class="hljs-title function_">twice</span>(x) x * <span class="hljs-number">2</span>
+<span class="hljs-keyword">let</span> path = <span class="hljs-string">@&quot;C:\data&quot;</span>

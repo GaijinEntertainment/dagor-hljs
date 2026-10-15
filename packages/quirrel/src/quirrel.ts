@@ -103,7 +103,7 @@ export default function quirrel(hljs: HLJSApi): Language {
 
 	const LAMBDA: Mode = {
 		scope: 'keyword',
-		begin: /@(?=\s*\()/,
+		begin: /@(?=\s*(?:[([]|[A-Za-z_]\w*\s*\())/,
 	};
 
 	// The name follows `function`. The mode ends before `[`, and returnEnd
