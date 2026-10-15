@@ -1,7 +1,7 @@
 # @gaijin/highlightjs-daslang
 
 A [highlight.js](https://highlightjs.org/) 11 grammar for the [Daslang](https://github.com/GaijinEntertainment/daScript)
-programming language. The language name is `daslang`.
+programming language. The language name is `daslang`, with the alias `das`.
 
 ## Usage
 

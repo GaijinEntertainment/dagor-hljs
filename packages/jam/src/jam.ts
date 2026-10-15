@@ -205,7 +205,7 @@ export default function jam(_hljs: HLJSApi): Language {
 
 	return {
 		name: 'Jam',
-		aliases: ['jam', 'jamfile'],
+		aliases: ['jamfile'],
 		keywords: KEYWORD_OBJECT,
 		contains: [
 			COMMENT,

@@ -186,7 +186,7 @@ export default function daslang(hljs: HLJSApi): Language {
 
 	return {
 		name: 'Daslang',
-		aliases: ['daslang'],
+		aliases: ['das'],
 		keywords: KEYWORD_OBJECT,
 		contains: CODE,
 	};

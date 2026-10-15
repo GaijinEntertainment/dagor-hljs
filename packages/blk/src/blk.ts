@@ -92,7 +92,6 @@ export default function blk(hljs: HLJSApi): Language {
 
 	return {
 		name: 'BLK',
-		aliases: ['blk'],
 		contains: [
 			BLOCK_COMMENT,
 			hljs.C_LINE_COMMENT_MODE,
