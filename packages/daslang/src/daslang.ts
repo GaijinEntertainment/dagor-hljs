@@ -134,6 +134,13 @@ export default function daslang(hljs: HLJSApi): Language {
 		],
 	};
 
+	const STRUCT_CONSTRUCTION: Mode = {
+		scope: 'type',
+		begin: new RegExp(
+			`(?<=\\bnew\\s+)${NAME_START}|${NAME_START}(?=\\(\\s*(?:uninitialized\\b|[_a-zA-Z]\\w*\\s*(?:=(?!=)|<-|:=)))`,
+		),
+	};
+
 	const CALL: Mode = {
 		scope: 'title.function',
 		begin: new RegExp(`${NAME_START}(?=\\s*\\()`),
@@ -185,6 +192,7 @@ export default function daslang(hljs: HLJSApi): Language {
 		TYPE_DEFINITION,
 		METHOD_CALL,
 		FIELD,
+		STRUCT_CONSTRUCTION,
 		CALL,
 		NAMESPACE,
 		CONSTANT,

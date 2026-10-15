@@ -1,0 +1,31 @@
+<span class="hljs-keyword">options</span> gen2
+
+<span class="hljs-keyword">struct</span> <span class="hljs-type">Point</span> {
+    x : <span class="hljs-built_in">float</span>
+    y : <span class="hljs-built_in">float</span>
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-type">Shape</span> {
+    origin : Point
+}
+
+[export]
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> copied = <span class="hljs-type">Point</span>(x = <span class="hljs-number">1.0</span>, y = <span class="hljs-number">2.0</span>)
+    <span class="hljs-keyword">var</span> source = <span class="hljs-number">1.0</span>
+    <span class="hljs-keyword">let</span> moved = <span class="hljs-type">Point</span>(x &lt;- source)
+    <span class="hljs-keyword">let</span> cloned = <span class="hljs-type">Point</span>(x := <span class="hljs-number">1.0</span>)
+    <span class="hljs-keyword">let</span> raw = <span class="hljs-type">Point</span>(<span class="hljs-keyword">uninitialized</span>)
+    <span class="hljs-keyword">let</span> partial = <span class="hljs-type">Point</span>(<span class="hljs-keyword">uninitialized</span> x = <span class="hljs-number">3.0</span>)
+    <span class="hljs-keyword">let</span> zero = <span class="hljs-title function_">Point</span>()
+    <span class="hljs-keyword">var</span> shape = <span class="hljs-keyword">new</span> <span class="hljs-type">Shape</span>(origin = copied)
+    <span class="hljs-keyword">var</span> empty = <span class="hljs-keyword">new</span> <span class="hljs-type">Shape</span>()
+    <span class="hljs-keyword">var</span> bare = <span class="hljs-keyword">new</span> <span class="hljs-type">Point</span>
+    <span class="hljs-keyword">let</span> size = <span class="hljs-title function_">length</span>(<span class="hljs-string">&quot;abc&quot;</span>)
+    <span class="hljs-title function_">print</span>(<span class="hljs-string">&quot;<span class="hljs-template-variable">{copied}</span> <span class="hljs-template-variable">{moved}</span> <span class="hljs-template-variable">{cloned}</span> <span class="hljs-template-variable">{raw}</span> <span class="hljs-template-variable">{partial}</span> <span class="hljs-template-variable">{zero}</span> <span class="hljs-template-variable">{size}</span>\n&quot;</span>)
+    <span class="hljs-keyword">unsafe</span> {
+        <span class="hljs-keyword">delete</span> shape
+        <span class="hljs-keyword">delete</span> empty
+        <span class="hljs-keyword">delete</span> bare
+    }
+}
