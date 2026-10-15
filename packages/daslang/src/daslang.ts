@@ -7,6 +7,8 @@
  * CLASS_SAFELIST in gr-syntax-layer-worker.ts are shown in the diff.
  */
 
+import type {HLJSApi, Language, Mode} from 'highlight.js';
+
 const KEYWORDS = [
 	// Declarations, modifiers and control flow.
 	'let var aka assume capture default goto label pass unsafe with',
@@ -34,7 +36,7 @@ const BUILT_IN_TYPES = [
 
 const RESERVED_WORDS = [KEYWORDS, LITERALS, BUILT_IN_TYPES].join(' ').split(' ');
 
-export default function (hljs) {
+export default function daslang(hljs: HLJSApi): Language {
 	const KEYWORD_OBJECT = {
 		keyword: KEYWORDS,
 		literal: LITERALS,
@@ -46,68 +48,68 @@ export default function (hljs) {
 
 	// Strings and interpolated code are reached through INTERPOLATION, so the
 	// contains list is filled in at the end.
-	const INTERPOLATION = {
+	const INTERPOLATION: Mode = {
 		className: 'template-variable',
 		begin: /\{/,
 		end: /\}/,
 		contains: [],
 	};
 
-	const STRING = {
+	const STRING: Mode = {
 		className: 'string',
 		begin: /"/,
 		end: /"/,
 		contains: [hljs.BACKSLASH_ESCAPE, INTERPOLATION],
 	};
 
-	const CHARACTER = {
+	const CHARACTER: Mode = {
 		className: 'string',
 		begin: /'(?:\\['btnfr\\]|[^'\\\n])'[uU]?8?/,
 	};
 
-	const NUMBER = {
+	const NUMBER: Mode = {
 		className: 'number',
 		begin: /\b(?:0[xX][0-9a-fA-F_]+|\d[\d_]*(?:\.\d[\d_]*)?(?:[eE][+-]?\d+)?)(?:[uUlLfFhHdD]+8?)?\b/,
 	};
 
 	// The macro body runs up to `%%`, and it may hold a single `%`.
-	const READER_MACRO = {
+	const READER_MACRO: Mode = {
 		className: 'meta',
 		begin: /%[_a-zA-Z]\w*[~!]/,
 		end: /%%/,
 	};
 
 	// The path after `include` is not Daslang code.
-	const INCLUDE = {
+	const INCLUDE: Mode = {
 		beginKeywords: 'include',
 		end: /$/,
 	};
 
-	const BLOCK_COMMENT = {
+	const BLOCK_COMMENT: Mode = {
 		className: 'comment',
 		begin: /\/\*/,
 		end: /\*\//,
 		contains: ['self'],
 	};
 
-	const LINE_DIRECTIVE = {
+	const LINE_DIRECTIVE: Mode = {
 		className: 'meta',
 		begin: /#\d+,\d+,"[^"]+"#/,
 	};
 
-	const MACRO_VARIABLE = {
+	const MACRO_VARIABLE: Mode = {
 		className: 'meta',
 		begin: /\$[eivbatcf]\b|@@?[_a-zA-Z]\w*/,
 	};
 
-	const NEGATED_KEYWORD = {
+	const NEGATED_KEYWORD: Mode = {
 		className: 'keyword',
 		begin: /!\?as\b|!as\b|!is\b/,
 	};
 
 	// `def` and the type declarations take a name, and modifiers can come
 	// between them. The name is the first part that is not a reserved word.
-	const FUNCTION_DEFINITION = {
+	const FUNCTION_DEFINITION: Mode = {
 		beginKeywords: 'def',
 		end: /[:(={;\n]/,
 		excludeEnd: true,
@@ -115,7 +117,7 @@ export default function (hljs) {
 		contains: [{className: 'title function_', begin: NAME_START}],
 	};
 
-	const TYPE_DEFINITION = {
+	const TYPE_DEFINITION: Mode = {
 		beginKeywords: 'struct class enum tuple variant bitfield typedef',
 		end: /[:={\n]/,
 		excludeEnd: true,
@@ -123,43 +125,43 @@ export default function (hljs) {
 		contains: [{className: 'type', begin: NAME_START}],
 	};
 
-	const CALL = {
+	const CALL: Mode = {
 		className: 'title function_',
 		begin: new RegExp(`${NAME_START}(?=\\s*\\()`),
 	};
 
 	// The dot, arrow or `?.` is not colored, only the name after it.
-	const METHOD_CALL = {
+	const METHOD_CALL: Mode = {
 		className: 'title function_',
 		begin: /(?:->|[?!]?\.)(?=[_a-zA-Z]\w*\s*\()/,
 		end: /(?!\w)/,
 		excludeBegin: true,
 	};
 
-	const FIELD = {
+	const FIELD: Mode = {
 		className: 'property',
 		begin: /(?:->|[?!]?\.)(?=[_a-zA-Z])/,
 		end: /(?!\w)/,
 		excludeBegin: true,
 	};
 
-	const NAMESPACE = {
+	const NAMESPACE: Mode = {
 		className: 'title',
 		begin: /[_a-zA-Z]\w*(?=::)/,
 	};
 
 	// Daslang writes constants in all capitals, such as `SCALE`.
-	const CONSTANT = {
+	const CONSTANT: Mode = {
 		className: 'literal',
 		begin: /\b[A-Z][A-Z0-9_]*\b/,
 	};
 
-	const SELF = {
+	const SELF: Mode = {
 		className: 'variable language_',
 		begin: /\bself\b/,
 	};
 
-	const CODE = [
+	const CODE: Mode[] = [
 		hljs.C_LINE_COMMENT_MODE,
 		BLOCK_COMMENT,
 		LINE_DIRECTIVE,

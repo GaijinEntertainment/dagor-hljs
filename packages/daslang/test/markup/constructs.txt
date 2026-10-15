@@ -1,0 +1,23 @@
+// A line comment
+/* A block comment /* nests */ here */
+include ../common/defs.das
+#12,4,"generated.das"#
+
+let MAX_COUNT = 0x1F_u
+let ratio = 1.5e3f
+let small = 12u8
+let letter = 'a'
+let message = "tab\t{letter} and {MAX_COUNT + 1}"
+
+def Inventory::count(self : Inventory) : int {
+    let total = self.items?.length()
+    item->name = "sword"
+    if (value is Weapon && value !is Shield) {
+        let weapon = value ?as Weapon
+        let other = value !?as Weapon
+    }
+    let expr = $e(total + 1)
+    let helper = @@count_items
+    let text = %stringify~ raw text with a single % inside %%
+    return math::max(total, 0)
+}

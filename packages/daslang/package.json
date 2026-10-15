@@ -1,0 +1,46 @@
+{
+	"name": "@gaijin/highlightjs-daslang",
+	"version": "0.0.0",
+	"description": "highlight.js grammar for the Daslang programming language",
+	"keywords": [
+		"dagor",
+		"das",
+		"daslang",
+		"highlight.js",
+		"highlightjs",
+		"syntax"
+	],
+	"homepage": "https://github.com/GaijinEntertainment/dagor-hljs/tree/main/packages/daslang#readme",
+	"bugs": {
+		"url": "https://github.com/GaijinEntertainment/dagor-hljs/issues"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Gaijin Entertainment"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/GaijinEntertainment/dagor-hljs.git",
+		"directory": "packages/daslang"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"exports": {
+		".": {
+			"types": "./dist/daslang.d.ts",
+			"default": "./dist/daslang.js"
+		}
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "vp pack"
+	},
+	"peerDependencies": {
+		"highlight.js": "^11.12.0"
+	}
+}

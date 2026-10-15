@@ -1,0 +1,78 @@
+<span class="hljs-keyword">options</span> gen2
+<span class="hljs-keyword">options</span> indenting = <span class="hljs-number">4</span>, no_aot = <span class="hljs-literal">true</span>
+
+<span class="hljs-keyword">module</span> example <span class="hljs-keyword">shared</span> <span class="hljs-keyword">public</span>
+
+<span class="hljs-keyword">require</span> daslib/strings_boost
+<span class="hljs-keyword">require</span> ../common/utils <span class="hljs-keyword">as</span> utils
+
+<span class="hljs-keyword">expect</span> <span class="hljs-number">30101</span>:<span class="hljs-number">2</span>
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-type">IntArray</span> = <span class="hljs-built_in">array</span>&lt;<span class="hljs-built_in">int</span>&gt;
+
+<span class="hljs-keyword">tuple</span> <span class="hljs-type">Pair</span> {
+    first : <span class="hljs-built_in">int</span>
+    second : <span class="hljs-built_in">string</span>
+}
+
+<span class="hljs-keyword">variant</span> <span class="hljs-type">Value</span> {
+    i : <span class="hljs-built_in">int</span>
+    s : <span class="hljs-built_in">string</span>
+}
+
+<span class="hljs-keyword">bitfield</span> <span class="hljs-type">Flags</span> : <span class="hljs-built_in">uint8</span> {
+    visible
+    enabled
+}
+
+<span class="hljs-keyword">enum</span> <span class="hljs-type">Color</span> : <span class="hljs-built_in">uint8</span> {
+    Red
+    Green = <span class="hljs-number">4</span>
+    Blue
+}
+
+<span class="hljs-keyword">struct</span> <span class="hljs-type">Point</span> {
+    x, y : <span class="hljs-built_in">float</span> = <span class="hljs-number">0.0</span>
+    <span class="hljs-meta">@tag</span> name : <span class="hljs-built_in">string</span>
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-type">Shape</span> : Base {
+    origin : Point
+    <span class="hljs-keyword">def</span> <span class="hljs-keyword">override</span> <span class="hljs-title function_">area</span> : <span class="hljs-built_in">float</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0.0</span>
+    }
+    <span class="hljs-keyword">def</span> <span class="hljs-keyword">abstract</span> <span class="hljs-title function_">describe</span> : <span class="hljs-built_in">string</span>
+}
+
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">private</span> scale = <span class="hljs-number">2.5</span>
+<span class="hljs-keyword">var</span> counter : <span class="hljs-built_in">int</span>
+
+[export]
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>(args : <span class="hljs-built_in">array</span>&lt;<span class="hljs-built_in">string</span>&gt;; verbose = <span class="hljs-literal">false</span>) : <span class="hljs-built_in">int</span> {
+    <span class="hljs-keyword">var</span> total = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> (arg, i <span class="hljs-keyword">in</span> args, <span class="hljs-title function_">count</span>()) {
+        total += <span class="hljs-title function_">length</span>(arg) * i
+    }
+    <span class="hljs-keyword">let</span> squares &lt;- [<span class="hljs-keyword">for</span> (x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>)); x * x; <span class="hljs-keyword">where</span> x % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>]
+    <span class="hljs-keyword">let</span> lookup = {<span class="hljs-string">&quot;one&quot;</span> =&gt; <span class="hljs-number">1</span>, <span class="hljs-string">&quot;two&quot;</span> =&gt; <span class="hljs-number">2</span>}
+    <span class="hljs-keyword">if</span> (verbose) {
+        <span class="hljs-title function_">print</span>(<span class="hljs-string">&quot;total <span class="hljs-template-variable">{total}</span> from <span class="hljs-template-variable">{<span class="hljs-title function_">length</span>(args)}</span> arguments\n&quot;</span>)
+    } <span class="hljs-keyword">elif</span> (total &gt; <span class="hljs-number">100</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-title function_">print</span>(<span class="hljs-string">&quot;small\n&quot;</span>)
+    }
+    <span class="hljs-keyword">let</span> pick = @(p : Point) =&gt; p.<span class="hljs-property">x</span> + p.<span class="hljs-property">y</span> * scale
+    squares |&gt; <span class="hljs-title function_">each</span>() &lt;| $(v) {
+        counter++
+    }
+    <span class="hljs-keyword">let</span> shape = <span class="hljs-keyword">new</span> <span class="hljs-title function_">Shape</span>(origin = <span class="hljs-title function_">Point</span>(x = <span class="hljs-number">1.0</span>, y = <span class="hljs-number">2.0</span>))
+    <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">unsafe</span> {
+            <span class="hljs-keyword">delete</span> shape
+        }
+    } <span class="hljs-keyword">recover</span> {
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+    }
+    <span class="hljs-keyword">return</span> total <span class="hljs-keyword">if</span> (total &gt; <span class="hljs-number">0</span>) <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+}
