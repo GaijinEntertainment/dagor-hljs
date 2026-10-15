@@ -1,6 +1,6 @@
 #strict
 #allow-root-table
-#pos:120:script.nut
+#pos:120:4
 /* A block comment */
 let path = @"C:\data\""quoted"""
 let letter = 'q'
@@ -8,7 +8,7 @@ let mask = 0xFF00
 let big = 1.5e10
 global const SPEED = 2.5
 
-class Unit extends Base {
+class Unit (Base) {
   static count = 0
 
   constructor() {

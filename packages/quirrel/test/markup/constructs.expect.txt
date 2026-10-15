@@ -1,6 +1,6 @@
 <span class="hljs-meta">#strict</span>
 <span class="hljs-meta">#allow-root-table</span>
-<span class="hljs-meta">#pos:120:script.nut</span>
+<span class="hljs-meta">#pos:120:4</span>
 <span class="hljs-comment">/* A block comment */</span>
 <span class="hljs-keyword">let</span> path = <span class="hljs-string">@&quot;C:\data\&quot;&quot;quoted&quot;&quot;&quot;</span>
 <span class="hljs-keyword">let</span> letter = <span class="hljs-string">&#x27;q&#x27;</span>
@@ -8,7 +8,7 @@
 <span class="hljs-keyword">let</span> big = <span class="hljs-number">1.5e10</span>
 <span class="hljs-keyword">global</span> <span class="hljs-keyword">const</span> <span class="hljs-literal">SPEED</span> = <span class="hljs-number">2.5</span>
 
-<span class="hljs-keyword">class</span> <span class="hljs-type">Unit</span> <span class="hljs-type">extends</span> <span class="hljs-type">Base</span> {
+<span class="hljs-keyword">class</span> <span class="hljs-type">Unit</span> (<span class="hljs-type">Base</span>) {
   <span class="hljs-keyword">static</span> count = <span class="hljs-number">0</span>
 
   <span class="hljs-title function_">constructor</span>() {
