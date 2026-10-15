@@ -1,0 +1,18 @@
+fname:t=billboard.dag // comment
+next:i=1//tight
+path:t=x//c
+a:i=1/* one */2
+b:r=70 /* trailing */
+c:t=x /* a */ ;
+compartment_08_dm:r=177.286/*
+  compartment_09_dm:r=504.399 /* inner
+  compartment_10_dm:r=177.286*/
+cover_01_dm:r=1498.56
+/* outer /* inner */ still outer */
+d:t= /* outer /* inner */ still outer */ y
+e:t="x" /* nested /* after a */ quoted value */
+list:i[]=[ // first
+  1 /* one */
+  // two
+  2;]
+dirs:t=a/b/
