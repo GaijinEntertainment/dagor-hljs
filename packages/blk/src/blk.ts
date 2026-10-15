@@ -49,11 +49,24 @@ export default function blk(hljs: HLJSApi): Language {
 	// one token and NUMBER does not match their first digits.
 	const RAW_VALUE: Mode = {
 		scope: 'string',
-		begin: /[^\s;,[\]"{}]+/,
+		begin: /(?:[^\s;,[\]"{}/]|\/(?![/*]))+/,
+	};
+
+	const BLOCK_COMMENT: Mode = {
+		scope: 'comment',
+		begin: /\/\*/,
+		end: /\*\//,
+		contains: ['self'],
+	};
+
+	const COMMENT_AFTER_UNQUOTED: Mode = {
+		scope: 'comment',
+		begin: /(?<=[^\s;=[\]"'{}][ \t]*)\/\*/,
+		end: /\*\//,
 	};
 
 	// The value of `name = value`. It ends at `;`, the end of the line, `}` or
-	// a trailing comment. Arrays can span lines, so ARRAY is a nested mode.
+	// a line comment. Arrays can span lines, so ARRAY is a nested mode.
 	const VALUE: Mode = {
 		begin: /=/,
 		end: /(?=;|\n|\}|\s*\/\/)/,
@@ -61,8 +74,19 @@ export default function blk(hljs: HLJSApi): Language {
 			{
 				begin: /\[/,
 				end: /\]/,
-				contains: ['self', STRING, NUMBER, BOOLEAN, RAW_VALUE],
+				contains: [
+					'self',
+					hljs.C_LINE_COMMENT_MODE,
+					COMMENT_AFTER_UNQUOTED,
+					BLOCK_COMMENT,
+					STRING,
+					NUMBER,
+					BOOLEAN,
+					RAW_VALUE,
+				],
 			},
+			COMMENT_AFTER_UNQUOTED,
+			BLOCK_COMMENT,
 			STRING,
 			NUMBER,
 			BOOLEAN,
@@ -75,13 +99,6 @@ export default function blk(hljs: HLJSApi): Language {
 		begin: /:/,
 		end: /(?=\[|=|;|\s|\n|$)/,
 		contains: [{scope: 'built_in', begin: words(TYPE_WORDS)}],
-	};
-
-	const BLOCK_COMMENT: Mode = {
-		scope: 'comment',
-		begin: /\/\*/,
-		end: /\*\//,
-		contains: ['self'],
 	};
 
 	// Must come before the name rules, because `include = x` is not a name.
