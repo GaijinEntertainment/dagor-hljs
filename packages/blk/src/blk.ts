@@ -100,11 +100,18 @@ export default function blk(hljs: HLJSApi): Language {
 		contains: [{scope: 'built_in', begin: words(TYPE_WORDS)}],
 	};
 
-	// Must come before the name rules, because `include = x` is not a name.
+	// Must come before the name rules, because `include = "x` with an unclosed quote is an include of `= "x`.
 	const INCLUDE: Mode = {
-		beginKeywords: 'include Include INCLUDE',
-		end: /$/,
-		contains: [STRING, {scope: 'string', begin: /[^\s"=][^\n]*/}],
+		begin: new RegExp(
+			'(?<![A-Za-z0-9_.~-])[iI][nN][cC][lL][uU][dD][eE](?![A-Za-z0-9_.~-])' +
+				`(?![ \\t]*(?:[{:]|=[ \\t]*(?:[^\\s"']|"[^"\\n]*"|'[^'\\n]*')))`,
+		),
+		beginScope: 'keyword',
+		end: /(?=[;}])/,
+		contains: [
+			{...STRING, endsParent: true},
+			{scope: 'string', begin: new RegExp(unquotedValue('')), endsParent: true},
+		],
 	};
 
 	return {

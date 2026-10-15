@@ -1,0 +1,20 @@
+<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;#/develop/gameBase/_common.blk&quot;</span>
+<span class="hljs-keyword">include</span> <span class="hljs-string">&#x27;%dngSceneBlk/base.blk&#x27;</span>;
+<span class="hljs-keyword">include</span> <span class="hljs-string">shaders_game_internal.blk</span>
+<span class="hljs-keyword">INCLUDE</span> <span class="hljs-string">/abs/path.blk</span> <span class="hljs-comment">// comment</span>
+<span class="hljs-keyword">inClude</span> <span class="hljs-string">&quot;mixed.blk&quot;</span>
+<span class="hljs-title">block</span>{
+  <span class="hljs-keyword">include</span>
+    <span class="hljs-string">&quot;a.blk&quot;</span>
+  <span class="hljs-keyword">Include</span>
+  <span class="hljs-string">b.blk</span>
+}
+<span class="hljs-title">a</span>{
+  <span class="hljs-keyword">include</span>
+}
+<span class="hljs-keyword">include</span>;
+<span class="hljs-title">include</span>{}
+<span class="hljs-property">Include</span>:<span class="hljs-built_in">t</span>=<span class="hljs-string">&quot;x&quot;</span>
+<span class="hljs-property">include</span> = <span class="hljs-string">y</span>
+<span class="hljs-property">include.x</span>:<span class="hljs-built_in">i</span>=<span class="hljs-number">1</span>
+<span class="hljs-property">AddIncludes</span> = <span class="hljs-string">$(Root)/include</span>
