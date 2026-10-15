@@ -240,7 +240,6 @@ export default function dshl(hljs: HLJSApi): Language {
 
 	return {
 		name: 'DSHL',
-		aliases: ['dshl'],
 		keywords: DSHL_KEYWORD_OBJECT,
 		contains: [...DSHL_RULES, STAGE_BLOCK],
 	};
