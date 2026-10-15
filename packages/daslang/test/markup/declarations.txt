@@ -4,8 +4,37 @@ require daslib/linq
 
 typedef distinct Meters = float
 
+class Base {
+    id : int
+}
+
+class Shape : Base {
+    area : float
+}
+
+struct Point {
+    x : float
+}
+
+struct Point3 : Point {
+    z : float
+}
+
+enum Color : uint8 {
+    Red
+    Green
+}
+
+bitfield Flags : uint8 {
+    visible
+    enabled
+}
+
 [export]
 def main() {
     let unique <- distinct([1, 2, 2, 3])
-    print("{unique}\n")
+    var choice : variant<a : int; b : float>
+    var flags : bitfield<x; y>
+    var pair : tuple<int; float>
+    print("{unique} {choice} {flags} {pair}\n")
 }

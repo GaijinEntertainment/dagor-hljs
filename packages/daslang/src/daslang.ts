@@ -123,8 +123,9 @@ export default function daslang(hljs: HLJSApi): Language {
 	};
 
 	const TYPE_DEFINITION: Mode = {
-		beginKeywords: 'struct class enum tuple variant bitfield typedef',
-		end: /[:={\n]/,
+		begin: /\b(?:struct|class|enum|tuple|variant|bitfield|typedef)\b(?=\s+[_a-zA-Z])/,
+		beginScope: 'keyword',
+		end: /[={\n]/,
 		excludeEnd: true,
 		keywords: KEYWORD_OBJECT,
 		contains: [
