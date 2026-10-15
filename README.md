@@ -1,42 +1,19 @@
-# daglangs_grammars
+# dagor-hljs
 
-highlight.js grammars for the Dagor languages. Use them in any project that
-highlights code with highlight.js 11.
+[highlight.js](https://highlightjs.org/) 11 grammars for the languages of the
+[Dagor Engine](https://github.com/GaijinEntertainment/DagorEngine). Each grammar is an npm package of its own.
 
-| Language | Name in highlight.js | File extensions   |
-| -------- | -------------------- | ----------------- |
-| Daslang  | `das`                | `.das`            |
-| BLK      | `blk`                | `.blk`            |
-| Quirrel  | `quirrel`            | `.nut`            |
-| DSHL     | `dshl`               | `.dshl`           |
-| Jam      | `jam`                | `.jam`, `Jamfile` |
+| Package                                           | Language | Name in highlight.js | File extensions   |
+| ------------------------------------------------- | -------- | -------------------- | ----------------- |
+| [`@gaijin/highlightjs-daslang`](packages/daslang) | Daslang  | `daslang`            | `.das`            |
+| [`@gaijin/highlightjs-blk`](packages/blk)         | BLK      | `blk`                | `.blk`            |
+| [`@gaijin/highlightjs-quirrel`](packages/quirrel) | Quirrel  | `quirrel`            | `.nut`            |
+| [`@gaijin/highlightjs-dshl`](packages/dshl)       | DSHL     | `dshl`               | `.dshl`           |
+| [`@gaijin/highlightjs-jam`](packages/jam)         | Jam      | `jam`                | `.jam`, `jamfile` |
 
-## Usage
+## Development
 
-```js
-import hljs from 'highlight.js';
-import {register} from 'daglangs_grammars';
-
-register(hljs);
-const html = hljs.highlight(code, {language: 'dshl'}).value;
-```
-
-Or register one grammar at a time:
-
-```js
-import dshl from 'daglangs_grammars/dshl.js';
-hljs.registerLanguage('dshl', dshl);
-```
-
-## Notes
-
-- Tested with highlight.js 11.12.0.
-- Each grammar is a plain highlight.js language definition. It only uses
-  highlight.js features, so it does not depend on the Gerrit code base.
-- The grammars are written by hand from the language sources. The header of
-  each file names the source it follows.
-
-## Tests
+The workspace uses [Vite+](https://viteplus.dev/) and yarn 4.
 
 ```sh
 vp install
@@ -44,6 +21,8 @@ vp check
 vp test run
 ```
 
+`vp test run` builds every package before it tests the built scripts. `vp run -r build` builds the packages alone.
+
 ## License
 
-MIT. See `LICENSE`.
+MIT. See [LICENSE](LICENSE).

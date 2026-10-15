@@ -1,19 +1,29 @@
 # dagor-hljs
 
-highlight.js 11 grammars for the languages of the Dagor Engine: Daslang, BLK, Quirrel, DSHL, and Jam. The repository is
-public.
+highlight.js 11 grammars for the languages of the Dagor Engine: Daslang, BLK, Quirrel, DSHL, and Jam. Each grammar is
+an npm package of its own. The repository is public.
+
+## Where things live
+
+- `packages/<language>/` - the package `@gaijin/highlightjs-<language>`. The directory name is the highlight.js
+  language name; it also names `src/<language>.ts`, `dist/<language>.min.js`, and the test registration.
+- `grammar-pack.ts` - the `vp pack` configuration of every package.
+- `test/markup.ts` - the fixture helper that each grammar test calls. `test/dist.test.ts` loads each built
+  `<language>.min.js` on a fresh highlight.js instance.
 
 ## Rules
 
 - The header comment of each grammar names the source that the grammar follows. Settle a token question in that source.
-- A grammar file, its key in `languages` of `index.js`, its entry in `files` of `package.json`, its row in the table of
-  `README.md`, and its sample in `test/smoke.test.mjs` change together.
+- A grammar package also changes the language table of `README.md`.
 - Give a token only a class from `CLASS_SAFELIST` in Gerrit's
   `polygerrit-ui/app/embed/diff/gr-syntax-layer/gr-syntax-layer-worker.ts`. The Gerrit diff view shows no other class.
+- A fixture is `test/markup/<name>.txt` with `<name>.expect.txt` beside it. `vp test run -u` writes a new expectation;
+  read its diff before the commit, because the expectation is what the test holds the grammar to.
 
 ## Verification
 
-- Run `vp install`, then `vp check` (format, lint, and type check) and `vp test run`.
+- Run `vp install`, then `vp check` (format, lint, and type check) and `vp test run`. The `dist` test project builds
+  every package first; `vp pack` runs publint and attw on each package.
 
 ## Public repository
 
