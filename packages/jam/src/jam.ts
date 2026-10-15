@@ -76,19 +76,28 @@ export default function jam(_hljs: HLJSApi): Language {
 
 	// A '$(...)' reference. Its name is a built-in variable or a user variable.
 	// A modifier such as ':S' or a subscript such as '[1]' is a type.
+	const MODIFIER_VALUE: Mode = {
+		begin: /=/,
+		end: /(?=[:)])/,
+		contains: [],
+	};
+
 	const VARIABLE: Mode = {
 		begin: /\$\(/,
 		end: /\)|$/,
 		contains: [
 			'self',
 			{scope: 'built_in', begin: words(JAM_VARIABLES)},
-			{scope: 'type', begin: /:[GBSMDPULEJRTW]+/},
+			{scope: 'type', begin: /:[LUPEJGRDBSM]+/},
+			{begin: /:[A-Za-z]+/},
+			MODIFIER_VALUE,
 			{scope: 'type', begin: /\[[\d-]+\]/},
 			{scope: 'built_in', begin: /[<>]/},
 			{scope: 'variable', begin: /\d+/},
 			{scope: 'variable', begin: new RegExp(NAME)},
 		],
 	};
+	MODIFIER_VALUE.contains = [VARIABLE];
 
 	const ESCAPE: Mode = {begin: /\\./, relevance: 0};
 
