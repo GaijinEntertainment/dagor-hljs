@@ -1,0 +1,25 @@
+#strict
+#allow-root-table
+#pos:120:script.nut
+/* A block comment */
+let path = @"C:\data\""quoted"""
+let letter = 'q'
+let mask = 0xFF00
+let big = 1.5e10
+global const SPEED = 2.5
+
+class Unit extends Base {
+  static count = 0
+
+  constructor() {
+    base.constructor()
+    ::print(typeof this)
+  }
+
+  function [pure] area(w, h) {
+    return w * h
+  }
+}
+
+let copy = clone defaults
+println(__FILE__ + ":" + __LINE__)

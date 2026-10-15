@@ -7,6 +7,8 @@
  * gr-syntax-layer-worker.ts are shown in the diff.
  */
 
+import type {HLJSApi, Language, Mode} from 'highlight.js';
+
 const KEYWORDS = [
 	'local let global static const class enum function return yield',
 	'if else switch case default while do for foreach break continue',
@@ -23,7 +25,7 @@ const LITERALS = 'null true false __LINE__ __FILE__';
 
 const RESERVED_WORDS = [KEYWORDS, BUILT_IN_TYPES, LITERALS].join(' ').split(' ');
 
-export default function (hljs) {
+export default function quirrel(hljs: HLJSApi): Language {
 	const KEYWORD_OBJECT = {
 		keyword: KEYWORDS,
 		built_in: BUILT_IN_TYPES,
@@ -35,28 +37,28 @@ export default function (hljs) {
 
 	// Interpolated code is highlighted like the rest of the file, so the
 	// contains list is filled in at the end.
-	const INTERPOLATION = {
+	const INTERPOLATION: Mode = {
 		className: 'template-variable',
 		begin: /\{/,
 		end: /\}/,
 		contains: [],
 	};
 
-	const STRING = {
+	const STRING: Mode = {
 		className: 'string',
 		begin: /"/,
 		end: /"/,
 		contains: [hljs.BACKSLASH_ESCAPE],
 	};
 
-	const VERBATIM_STRING = {
+	const VERBATIM_STRING: Mode = {
 		className: 'string',
 		begin: /@"/,
 		end: /"/,
 		contains: [{begin: /""/, skip: true}],
 	};
 
-	const INTERPOLATED_STRING = {
+	const INTERPOLATED_STRING: Mode = {
 		className: 'string',
 		begin: /\$"/,
 		end: /"/,
@@ -64,43 +66,43 @@ export default function (hljs) {
 	};
 
 	// The `@@` form has one quote character after `@@`, then the text.
-	const DOCSTRING = {
+	const DOCSTRING: Mode = {
 		className: 'string',
 		begin: /@@./,
 		end: /"/,
 		contains: [{begin: /""/, skip: true}],
 	};
 
-	const CHARACTER = {
+	const CHARACTER: Mode = {
 		className: 'string',
 		begin: /'(?:\\[^'\n]*|[^'\\\n])'/,
 	};
 
-	const NUMBER = {
+	const NUMBER: Mode = {
 		className: 'number',
 		begin: /\b(?:0[xX][0-9a-fA-F]+|\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)\b/,
 	};
 
-	const DIRECTIVE = {
+	const DIRECTIVE: Mode = {
 		className: 'meta',
 		begin: /#pos:\d+:\S*|#[a-z][a-z-]*(?::[a-z-]+)?/,
 	};
 
 	// `[pure]` and `[nodiscard]` come before the function name.
-	const ATTRIBUTE = {
+	const ATTRIBUTE: Mode = {
 		begin: /\[(?=\s*(?:pure|nodiscard)\b)/,
 		end: /\]/,
 		contains: [{className: 'attr', begin: /\b(?:pure|nodiscard)\b/}],
 	};
 
-	const LAMBDA = {
+	const LAMBDA: Mode = {
 		className: 'keyword',
 		begin: /@(?=\s*\()/,
 	};
 
 	// The name follows `function`. The mode ends before `[`, and returnEnd
 	// hands that `[` back, so an attribute such as `[pure]` is still colored.
-	const FUNCTION_DEFINITION = {
+	const FUNCTION_DEFINITION: Mode = {
 		beginKeywords: 'function',
 		end: /[([{;\n]/,
 		returnEnd: true,
@@ -108,7 +110,7 @@ export default function (hljs) {
 		contains: [{className: 'title function_', begin: NAME_START}],
 	};
 
-	const TYPE_DEFINITION = {
+	const TYPE_DEFINITION: Mode = {
 		beginKeywords: 'class enum',
 		end: /[{\n]/,
 		returnEnd: true,
@@ -116,43 +118,43 @@ export default function (hljs) {
 		contains: [{className: 'type', begin: NAME_START}],
 	};
 
-	const CONSTRUCTOR = {
+	const CONSTRUCTOR: Mode = {
 		className: 'title function_',
 		begin: /\bconstructor\b/,
 	};
 
-	const THIS_OR_BASE = {
+	const THIS_OR_BASE: Mode = {
 		className: 'variable language_',
 		begin: /\b(?:this|base)\b/,
 	};
 
 	// The dot, `?.` or the name after it is not colored, only the name.
-	const METHOD_CALL = {
+	const METHOD_CALL: Mode = {
 		className: 'title function_',
 		begin: /(?:\?\.|\.)(?=[A-Za-z_]\w*\s*\()/,
 		end: /(?!\w)/,
 		excludeBegin: true,
 	};
 
-	const FIELD = {
+	const FIELD: Mode = {
 		className: 'property',
 		begin: /(?:\?\.|\.)(?=[A-Za-z_])/,
 		end: /(?!\w)/,
 		excludeBegin: true,
 	};
 
-	const CALL = {
+	const CALL: Mode = {
 		className: 'title function_',
 		begin: new RegExp(`${NAME_START}(?=\\s*\\()`),
 	};
 
 	// Quirrel writes constants in all capitals, such as `MAX_COUNT`.
-	const CONSTANT = {
+	const CONSTANT: Mode = {
 		className: 'literal',
 		begin: /\b[A-Z][A-Z0-9_]*\b/,
 	};
 
-	const CODE = [
+	const CODE: Mode[] = [
 		hljs.C_LINE_COMMENT_MODE,
 		hljs.C_BLOCK_COMMENT_MODE,
 		DOCSTRING,
