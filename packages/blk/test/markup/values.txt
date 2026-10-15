@@ -1,0 +1,26 @@
+text:t=70
+words:t=hello world
+flag:b=yes
+off:b=no
+whole:i=12
+long:i64=-9000000000
+real:r=.5
+plus:r=+1
+exp:r=1e3
+color:c=255, 128, 0, 255
+pos:p3=1.5, -2, 3e2
+grid:ip2=4,4
+matrix:m=[[1,0,0] [0,1,0] [0,0,1] [0,0,0]]
+untyped = 5
+untyped_bool = yes
+percent = 50%pw
+quoted:i="12"
+numbers:r[]=[.5; +1; 1e3; -2;]
+flags:b[]=[yes; no; on; off;]
+names:t[]=["a"; b; yes please;]
+pairs:ip2[]=[32, 64; 128, 256;]
+spaced:t[] = [
+  "first"
+  bare value
+]
+empty:p3[]=[]
