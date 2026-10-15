@@ -1,0 +1,10 @@
+<span class="hljs-keyword">let</span> <span class="hljs-title function_">handler</span> = <span class="hljs-keyword">function</span>(x) { <span class="hljs-keyword">return</span> x }
+
+<span class="hljs-keyword">let</span> callbacks = {
+  <span class="hljs-attr">onDone</span> = <span class="hljs-keyword">function</span>(result) {
+    <span class="hljs-keyword">local</span> total = result
+    total = total + <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> { <span class="hljs-attr">total</span> = total }
+  }
+  <span class="hljs-attr">retries</span> = <span class="hljs-number">3</span>, [<span class="hljs-variable constant_">MODE</span>] = <span class="hljs-string">&quot;fast&quot;</span>
+}

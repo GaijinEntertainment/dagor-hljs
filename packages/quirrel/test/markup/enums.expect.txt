@@ -1,11 +1,11 @@
-<span class="hljs-keyword">enum</span> <span class="hljs-title">State</span> {
-  <span class="hljs-literal">idle</span>, <span class="hljs-literal">busy</span> = <span class="hljs-number">2</span>
-  <span class="hljs-literal">failed</span> = -<span class="hljs-number">1</span> <span class="hljs-comment">// the last state</span>
+<span class="hljs-keyword">enum</span> <span class="hljs-title class_">State</span> {
+  idle, busy = <span class="hljs-number">2</span>
+  failed = -<span class="hljs-number">1</span> <span class="hljs-comment">// the last state</span>
   <span class="hljs-comment">/* reserved */</span>
-  <span class="hljs-literal">label</span> = <span class="hljs-string">&quot;text&quot;</span>, <span class="hljs-literal">ratio</span> = <span class="hljs-number">0.5</span>, <span class="hljs-literal">mark</span> = <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-literal">enabled</span> = <span class="hljs-literal">true</span>
+  label = <span class="hljs-string">&quot;text&quot;</span>, ratio = <span class="hljs-number">0.5</span>, mark = <span class="hljs-string">&#x27;c&#x27;</span>, enabled = <span class="hljs-literal">true</span>
 }
 
-<span class="hljs-keyword">global</span> <span class="hljs-keyword">enum</span> <span class="hljs-title">Speed</span> {
-  <span class="hljs-literal">FAST</span>
-  <span class="hljs-literal">SLOW</span> = <span class="hljs-number">0x10</span>
+<span class="hljs-keyword">global</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">Speed</span> {
+  <span class="hljs-variable constant_">FAST</span>
+  <span class="hljs-variable constant_">SLOW</span> = <span class="hljs-number">0x10</span>
 }
