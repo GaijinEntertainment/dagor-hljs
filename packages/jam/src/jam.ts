@@ -6,6 +6,8 @@
  * CLASS_SAFELIST in gr-syntax-layer-worker.ts are shown in the diff.
  */
 
+import type {HLJSApi, Language, Mode} from 'highlight.js';
+
 // Keywords of the Jam language.
 const KEYWORDS = [
 	'actions bind break case continue default else existing for if ignore in',
@@ -41,11 +43,11 @@ const NAME = '[A-Za-z_][\\w.]*';
 const RESERVED = [KEYWORDS, BUILTIN_RULES, JAM_VARIABLES, ACTION_COMMANDS].join(' ').split(' ');
 const NOT_RESERVED = `(?!(?:${RESERVED.join('|')})\\b)`;
 
-function words(list) {
+function words(list: string): RegExp {
 	return new RegExp(`\\b(?:${list.split(' ').join('|')})\\b`);
 }
 
-export default function (hljs) {
+export default function jam(_hljs: HLJSApi): Language {
 	const KEYWORD_OBJECT = {
 		keyword: `${KEYWORDS} ${BUILTIN_RULES}`,
 	};
@@ -55,7 +57,7 @@ export default function (hljs) {
 		string: ACTION_STRINGS,
 	};
 
-	const COMMENT = {
+	const COMMENT: Mode = {
 		className: 'comment',
 		begin: /(?:^|[ \t])#/,
 		end: /$/,
@@ -63,24 +65,23 @@ export default function (hljs) {
 
 	// A '$(...)' reference. Its name is a built-in variable or a user variable.
 	// A modifier such as ':S' or a subscript such as '[1]' is a type.
-	const VARIABLE = {
+	const VARIABLE: Mode = {
 		begin: /\$\(/,
 		end: /\)|$/,
-		contains: [],
+		contains: [
+			'self',
+			{className: 'built_in', begin: words(JAM_VARIABLES)},
+			{className: 'type', begin: /:[GBSMDPULEJRTW]+/},
+			{className: 'type', begin: /\[[\d-]+\]/},
+			{className: 'built_in', begin: /[<>]/},
+			{className: 'variable', begin: /\d+/},
+			{className: 'variable', begin: new RegExp(NAME)},
+		],
 	};
-	VARIABLE.contains = [
-		'self',
-		{className: 'built_in', begin: words(JAM_VARIABLES)},
-		{className: 'type', begin: /:[GBSMDPULEJRTW]+/},
-		{className: 'type', begin: /\[[\d-]+\]/},
-		{className: 'built_in', begin: /[<>]/},
-		{className: 'variable', begin: /\d+/},
-		{className: 'variable', begin: new RegExp(NAME)},
-	];
 
-	const ESCAPE = {begin: /\\./, relevance: 0};
+	const ESCAPE: Mode = {begin: /\\./, relevance: 0};
 
-	const STRING = {
+	const STRING: Mode = {
 		className: 'string',
 		begin: /"/,
 		end: /"|$/,
@@ -88,14 +89,14 @@ export default function (hljs) {
 	};
 
 	// A brace inside an action body nests, so it does not end the body.
-	const ACTION_NESTED = {
+	const ACTION_NESTED: Mode = {
 		begin: /\{/,
 		end: /\}/,
 		keywords: ACTION_OBJECT,
 		contains: [],
 	};
 
-	const ACTION_RULES = [
+	const ACTION_RULES: Mode[] = [
 		// Directives such as `#async` change how the action runs.
 		{className: 'meta', begin: /^[ \t]*#(?:async|respfile-ln|no-respfile|respfile)\b/},
 		// The markers that flip slashes in an action line.
@@ -108,7 +109,7 @@ export default function (hljs) {
 	ACTION_NESTED.contains = [...ACTION_RULES, ACTION_NESTED];
 
 	// The body of an `actions` block. It ends the enclosing block when it closes.
-	const ACTION_BODY = {
+	const ACTION_BODY: Mode = {
 		begin: /\{/,
 		end: /\}/,
 		endsParent: true,
@@ -118,7 +119,7 @@ export default function (hljs) {
 
 	// `actions [flags] NAME [bind VARS] {`. The lookahead lets the header words
 	// be colored by this mode, and the body closes the mode through endsParent.
-	const ACTIONS_BLOCK = {
+	const ACTIONS_BLOCK: Mode = {
 		begin: /(?=^[ \t]*actions\b[^{}]*\{)/,
 		end: /(?!)/,
 		keywords: KEYWORD_OBJECT,
@@ -131,13 +132,13 @@ export default function (hljs) {
 
 	// The parameters of `rule NAME PARAMS {` are variables. The title ends
 	// where the parameters start, and the parameters end at the brace.
-	const RULE_PARAMETERS = {
+	const RULE_PARAMETERS: Mode = {
 		className: 'variable',
 		end: /(?=\{)|$/,
 		endsParent: true,
 	};
 
-	const RULE_DEFINITION = {
+	const RULE_DEFINITION: Mode = {
 		begin: /(?=^[ \t]*rule\b)/,
 		end: /$/,
 		contains: [
@@ -147,7 +148,7 @@ export default function (hljs) {
 	};
 
 	// `local` and the loop variable of `for` name variables.
-	const LOCAL_DEFINITION = {
+	const LOCAL_DEFINITION: Mode = {
 		begin: /(?=^[ \t]*local\b)/,
 		end: /(?=[=;])|$/,
 		contains: [
@@ -156,7 +157,7 @@ export default function (hljs) {
 		],
 	};
 
-	const FOR_DEFINITION = {
+	const FOR_DEFINITION: Mode = {
 		begin: /(?=^[ \t]*for\b)/,
 		end: /(?=\s+in\b)|$/,
 		contains: [
@@ -166,30 +167,30 @@ export default function (hljs) {
 	};
 
 	// An assignment to a Jam variable, such as `SEARCH = ...`.
-	const ASSIGN_BUILT_IN = {
+	const ASSIGN_BUILT_IN: Mode = {
 		className: 'built_in',
 		begin: new RegExp(`\\b(?:${JAM_VARIABLES.split(' ').join('|')})\\b(?=\\s*(?:\\?=|\\+=|=|on\\b))`),
 	};
 
-	const ASSIGN_USER = {
+	const ASSIGN_USER: Mode = {
 		className: 'variable',
 		begin: new RegExp(`${NAME}(?=\\s*(?:\\?=|\\+=|=|on\\b))`),
 	};
 
 	// `[ RuleName args ]`. A built-in rule is a keyword, so the bracket
 	// mode below handles it instead.
-	const BRACKET_ARGUMENTS = {
+	const BRACKET_ARGUMENTS: Mode = {
 		end: /(?=\])|$/,
 		contains: [STRING, VARIABLE],
 	};
 
-	const BRACKET_RULE = {
+	const BRACKET_RULE: Mode = {
 		begin: new RegExp(`\\[[ \\t]*(?=${NOT_RESERVED}${NAME})`),
 		end: /\]|$/,
 		contains: [{className: 'title function_', begin: new RegExp(NAME), starts: BRACKET_ARGUMENTS}],
 	};
 
-	const BRACKET_BUILT_IN = {
+	const BRACKET_BUILT_IN: Mode = {
 		begin: /\[/,
 		end: /\]|$/,
 		keywords: KEYWORD_OBJECT,
@@ -197,7 +198,7 @@ export default function (hljs) {
 	};
 
 	// A line that starts with a user rule name calls that rule.
-	const STATEMENT_CALL = {
+	const STATEMENT_CALL: Mode = {
 		className: 'title function_',
 		begin: new RegExp(`^[ \\t]*${NOT_RESERVED}${NAME}(?=\\s|$)(?!\\s*(?:\\?=|\\+=|=|on\\b))`),
 	};

@@ -1,0 +1,29 @@
+<span class="hljs-comment"># A comment line</span>
+<span class="hljs-built_in">SEARCH</span> <span class="hljs-keyword">on</span> $(<span class="hljs-variable">target</span>) = $(<span class="hljs-variable">Root</span>)/src ;
+<span class="hljs-variable">OutDir</span> ?= $(<span class="hljs-variable">Root</span>)/out ;
+<span class="hljs-variable">Flags</span> += -O2 ;<span class="hljs-comment"> # A trailing comment</span>
+
+<span class="hljs-keyword">rule</span> <span class="hljs-title function_">CompileShader</span><span class="hljs-variable"> target : source : flags</span>
+{
+  <span class="hljs-keyword">local</span> <span class="hljs-variable">out</span> = $(<span class="hljs-variable">target</span><span class="hljs-type">:S</span>=.<span class="hljs-variable">bin</span>) ;
+  <span class="hljs-keyword">Depends</span> $(<span class="hljs-variable">target</span>) : $(<span class="hljs-variable">source</span>) ;
+  <span class="hljs-keyword">NoCare</span> $(<span class="hljs-variable">source</span>) ;
+  <span class="hljs-keyword">for</span> <span class="hljs-variable">f</span> <span class="hljs-keyword">in</span> $(<span class="hljs-variable">flags</span><span class="hljs-type">[1-2]</span>) {
+    <span class="hljs-keyword">Echo</span> <span class="hljs-string">&quot;flag: \&quot;$(<span class="hljs-variable">f</span>)\&quot; on $(<span class="hljs-built_in">OS</span>)&quot;</span> ;
+  }
+  <span class="hljs-keyword">switch</span> $(<span class="hljs-built_in">OSPLAT</span>) {
+    <span class="hljs-keyword">case</span> X86 : <span class="hljs-keyword">Exit</span> unsupported ;
+    <span class="hljs-keyword">case</span> * : CompileShaderCmd $(<span class="hljs-variable">target</span>) : $(<span class="hljs-variable">source</span>) ;
+  }
+  <span class="hljs-keyword">while</span> $(<span class="hljs-variable">out</span>) { <span class="hljs-variable">out</span> = [ <span class="hljs-keyword">Match</span> <span class="hljs-string">&quot;(.*)/[^/]*&quot;</span> : $(<span class="hljs-variable">out</span>) ] ; }
+  <span class="hljs-keyword">local</span> <span class="hljs-variable">name</span> = [ <span class="hljs-title function_">BaseName</span> $(<span class="hljs-variable">source</span>) ] ;
+}
+
+<span class="hljs-keyword">actions</span> <span class="hljs-keyword">quietly</span> <span class="hljs-title function_">CompileShaderCmd</span> <span class="hljs-keyword">bind</span> <span class="hljs-title function_">flags</span>
+{
+<span class="hljs-meta">#async</span>
+<span class="hljs-string">  :retry</span>
+  <span class="hljs-keyword">call</span> $(<span class="hljs-variable">COMPILER</span>) <span class="hljs-meta">#\(</span>-o $(<span class="hljs-variable">1</span>)\<span class="hljs-meta">)#</span> $(<span class="hljs-variable">2</span>)
+  <span class="hljs-keyword">if</span> <span class="hljs-string">errorlevel</span> 1 <span class="hljs-keyword">goto</span> retry
+  { <span class="hljs-keyword">echo</span> nested braces }
+}

@@ -91,6 +91,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@gaijin/highlightjs-jam@workspace:packages/jam":
+  version: 0.0.0-use.local
+  resolution: "@gaijin/highlightjs-jam@workspace:packages/jam"
+  peerDependencies:
+    highlight.js: ^11.12.0
+  languageName: unknown
+  linkType: soft
+
 "@gaijin/highlightjs-quirrel@workspace:packages/quirrel":
   version: 0.0.0-use.local
   resolution: "@gaijin/highlightjs-quirrel@workspace:packages/quirrel"
