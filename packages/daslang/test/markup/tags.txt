@@ -1,0 +1,20 @@
+options gen2
+
+require daslib/ast
+require daslib/templates_boost
+
+def make_sum(a, b : ExpressionPtr) : ExpressionPtr {
+    return qmacro($e(a) + $$(b))
+}
+
+def make_call(name : string; arg : ExpressionPtr) : ExpressionPtr {
+    return qmacro($c(name)($e(arg)))
+}
+
+def make_variable(name : string) : ExpressionPtr {
+    return qmacro($i(name))
+}
+
+def make_value(value : int) : ExpressionPtr {
+    return qmacro($v(value))
+}
