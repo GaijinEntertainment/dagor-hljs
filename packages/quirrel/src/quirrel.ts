@@ -2,9 +2,7 @@
  * Quirrel (.nut) language definition for highlight.js.
  *
  * Written by hand from the tree-sitter grammar in
- * GaijinEntertainment/tree-sitter-quirrel (MIT). Its queries/highlights.scm
- * chooses the token classes. Only classes listed in CLASS_SAFELIST in
- * gr-syntax-layer-worker.ts are shown in the diff.
+ * GaijinEntertainment/tree-sitter-quirrel (MIT).
  */
 
 import type {HLJSApi, Language, Mode} from 'highlight.js';
@@ -98,7 +96,7 @@ export default function quirrel(hljs: HLJSApi): Language {
 	const ATTRIBUTE: Mode = {
 		begin: /\[(?=\s*(?:pure|nodiscard)\b)/,
 		end: /\]/,
-		contains: [{scope: 'attr', begin: /\b(?:pure|nodiscard)\b/}],
+		contains: [{scope: 'meta', begin: /\b(?:pure|nodiscard)\b/}],
 	};
 
 	const LAMBDA: Mode = {
@@ -118,7 +116,13 @@ export default function quirrel(hljs: HLJSApi): Language {
 
 	const TYPE_DEFINITION: Mode = {
 		match: [/\b(?:class|enum)/, /\s+/, new RegExp(NAME_START)],
-		scope: {1: 'keyword', 3: 'type'},
+		scope: {1: 'keyword', 3: 'title'},
+	};
+
+	// `Name = class` and `Name <- class` give the class the name of the variable or the slot.
+	const CLASS_VALUE: Mode = {
+		match: [new RegExp(NAME_START), /\s*(?:=|<-)\s*/, /\bclass\b/],
+		scope: {1: 'title', 3: 'keyword'},
 	};
 
 	const CLASS_BASE: Mode = {
@@ -153,7 +157,7 @@ export default function quirrel(hljs: HLJSApi): Language {
 	};
 
 	const THIS_OR_BASE: Mode = {
-		scope: 'variable.language',
+		scope: 'built_in',
 		begin: /\b(?:this|base)\b/,
 	};
 
@@ -165,8 +169,7 @@ export default function quirrel(hljs: HLJSApi): Language {
 		excludeBegin: true,
 	};
 
-	const FIELD: Mode = {
-		scope: 'property',
+	const PLAIN_FIELD: Mode = {
 		begin: /(?:\?\.|\.)(?=[A-Za-z_])/,
 		end: /(?!\w)/,
 		excludeBegin: true,
@@ -198,13 +201,14 @@ export default function quirrel(hljs: HLJSApi): Language {
 		LAMBDA,
 		FUNCTION_DEFINITION,
 		TYPE_DEFINITION,
+		CLASS_VALUE,
 		CLASS_BASE,
 		ENUM_BODY,
 		CATCH_CLASS,
 		CONSTRUCTOR,
 		THIS_OR_BASE,
 		METHOD_CALL,
-		FIELD,
+		PLAIN_FIELD,
 		CALL,
 		CONSTANT,
 	];

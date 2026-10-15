@@ -10,6 +10,11 @@ local class Inner {
   name = null
 }
 
+local Shape
+Shape = class {
+  sides = 0
+}
+
 class Loaded (require("base.nut").Base) {
   name = null
 }

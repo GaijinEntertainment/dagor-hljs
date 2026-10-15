@@ -5,7 +5,7 @@
 
 <span class="hljs-keyword">const</span> <span class="hljs-literal">MAX_PLAYERS</span> = <span class="hljs-number">16</span>
 
-<span class="hljs-keyword">enum</span> <span class="hljs-type">Team</span> {
+<span class="hljs-keyword">enum</span> <span class="hljs-title">Team</span> {
   <span class="hljs-literal">RED</span> = <span class="hljs-number">1</span>
   <span class="hljs-literal">BLUE</span> = <span class="hljs-number">2</span>
 }
@@ -13,21 +13,21 @@
 <span class="hljs-keyword">let</span> defaults = <span class="hljs-title function_">freeze</span>({
   name = <span class="hljs-string">&quot;player&quot;</span>
   score = <span class="hljs-number">0</span>
-  team = Team.<span class="hljs-property">RED</span>
+  team = Team.RED
 })
 
-<span class="hljs-keyword">class</span> <span class="hljs-type">Player</span> {
+<span class="hljs-keyword">class</span> <span class="hljs-title">Player</span> {
   name = <span class="hljs-literal">null</span>
   score = <span class="hljs-number">0</span>
 
   <span class="hljs-title function_">constructor</span>(params = {}) {
-    <span class="hljs-keyword">let</span> { name = defaults.<span class="hljs-property">name</span>, score = defaults.<span class="hljs-property">score</span> } = params
-    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name
-    <span class="hljs-variable language_">this</span>.<span class="hljs-property">score</span> = score
+    <span class="hljs-keyword">let</span> { name = defaults.name, score = defaults.score } = params
+    <span class="hljs-built_in">this</span>.name = name
+    <span class="hljs-built_in">this</span>.score = score
   }
 
   <span class="hljs-keyword">function</span> <span class="hljs-title function_">title</span>() {
-    <span class="hljs-keyword">return</span> <span class="hljs-string">$&quot;<span class="hljs-template-variable">{<span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span>}</span> (<span class="hljs-template-variable">{<span class="hljs-variable language_">this</span>.<span class="hljs-property">score</span>}</span>)&quot;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">$&quot;<span class="hljs-template-variable">{<span class="hljs-built_in">this</span>.name}</span> (<span class="hljs-template-variable">{<span class="hljs-built_in">this</span>.score}</span>)&quot;</span>
   }
 }
 
@@ -43,7 +43,7 @@
 
 <span class="hljs-keyword">let</span> best = <span class="hljs-keyword">@</span>(roster) roster
   .<span class="hljs-title function_">values</span>()
-  .<span class="hljs-title function_">reduce</span>(<span class="hljs-keyword">@</span>(a, b) a == <span class="hljs-literal">null</span> || b.<span class="hljs-property">score</span> &gt; a.<span class="hljs-property">score</span> ? b : a, <span class="hljs-literal">null</span>)
+  .<span class="hljs-title function_">reduce</span>(<span class="hljs-keyword">@</span>(a, b) a == <span class="hljs-literal">null</span> || b.score &gt; a.score ? b : a, <span class="hljs-literal">null</span>)
 
 <span class="hljs-keyword">local</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">report</span>(roster) {
   <span class="hljs-keyword">let</span> winner = <span class="hljs-title function_">best</span>(roster)
