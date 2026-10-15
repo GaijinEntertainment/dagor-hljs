@@ -1,12 +1,12 @@
 CPPopt += -DFOO=1 ;
 x=1 ;
-<span class="hljs-title function_">Foo</span> a ; <span class="hljs-title function_">Bar</span> b ;
-<span class="hljs-keyword">if</span> <span class="hljs-template-variable">$(x)</span> { <span class="hljs-title function_">Foo</span> a ; } <span class="hljs-keyword">else</span> <span class="hljs-title function_">Bar</span> b ;
-<span class="hljs-keyword">switch</span> <span class="hljs-template-variable">$(x)</span> {
-  <span class="hljs-keyword">case</span> a : <span class="hljs-title function_">Baz</span> c ;
+Foo a ; Bar b ;
+<span class="hljs-keyword">if</span> <span class="hljs-variable">$(x)</span> { Foo a ; } <span class="hljs-keyword">else</span> Bar b ;
+<span class="hljs-keyword">switch</span> <span class="hljs-variable">$(x)</span> {
+  <span class="hljs-keyword">case</span> a : Baz c ;
 }
-  <span class="hljs-title function_">Indented</span> call ;
+  Indented call ;
   Count = 1 ;
-<span class="hljs-title function_">SubInclude</span> TOP prog lib ;
-TargetLib = <span class="hljs-template-variable">$(Root)</span>/lib ;
-<span class="hljs-title function_">Library</span> <span class="hljs-template-variable">$(TargetLib)</span> : <span class="hljs-template-variable">$(Sources)</span> ;
+SubInclude TOP prog lib ;
+TargetLib = <span class="hljs-variable">$(Root)</span>/lib ;
+Library <span class="hljs-variable">$(TargetLib)</span> : <span class="hljs-variable">$(Sources)</span> ;

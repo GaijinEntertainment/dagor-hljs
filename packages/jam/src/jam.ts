@@ -1,8 +1,8 @@
 /*
  * Jam and Jamfile language definition for highlight.js.
  *
- * Written from the syntax of the Jam engine (its keyword table and scanner)
- * and the Colorer definition for Jamfiles.
+ * Written from the syntax of the Jam engine (its keyword table and scanner).
+ * Token scopes follow the highlight.js grammars of Makefile and Bash.
  */
 
 import type {HLJSApi, Language, Mode} from 'highlight.js';
@@ -28,17 +28,19 @@ const JAM_VARIABLES = [
 	'JAM_CWD JAMTARGETS JAMFILESRC JAM_BUILTINS HDRFS',
 ].join(' ');
 
+// The words of an action line that control the flow of its commands.
+const ACTION_KEYWORDS = 'quietly together goto if not exist call ERRORLEVEL errorlevel';
+
 // Commands at the start of an action line.
 const ACTION_COMMANDS = [
-	'quietly together echo echo_cvt mkdir copyfile del rem set goto if not',
-	'exist call call_filtered call_1core call_1core_filtered set_filter clr_filters enter_critsec',
-	'leave_critsec ERRORLEVEL errorlevel',
+	'echo echo_cvt mkdir copyfile del rem set call_filtered call_1core call_1core_filtered set_filter',
+	'clr_filters enter_critsec leave_critsec',
 ].join(' ');
 
 const NAME = '[A-Za-z_][\\w.]*';
 
 // A word that the parser reads as a rule call. Keywords and variables are excluded.
-const RESERVED = [KEYWORDS, BUILTIN_RULES, JAM_VARIABLES, ACTION_COMMANDS].join(' ').split(' ');
+const RESERVED = [KEYWORDS, BUILTIN_RULES, JAM_VARIABLES, ACTION_KEYWORDS, ACTION_COMMANDS].join(' ').split(' ');
 const NOT_RESERVED = `(?!(?:${RESERVED.join('|')})(?!\\S))`;
 
 const STATEMENT_START = '(?<=^[ \\t]*|(?:^|\\s)(?:[;{}]|else)\\s+|(?:^|\\s)case\\s+\\S+\\s+:\\s+)';
@@ -58,7 +60,8 @@ export default function jam(_hljs: HLJSApi): Language {
 
 	const ACTION_OBJECT = {
 		$pattern: /\S+/,
-		keyword: ACTION_COMMANDS,
+		keyword: ACTION_KEYWORDS,
+		built_in: ACTION_COMMANDS,
 	};
 
 	const COMMENT: Mode = {
@@ -76,7 +79,7 @@ export default function jam(_hljs: HLJSApi): Language {
 	};
 
 	const VARIABLE: Mode = {
-		scope: 'template-variable',
+		scope: 'variable',
 		begin: /\$\(/,
 		end: /\)|$/,
 		contains: ['self', MODIFIER_VALUE],
@@ -109,7 +112,7 @@ export default function jam(_hljs: HLJSApi): Language {
 		{scope: 'meta', begin: /#\/\(|\)\/#|#\\\(|\)\\#/},
 		{match: [/^[ \t]*/, /:\S+/], scope: {2: 'title'}},
 		{scope: 'comment', begin: /^[ \t]*#/, end: /$/},
-		{match: [/(?<=^[ \t]*)[rR][eE][mM](?=\s|$)/, /.*/], scope: {1: 'keyword', 2: 'comment'}},
+		{scope: 'comment', begin: /(?<=^[ \t]*)[rR][eE][mM](?=\s|$)/, end: /$/},
 		ACTION_STRING,
 		VARIABLE,
 	];
@@ -138,7 +141,7 @@ export default function jam(_hljs: HLJSApi): Language {
 				end: BEFORE_BLOCK,
 				contains: [VARIABLE],
 			},
-			{scope: 'title.function', begin: new RegExp(`${NOT_RESERVED}${NAME}(?=\\s*(?:bind\\b|\\{|$))`)},
+			{scope: 'title', begin: new RegExp(`${NOT_RESERVED}${NAME}(?=\\s*(?:bind\\b|\\{|$))`)},
 			ACTION_BODY,
 		],
 	};
@@ -155,7 +158,7 @@ export default function jam(_hljs: HLJSApi): Language {
 		end: /$/,
 		contains: [
 			{scope: 'keyword', begin: /\brule\b/},
-			{scope: 'title.function', begin: new RegExp(NAME), starts: RULE_PARAMETERS},
+			{scope: 'title', begin: new RegExp(NAME), starts: RULE_PARAMETERS},
 		],
 	};
 
@@ -171,7 +174,7 @@ export default function jam(_hljs: HLJSApi): Language {
 		contains: [
 			{scope: 'built_in', begin: new RegExp(`${BUILTIN_RULE}(?!\\S)`), starts: BRACKET_ARGUMENTS},
 			{scope: 'keyword', begin: /on(?!\S)/},
-			{scope: 'title.function', begin: new RegExp(`${NOT_RESERVED}${NAME}(?!\\S)`), starts: BRACKET_ARGUMENTS},
+			{begin: new RegExp(`${NOT_RESERVED}${NAME}(?!\\S)`), starts: BRACKET_ARGUMENTS},
 			STRING,
 			VARIABLE,
 		],
@@ -242,7 +245,6 @@ export default function jam(_hljs: HLJSApi): Language {
 	};
 
 	const STATEMENT_CALL: Mode = {
-		scope: 'title.function',
 		begin: new RegExp(`${STATEMENT_START}${NOT_RESERVED}${NAME}(?=\\s|$)(?!${ASSIGNMENT_AHEAD})`),
 		starts: ARGUMENTS,
 	};
