@@ -31,7 +31,7 @@
 <span class="hljs-variable">make_serve_files_DEPS</span> = $(<span class="hljs-variable">Root</span>)/$(<span class="hljs-variable">Location</span>)/make_serve_cpp.py ;
 
 <span class="hljs-variable">SourcesWebFolders</span> = 
-<span class="hljs-title function_">  vue</span>
+  <span class="hljs-title function_">vue</span>
   vue/components
   vue/core
   vue/vendor
@@ -58,8 +58,8 @@
 <span class="hljs-variable">ServeFiles_dep_rule</span> = ServeFilesDeps ;
 
 <span class="hljs-variable">Sources</span> =
-<span class="hljs-title function_">  ServeFiles.jamvar</span>
-<span class="hljs-title function_">  webViewPlugin.cpp</span>
+  <span class="hljs-title function_">ServeFiles.jamvar</span>
+  <span class="hljs-title function_">webViewPlugin.cpp</span>
 ;
 
 <span class="hljs-keyword">include</span> $(<span class="hljs-variable">Root</span>)/prog/_jBuild/build.jam ;

@@ -41,7 +41,11 @@ const NAME = '[A-Za-z_][\\w.]*';
 
 // A word that the parser reads as a rule call. Keywords and variables are excluded.
 const RESERVED = [KEYWORDS, BUILTIN_RULES, JAM_VARIABLES, ACTION_COMMANDS].join(' ').split(' ');
-const NOT_RESERVED = `(?!(?:${RESERVED.join('|')})\\b)`;
+const NOT_RESERVED = `(?!(?:${RESERVED.join('|')})(?!\\S))`;
+
+const STATEMENT_START = '(?<=^[ \\t]*|(?:^|\\s)(?:[;{}]|else)\\s+|(?:^|\\s)case\\s+\\S+\\s+:\\s+)';
+
+const ASSIGNMENT_AHEAD = '(?=\\s+(?:(?:\\?=|\\+=|=)(?:\\s|$)|on(?:\\s|$)|default\\s+=(?:\\s|$)))';
 
 function words(list: string): RegExp {
 	return new RegExp(`\\b(?:${list.split(' ').join('|')})\\b`);
@@ -171,12 +175,12 @@ export default function jam(_hljs: HLJSApi): Language {
 	// An assignment to a Jam variable, such as `SEARCH = ...`.
 	const ASSIGN_BUILT_IN: Mode = {
 		scope: 'built_in',
-		begin: new RegExp(`\\b(?:${JAM_VARIABLES.split(' ').join('|')})\\b(?=\\s*(?:\\?=|\\+=|=|on\\b))`),
+		begin: new RegExp(`${STATEMENT_START}(?:${JAM_VARIABLES.split(' ').join('|')})${ASSIGNMENT_AHEAD}`),
 	};
 
 	const ASSIGN_USER: Mode = {
 		scope: 'variable',
-		begin: new RegExp(`${NAME}(?=\\s*(?:\\?=|\\+=|=|on\\b))`),
+		begin: new RegExp(`${STATEMENT_START}${NAME}${ASSIGNMENT_AHEAD}`),
 	};
 
 	// `[ RuleName args ]`. A built-in rule is a keyword, so the bracket
@@ -199,10 +203,10 @@ export default function jam(_hljs: HLJSApi): Language {
 		contains: [STRING, VARIABLE],
 	};
 
-	// A line that starts with a user rule name calls that rule.
+	// A statement that starts with a user rule name calls that rule.
 	const STATEMENT_CALL: Mode = {
 		scope: 'title.function',
-		begin: new RegExp(`^[ \\t]*${NOT_RESERVED}${NAME}(?=\\s|$)(?!\\s*(?:\\?=|\\+=|=|on\\b))`),
+		begin: new RegExp(`${STATEMENT_START}${NOT_RESERVED}${NAME}(?=\\s|$)(?!${ASSIGNMENT_AHEAD})`),
 	};
 
 	return {

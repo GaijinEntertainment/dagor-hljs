@@ -1,0 +1,9 @@
+CPPopt += -DFOO=1 ;
+x=1 ;
+Foo a ; Bar b ;
+if $(x) { Foo a ; } else Bar b ;
+switch $(x) {
+  case a : Baz c ;
+}
+  Indented call ;
+  Count = 1 ;
