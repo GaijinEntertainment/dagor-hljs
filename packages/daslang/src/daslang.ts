@@ -25,7 +25,7 @@ const LITERALS = 'true false null';
 
 const BUILT_IN_TYPES = [
 	'bool string int int8 int16 int64 int2 int3 int4 uint uint8 uint16 uint64',
-	'uint2 uint3 uint4 float float2 float3 float4 float16 half2 half3 half4 half8',
+	'uint2 uint3 uint4 float float2 float3 float4 float16 half2 half3 half4 half8 float3x3 float3x4 float4x4',
 	'short2 short3 short4 short8 ushort2 ushort3 ushort4 ushort8',
 	'byte2 byte3 byte4 byte8 byte16 ubyte2 ubyte3 ubyte4 ubyte8 ubyte16',
 	'void range urange range64 urange64 double',
@@ -47,7 +47,7 @@ export default function daslang(hljs: HLJSApi): Language {
 	// Strings and interpolated code are reached through INTERPOLATION, so the
 	// contains list is filled in at the end.
 	const INTERPOLATION: Mode = {
-		scope: 'template-variable',
+		scope: 'subst',
 		begin: /\{/,
 		end: /\}/,
 		contains: [],
@@ -106,7 +106,7 @@ export default function daslang(hljs: HLJSApi): Language {
 		scope: 'meta',
 		begin: /(?<=^[ \t]*)\[(?=[^\]\n]*\][\s;]*(?:def|struct|class|enum)\b)/,
 		end: /\]/,
-		contains: [STRING, NUMBER],
+		contains: [STRING],
 	};
 
 	const BLOCK_MARKER: Mode = {
@@ -124,11 +124,8 @@ export default function daslang(hljs: HLJSApi): Language {
 		begin: /!\?as\b|!as\b|!is\b/,
 	};
 
-	// The name after the `:` of a declaration is a type, as in `cam : EntityId`. A `?` and a space before the `:` on
-	// the same line make it the `:` of a conditional expression.
-	const TYPE_ANNOTATION: Mode = {
-		match: [/(?<![:?])(?<!\?\s[^\n]*):(?![:=])\s*/, new RegExp(String.raw`${NAME_START}(?:::[_a-zA-Z]\w*)*`)],
-		scope: {2: 'type'},
+	const BASE_TYPE: Mode = {
+		begin: new RegExp(String.raw`:\s*${NAME_START}(?:::[_a-zA-Z]\w*)*`),
 	};
 
 	// `def` and the type declarations take a name, and modifiers can come
@@ -147,24 +144,24 @@ export default function daslang(hljs: HLJSApi): Language {
 		end: /[={\n]/,
 		excludeEnd: true,
 		keywords: KEYWORD_OBJECT,
-		contains: [{scope: 'keyword', begin: /\bdistinct\b/}, TYPE_ANNOTATION, {scope: 'title', begin: NAME_START}],
+		contains: [{scope: 'keyword', begin: /\bdistinct\b/}, BASE_TYPE, {scope: 'title.class', begin: NAME_START}],
 	};
 
+	// A construction such as `Point(x = 1.0)` or `new Shape` names a type, so the call rule must not reach it.
 	const STRUCT_CONSTRUCTION: Mode = {
-		scope: 'type',
 		begin: new RegExp(
 			`(?<=\\bnew\\s+)${NAME_START}|${NAME_START}(?=\\(\\s*(?:uninitialized\\b|[_a-zA-Z]\\w*\\s*(?:=(?!=)|<-|:=)))`,
 		),
 	};
 
 	const CALL: Mode = {
-		scope: 'title.function',
+		scope: 'title.function.invoke',
 		begin: new RegExp(`${NAME_START}(?=\\s*\\()`),
 	};
 
 	// The dot, arrow or `?.` is not colored, only the name after it.
 	const METHOD_CALL: Mode = {
-		scope: 'title.function',
+		scope: 'title.function.invoke',
 		begin: /(?:->|[?!]?\.)(?=[_a-zA-Z]\w*\s*\()/,
 		end: /(?!\w)/,
 		excludeBegin: true,
@@ -180,20 +177,8 @@ export default function daslang(hljs: HLJSApi): Language {
 		begin: /[_a-zA-Z]\w*(?=::)/,
 	};
 
-	const FUNCTION_ADDRESS: Mode = {
-		begin: /@@(?=[_a-zA-Z])/,
-		end: /(?![\w:])/,
-		contains: [NAMESPACE, {scope: 'title.function', begin: /[_a-zA-Z]\w*/}],
-	};
-
-	// Daslang writes constants in all capitals, such as `SCALE`.
-	const CONSTANT: Mode = {
-		scope: 'literal',
-		begin: /\b[A-Z][A-Z0-9_]*\b/,
-	};
-
 	const SELF: Mode = {
-		scope: 'built_in',
+		scope: 'keyword',
 		begin: /\bself\b/,
 	};
 
@@ -207,19 +192,16 @@ export default function daslang(hljs: HLJSApi): Language {
 		CHARACTER,
 		READER_MACRO,
 		BLOCK_MARKER,
-		FUNCTION_ADDRESS,
 		MACRO_VARIABLE,
 		NEGATED_KEYWORD,
 		NUMBER,
 		FUNCTION_DEFINITION,
 		TYPE_DEFINITION,
-		TYPE_ANNOTATION,
 		METHOD_CALL,
 		FIELD,
 		STRUCT_CONSTRUCTION,
 		CALL,
 		NAMESPACE,
-		CONSTANT,
 		SELF,
 	];
 

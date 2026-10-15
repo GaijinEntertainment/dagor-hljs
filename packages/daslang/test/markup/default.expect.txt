@@ -8,36 +8,36 @@
 
 <span class="hljs-keyword">expect</span> <span class="hljs-number">30101</span>:<span class="hljs-number">2</span>
 
-<span class="hljs-keyword">typedef</span> <span class="hljs-title">IntArray</span> = <span class="hljs-type">array</span>&lt;<span class="hljs-type">int</span>&gt;
+<span class="hljs-keyword">typedef</span> <span class="hljs-title class_">IntArray</span> = <span class="hljs-type">array</span>&lt;<span class="hljs-type">int</span>&gt;
 
-<span class="hljs-keyword">tuple</span> <span class="hljs-title">Pair</span> {
+<span class="hljs-keyword">tuple</span> <span class="hljs-title class_">Pair</span> {
     first : <span class="hljs-type">int</span>
     second : <span class="hljs-type">string</span>
 }
 
-<span class="hljs-keyword">variant</span> <span class="hljs-title">Value</span> {
+<span class="hljs-keyword">variant</span> <span class="hljs-title class_">Value</span> {
     i : <span class="hljs-type">int</span>
     s : <span class="hljs-type">string</span>
 }
 
-<span class="hljs-keyword">bitfield</span> <span class="hljs-title">Flags</span> : <span class="hljs-type">uint8</span> {
+<span class="hljs-keyword">bitfield</span> <span class="hljs-title class_">Flags</span> : <span class="hljs-type">uint8</span> {
     visible
     enabled
 }
 
-<span class="hljs-keyword">enum</span> <span class="hljs-title">Color</span> : <span class="hljs-type">uint8</span> {
+<span class="hljs-keyword">enum</span> <span class="hljs-title class_">Color</span> : <span class="hljs-type">uint8</span> {
     Red
     Green = <span class="hljs-number">4</span>
     Blue
 }
 
-<span class="hljs-keyword">struct</span> <span class="hljs-title">Point</span> {
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Point</span> {
     x, y : <span class="hljs-type">float</span> = <span class="hljs-number">0.0</span>
     <span class="hljs-meta">@tag</span> name : <span class="hljs-type">string</span>
 }
 
-<span class="hljs-keyword">class</span> <span class="hljs-title">Shape</span> : <span class="hljs-type">Base</span> {
-    origin : <span class="hljs-type">Point</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Shape</span> : Base {
+    origin : Point
     <span class="hljs-keyword">def</span> <span class="hljs-keyword">override</span> <span class="hljs-title function_">area</span> : <span class="hljs-type">float</span> {
         <span class="hljs-keyword">return</span> <span class="hljs-number">0.0</span>
     }
@@ -50,23 +50,23 @@
 <span class="hljs-meta">[export]</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>(args : <span class="hljs-type">array</span>&lt;<span class="hljs-type">string</span>&gt;; verbose = <span class="hljs-literal">false</span>) : <span class="hljs-type">int</span> {
     <span class="hljs-keyword">var</span> total = <span class="hljs-number">0</span>
-    <span class="hljs-keyword">for</span> (arg, i <span class="hljs-keyword">in</span> args, <span class="hljs-title function_">count</span>()) {
-        total += <span class="hljs-title function_">length</span>(arg) * i
+    <span class="hljs-keyword">for</span> (arg, i <span class="hljs-keyword">in</span> args, <span class="hljs-title function_ invoke__">count</span>()) {
+        total += <span class="hljs-title function_ invoke__">length</span>(arg) * i
     }
     <span class="hljs-keyword">let</span> squares &lt;- [<span class="hljs-keyword">for</span> (x <span class="hljs-keyword">in</span> <span class="hljs-type">range</span>(<span class="hljs-number">10</span>)); x * x; <span class="hljs-keyword">where</span> x % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>]
     <span class="hljs-keyword">let</span> lookup = {<span class="hljs-string">&quot;one&quot;</span> =&gt; <span class="hljs-number">1</span>, <span class="hljs-string">&quot;two&quot;</span> =&gt; <span class="hljs-number">2</span>}
     <span class="hljs-keyword">if</span> (verbose) {
-        <span class="hljs-title function_">print</span>(<span class="hljs-string">&quot;total <span class="hljs-template-variable">{total}</span> from <span class="hljs-template-variable">{<span class="hljs-title function_">length</span>(args)}</span> arguments\n&quot;</span>)
+        <span class="hljs-title function_ invoke__">print</span>(<span class="hljs-string">&quot;total <span class="hljs-subst">{total}</span> from <span class="hljs-subst">{<span class="hljs-title function_ invoke__">length</span>(args)}</span> arguments\n&quot;</span>)
     } <span class="hljs-keyword">elif</span> (total &gt; <span class="hljs-number">100</span>) {
         <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
     } <span class="hljs-keyword">else</span> {
-        <span class="hljs-title function_">print</span>(<span class="hljs-string">&quot;small\n&quot;</span>)
+        <span class="hljs-title function_ invoke__">print</span>(<span class="hljs-string">&quot;small\n&quot;</span>)
     }
-    <span class="hljs-keyword">let</span> pick = <span class="hljs-keyword">@</span>(p : <span class="hljs-type">Point</span>) =&gt; p.x + p.y * scale
-    squares |&gt; <span class="hljs-title function_">each</span>() &lt;| <span class="hljs-keyword">$</span>(v) {
+    <span class="hljs-keyword">let</span> pick = <span class="hljs-keyword">@</span>(p : Point) =&gt; p.x + p.y * scale
+    squares |&gt; <span class="hljs-title function_ invoke__">each</span>() &lt;| <span class="hljs-keyword">$</span>(v) {
         counter++
     }
-    <span class="hljs-keyword">let</span> shape = <span class="hljs-keyword">new</span> <span class="hljs-type">Shape</span>(origin = <span class="hljs-type">Point</span>(x = <span class="hljs-number">1.0</span>, y = <span class="hljs-number">2.0</span>))
+    <span class="hljs-keyword">let</span> shape = <span class="hljs-keyword">new</span> Shape(origin = Point(x = <span class="hljs-number">1.0</span>, y = <span class="hljs-number">2.0</span>))
     <span class="hljs-keyword">try</span> {
         <span class="hljs-keyword">unsafe</span> {
             <span class="hljs-keyword">delete</span> shape

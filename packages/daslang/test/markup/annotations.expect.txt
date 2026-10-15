@@ -1,7 +1,12 @@
 <span class="hljs-keyword">options</span> gen2
 
 <span class="hljs-meta">[safe_when_uninitialized]</span>
-<span class="hljs-keyword">struct</span> <span class="hljs-title">Plain</span> {
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Plain</span> {
+    value : <span class="hljs-type">int</span>
+}
+
+<span class="hljs-meta">[comment(tag = <span class="hljs-string">&quot;alive&quot;</span>, level = 3)]</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Annotated</span> {
     value : <span class="hljs-type">int</span>
 }
 
@@ -11,7 +16,7 @@
         [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
         [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
     ]
-    <span class="hljs-title function_">print</span>(<span class="hljs-string">&quot;<span class="hljs-template-variable">{rows}</span> <span class="hljs-template-variable">{<span class="hljs-title function_">other</span>()}</span>\n&quot;</span>)
+    <span class="hljs-title function_ invoke__">print</span>(<span class="hljs-string">&quot;<span class="hljs-subst">{rows}</span> <span class="hljs-subst">{<span class="hljs-title function_ invoke__">other</span>()}</span>\n&quot;</span>)
 }
 
 <span class="hljs-meta">[export]</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">other</span>() : <span class="hljs-type">int</span> {
