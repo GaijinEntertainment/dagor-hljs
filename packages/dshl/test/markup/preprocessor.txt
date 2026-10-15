@@ -1,0 +1,22 @@
+shader preprocessor_demo
+{
+  hlsl(ps) {
+
+    #define SCALE 2
+    #define MUL(a, b) \
+      ((a) * (b))
+    #define SWAP(a, b) \
+      { \
+        float t = a; a = b; b = t; \
+      }
+    ##if use_fog
+    float fog = 1;
+    ##endif
+
+    float4 preprocessor_ps() : SV_Target
+    {
+      return float4(MUL(SCALE, 1), 0, 0, 1);
+    }
+  }
+  compile("target_ps", "preprocessor_ps");
+}
