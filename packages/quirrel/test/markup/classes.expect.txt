@@ -1,0 +1,19 @@
+<span class="hljs-keyword">class</span> <span class="hljs-type">Unit</span> (<span class="hljs-type">Base</span>) {
+  name = <span class="hljs-literal">null</span>
+}
+
+<span class="hljs-keyword">let</span> Anonymous = <span class="hljs-keyword">class</span> (<span class="hljs-type">Base</span>) {
+  name = <span class="hljs-literal">null</span>
+}
+
+<span class="hljs-keyword">local</span> <span class="hljs-keyword">class</span> <span class="hljs-type">Inner</span> {
+  name = <span class="hljs-literal">null</span>
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-type">Loaded</span> (<span class="hljs-title function_">require</span>(<span class="hljs-string">&quot;base.nut&quot;</span>).<span class="hljs-property">Base</span>) {
+  name = <span class="hljs-literal">null</span>
+}
+
+<span class="hljs-keyword">enum</span> <span class="hljs-type">Team</span> {
+  <span class="hljs-literal">RED</span> = <span class="hljs-number">1</span>
+}

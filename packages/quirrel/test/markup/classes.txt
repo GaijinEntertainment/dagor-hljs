@@ -1,0 +1,19 @@
+class Unit (Base) {
+  name = null
+}
+
+let Anonymous = class (Base) {
+  name = null
+}
+
+local class Inner {
+  name = null
+}
+
+class Loaded (require("base.nut").Base) {
+  name = null
+}
+
+enum Team {
+  RED = 1
+}
