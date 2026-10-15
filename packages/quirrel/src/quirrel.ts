@@ -33,7 +33,7 @@ export default function quirrel(hljs: HLJSApi): Language {
 
 	const TYPE = `(?:${TYPE_NAMES.split(' ').join('|')})`;
 	const TYPE_ANNOTATION: Mode = {
-		scope: 'built_in',
+		scope: 'type',
 		match: new RegExp(`(?<=(?<!:):\\s*\\(?\\s*(?:${TYPE}\\s*\\|\\s*)*)${TYPE}\\b`),
 	};
 

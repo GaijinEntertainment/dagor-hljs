@@ -31,7 +31,7 @@
   }
 }
 
-<span class="hljs-keyword">function</span> <span class="hljs-title function_">makeRoster</span>(names: <span class="hljs-built_in">array</span>, ...): <span class="hljs-built_in">table</span> {
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">makeRoster</span>(names: <span class="hljs-type">array</span>, ...): <span class="hljs-type">table</span> {
   <span class="hljs-keyword">let</span> roster = {}
   <span class="hljs-keyword">foreach</span> (i, name <span class="hljs-keyword">in</span> names) {
     <span class="hljs-keyword">if</span> (i &gt;= <span class="hljs-literal">MAX_PLAYERS</span>)
