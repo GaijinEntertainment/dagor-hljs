@@ -13,7 +13,7 @@ const KEYWORDS = [
 	// Declarations, modifiers and control flow.
 	'let var aka assume capture default goto label pass unsafe with',
 	'abstract const explicit implicit inscope override private public sealed',
-	'shared static template uninitialized distinct',
+	'shared static template uninitialized',
 	'def operator class enum struct typedef tuple variant bitfield',
 	'return yield generator',
 	'if static_if elif static_elif else for while where break continue',
@@ -127,7 +127,10 @@ export default function daslang(hljs: HLJSApi): Language {
 		end: /[:={\n]/,
 		excludeEnd: true,
 		keywords: KEYWORD_OBJECT,
-		contains: [{scope: 'type', begin: NAME_START}],
+		contains: [
+			{scope: 'keyword', begin: /\bdistinct\b/},
+			{scope: 'type', begin: NAME_START},
+		],
 	};
 
 	const CALL: Mode = {

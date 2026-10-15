@@ -1,0 +1,11 @@
+<span class="hljs-keyword">options</span> gen2
+
+<span class="hljs-keyword">require</span> daslib/linq
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">distinct</span> <span class="hljs-type">Meters</span> = <span class="hljs-built_in">float</span>
+
+[export]
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> unique &lt;- <span class="hljs-title function_">distinct</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+    <span class="hljs-title function_">print</span>(<span class="hljs-string">&quot;<span class="hljs-template-variable">{unique}</span>\n&quot;</span>)
+}
