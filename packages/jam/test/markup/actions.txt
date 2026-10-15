@@ -7,6 +7,8 @@ actions quietly Link bind NEEDLIBS LINKFLAGS
 
 actions Clean
 {
+  :label-1
+  if errorlevel 1 goto label-1
   rem nothing $(1) here
   REM an upper-case remark
   del $(1)
