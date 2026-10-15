@@ -8,15 +8,15 @@
 <span class="hljs-keyword">let</span> big = <span class="hljs-number">1.5e10</span>
 <span class="hljs-keyword">global</span> <span class="hljs-keyword">const</span> <span class="hljs-literal">SPEED</span> = <span class="hljs-number">2.5</span>
 
-<span class="hljs-keyword">class</span> <span class="hljs-type">Unit</span> (<span class="hljs-type">Base</span>) {
+<span class="hljs-keyword">class</span> <span class="hljs-title">Unit</span> (<span class="hljs-type">Base</span>) {
   <span class="hljs-keyword">static</span> count = <span class="hljs-number">0</span>
 
   <span class="hljs-title function_">constructor</span>() {
-    <span class="hljs-variable language_">base</span>.<span class="hljs-title function_">constructor</span>()
-    ::<span class="hljs-title function_">print</span>(<span class="hljs-keyword">typeof</span> <span class="hljs-variable language_">this</span>)
+    <span class="hljs-built_in">base</span>.<span class="hljs-title function_">constructor</span>()
+    ::<span class="hljs-title function_">print</span>(<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">this</span>)
   }
 
-  <span class="hljs-keyword">function</span> [<span class="hljs-attr">pure</span>] <span class="hljs-title function_">area</span>(w, h) {
+  <span class="hljs-keyword">function</span> [<span class="hljs-meta">pure</span>] <span class="hljs-title function_">area</span>(w, h) {
     <span class="hljs-keyword">return</span> w * h
   }
 }
