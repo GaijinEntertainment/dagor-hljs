@@ -130,7 +130,7 @@ export default function dshl(hljs: HLJSApi): Language {
 	const STRING: Mode = {
 		scope: 'string',
 		begin: /"/,
-		end: /"/,
+		end: /"|$/,
 		contains: [{begin: /~./, relevance: 0}],
 	};
 
