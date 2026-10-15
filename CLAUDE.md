@@ -24,7 +24,8 @@ an npm package of its own. The repository is public.
   - `title` - the name that a declaration of a type, a shader, a block, or a class introduces.
   - `type` - built-in types, type suffixes such as `@f4` and `:r`, and type names in a type position.
   - `built_in` - built-in functions and built-in values such as `this`.
-  - `literal` - `true`, `false`, `null`, and named built-in constants.
+  - `literal` - `true`, `false`, `null`, named built-in constants, and in Daslang and Quirrel a name in capital
+    letters, which those languages give to a constant.
   - `attr` - render states and other built-in setting names, HLSL semantics, and BLK parameter names, as Gerrit colors
     the keys of JSON.
   - `template-variable` - a variable expansion, such as `$(Root)` in Jam.
