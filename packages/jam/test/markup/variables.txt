@@ -1,0 +1,2 @@
+Echo $(1:S=.jam) $(o:J=_) $(b:G=grist) $(name:U:E=none) ;
+Echo $(1:S=$(SUFFIX):D=out) $(x:T) $(list[2-3]) ;
