@@ -1,0 +1,7 @@
+<span class="hljs-variable">AddIncludes</span> += $(<span class="hljs-variable">Root</span>)/prog/include -include out.in ;
+<span class="hljs-variable">Sources</span> = default.if local_rule ;
+
+<span class="hljs-keyword">actions</span> <span class="hljs-title function_">CleanUp</span>
+{
+  <span class="hljs-keyword">del</span> out/include/del/x.if
+}

@@ -1,0 +1,7 @@
+AddIncludes += $(Root)/prog/include -include out.in ;
+Sources = default.if local_rule ;
+
+actions CleanUp
+{
+  del out/include/del/x.if
+}
