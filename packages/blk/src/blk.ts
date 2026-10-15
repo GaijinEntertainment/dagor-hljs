@@ -33,9 +33,10 @@ function typeName(types: readonly string[]): string {
 
 function unquotedValue(stops: string): string {
 	const slash = '\\/(?![/*])';
-	const first = `(?:[^\\s;}/"'${stops}]|${slash})`;
-	const inner = `(?:[^;}\\r\\n/${stops}]|${slash})`;
 	const last = `(?:[^\\s;}/${stops}]|${slash})`;
+	const first = `(?:[^\\s;}/"'${stops}]|${slash})`;
+	const closedComment = `\\/\\*(?:(?!\\*\\/)[^\\r\\n])*\\*\\/(?=[ \\t]*${last})`;
+	const inner = `(?:[^;}\\r\\n/${stops}]|${slash}|${closedComment})`;
 	return `${first}(?:${inner}*${last})?`;
 }
 
@@ -67,7 +68,12 @@ export default function blk(hljs: HLJSApi): Language {
 	const value = (equals: RegExp, scope: string): Mode => ({
 		begin: equals,
 		end: /(?=;|\n|\}|\s*\/\/)/,
-		contains: [COMMENT_AFTER_UNQUOTED, BLOCK_COMMENT, STRING, {scope, begin: new RegExp(unquotedValue(''))}],
+		contains: [
+			{...COMMENT_AFTER_UNQUOTED, endsParent: true},
+			BLOCK_COMMENT,
+			STRING,
+			{scope, begin: new RegExp(unquotedValue(''))},
+		],
 	});
 
 	const typedEquals = (types: readonly string[]): RegExp => new RegExp(`(?<=:[ \\t]*${typeName(types)}[ \\t]*)=`);
